@@ -1,11 +1,31 @@
 package edu.depaul.secmail;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Log {
 	//member vars here
 	private final static boolean DEBUG = false;
+	private static FileWriter logFile;
 	
 	//constructor
 	Log() {
+		
+	}
+	
+	public static void Init(File file)
+	{
+		//create the FileWriter based on file
+		FileWriter w = null;
+		try {
+			w = new FileWriter(file);
+		} catch (IOException e)	{
+			System.err.println(e);
+		} finally {
+			logFile = w;
+		}
+		
 		
 	}
 	
@@ -37,8 +57,13 @@ public class Log {
 	//private methods
 	private static void File_Output(String out)
 	{
-		//TODO implement this function.
-		System.out.println(out);
+		if (logFile == null)
+		{
+			System.err.println("Error: unable to write to logFile because logFile uninitialized.");
+			System.err.println(out);
+		}
+		else
+			System.out.println(out);
 	}
 	
 	// print debugging magic.
