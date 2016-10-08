@@ -1,0 +1,7 @@
+capabilities:
+	write mail
+	designate server (url and port number?)
+	push mail to server
+	receive notifications from server on login (and while running)
+	do key exchange with specified secmail address?
+
