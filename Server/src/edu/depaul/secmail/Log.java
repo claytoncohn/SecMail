@@ -63,7 +63,11 @@ public class Log {
 			System.err.println(out);
 		}
 		else
-			System.out.println(out);
+			try {
+				logFile.write(out);
+			} catch (IOException e) {
+				System.err.println("Unable to write to log file. Exception thrown." + e);
+			}
 	}
 	
 	// print debugging magic.

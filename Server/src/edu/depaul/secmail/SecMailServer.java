@@ -6,6 +6,7 @@ public class SecMailServer {
 	public static void main(String[] args) {
 		// read the command line arguments and set up the configuration
 		serverConfig = new Config(args);
+		Log.Init(serverConfig.getLogFile());
 
 	}
 
