@@ -45,6 +45,9 @@ public class Log {
 	
 	public static void Error(String message)
 	{
+		if (DEBUG)
+			System.err.println(message);
+		
 		String toOut = "Error: " + GetStackInfo() + " " + message;
 		File_Output(toOut);
 	}

@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class Config {
 	private int port = 57890;
+	private int backlog = 15;
 	private String configFilePath = null;
 	private File configFile = null;
 	private String logFilePath = "./SecMailServer.log";
@@ -45,6 +46,11 @@ public class Config {
 	public String getConfigFilePath()
 	{
 		return this.configFilePath;
+	}
+	
+	public int getBacklog()
+	{
+		return backlog;
 	}
 	
 	public int getPort()
