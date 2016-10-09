@@ -3,11 +3,12 @@ package edu.depaul.secmail;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class Log {
 	//member vars here
-	private final static boolean DEBUG = false;
-	private static FileWriter logFile;
+	private final static boolean DEBUG = true;
+	private static PrintWriter logFile;
 	
 	//constructor
 	Log() {
@@ -17,9 +18,9 @@ public class Log {
 	public static void Init(File file)
 	{
 		//create the FileWriter based on file
-		FileWriter w = null;
+		PrintWriter w = null;
 		try {
-			w = new FileWriter(file);
+			w = new PrintWriter(new FileWriter(file));
 		} catch (IOException e)	{
 			System.err.println(e);
 		} finally {
@@ -63,11 +64,11 @@ public class Log {
 			System.err.println(out);
 		}
 		else
-			try {
-				logFile.write(out);
-			} catch (IOException e) {
-				System.err.println("Unable to write to log file. Exception thrown." + e);
-			}
+		{
+			logFile.println(out);
+			logFile.flush();
+		}
+		
 	}
 	
 	// print debugging magic.

@@ -7,6 +7,8 @@ public class SecMailServer {
 		// read the command line arguments and set up the configuration
 		serverConfig = new Config(args);
 		Log.Init(serverConfig.getLogFile());
+		
+		Log.Out("Set up Server onfig and log file.");
 
 	}
 
