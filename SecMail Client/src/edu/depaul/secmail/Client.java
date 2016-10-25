@@ -84,19 +84,26 @@ public class Client {
 			
 			
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			System.out.println("No such algorithm exception: " + e.getLocalizedMessage());
+			System.out.println("Stack trace: " + e.printStackTrace());
 		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
+			System.out.println("No such padding exception: " + e.getLocalizedMessage());
+			System.out.println("Stack trace: " + e.printStackTrace());
 		} catch (InvalidKeyException e) {
-			e.printStackTrace();
+			System.out.println("Invalid key exception : " + e.getLocalizedMessage());
+			System.out.println("Stack trace: " + e.printStackTrace());
 		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
+			System.out.println("Illegal block size exception: " + e.getLocalizedMessage());
+			System.out.println("Stack trace: " + e.printStackTrace());
 		} catch (BadPaddingException e) {
-			e.printStackTrace();
+			System.out.println("Bad padding exception: " + e.getLocalizedMessage());
+			System.out.println("Stack trace: " + e.printStackTrace());
 		} catch (InvalidAlgorithmParameterException e) {
-			e.printStackTrace();
+			System.out.println("Invalid algorithm parameter exception: " + e.getLocalizedMessage());
+			System.out.println("Stack trace: " + e.printStackTrace());
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("IO exception: " + e.getLocalizedMessage());
+			System.out.println("Stack trace: " + e.printStackTrace());
 		}
 		return message;
 	}
