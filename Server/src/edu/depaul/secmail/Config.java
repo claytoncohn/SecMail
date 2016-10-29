@@ -25,11 +25,11 @@ public class Config {
 				{
 				case "c":
 				case "-configfile":
-					this.LoadConfigFile(args[i+1]);
+					this.LoadConfigFile(args[++i]);
 					break;
 				case "l":
 				case "-logfile":
-					this.SetLogFile(args[i+1]);
+					this.SetLogFile(args[++i]);
 				default:
 					System.err.println("Unknown command line option: " + args[i]);
 				}
