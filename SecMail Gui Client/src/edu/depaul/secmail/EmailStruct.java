@@ -1,18 +1,88 @@
 package edu.depaul.secmail;
 
 import java.util.LinkedList;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.PrintWriter;
 
 public class EmailStruct {
 	private LinkedList<String> recipients = new LinkedList<String>();
 	private LinkedList<File> attachments = new LinkedList<File>();
-	private String subject;
-	private String body;
+	private String subject = null;
+	private String body = null;
+	
+	EmailStruct()
+	{
+		
+	}
 	
 	//Constructor for reading an email from a file.
 	EmailStruct(File f)
 	{
-		
+		try {
+			BufferedReader input = new BufferedReader(new FileReader(f));
+			String line = null;
+			while ((line = input.readLine()) != null)
+			{
+				if (line.startsWith("to:"))
+				{
+					//add a recipient
+					String[] split = line.split(":");
+					if (split.length > 2)
+						 fileFormatError(line);
+					else
+						recipients.add(split[1].trim());
+				}
+				else if (line.startsWith("attachment:"))
+				{
+					//add attachment
+					String[] split = line.split(":");
+					if (split.length > 2)
+						fileFormatError(line);
+					else
+					{
+						File attachment = new File(split[1].trim());
+						attachments.add(attachment);
+					}
+				}
+				else if (line.startsWith("subject:"))
+				{
+					//add the subject
+					String[] split = line.split(":");
+					if (split.length > 2)
+						fileFormatError(line);
+					else
+					{
+						this.subject = split[1].trim();
+					}
+				}
+				else if (line.startsWith("body:"))
+				{
+					//add the body
+					StringBuffer buffer = new StringBuffer();
+					//consume the rest of the file
+					while ((line = input.readLine()) != null)
+						buffer.append(line);
+					body = buffer.toString();
+				}
+				else
+				{
+					fileFormatError(line);
+				}
+			}
+		} catch (Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	
+	
+	private void fileFormatError(String line)
+	{
+		System.out.println("Format error reading email from file. offending line:");
+		System.out.println(line);
 	}
 	public void addRecipient(String to)
 	{
@@ -62,7 +132,38 @@ public class EmailStruct {
 	//returns true if successful, returns false otherwise
 	public boolean writeToFile(File f)
 	{
-		return false;
+		try {
+			PrintWriter out = new PrintWriter(f);
+			//write the recipients
+			for (String recipient : recipients)
+			{
+				out.print("to: ");
+				out.println(recipient);
+			}
+			
+			//write the attachments
+			for (File attachment : attachments)
+			{
+				out.print("attachment: ");
+				out.println(attachment.getAbsolutePath());
+			}
+			
+			//write the subject
+			out.print("subject: ");
+			out.println(subject);
+			
+			//the rest of the email is the body.
+			out.println("body: ");
+			out.print(body);
+			
+			out.close();
+			return true;
+		} catch (Exception e)
+		{
+			System.out.println(e);
+			return false;
+		}
+			
 	}
 
 }
