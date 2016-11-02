@@ -6,20 +6,20 @@ import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 
 public class ClientHandler implements Runnable{
 	private Socket clientSocket = null;
-	private PrintWriter out = null;
-	private BufferedReader in = null;
+	private ObjectOutputStream out = null;
+	private ObjectInputStream in = null;
 	
 	ClientHandler(Socket s)
 	{
 		this.clientSocket = s;
 		try {
-			out = new PrintWriter(clientSocket.getOutputStream());
-			in = new BufferedReader(
-					new InputStreamReader(clientSocket.getInputStream())
-					);
+			out = new ObjectOutputStream(new DHEncryptionWriter(clientSocket.getOutputStream()));
+			in = new ObjectInputStream(new DHEncryptionReader(clientSocket.getInputStream()));
 		} catch (IOException e) {
 			//TODO: handle this. For now, just output error and abort
 			System.err.println(e);
@@ -39,15 +39,19 @@ public class ClientHandler implements Runnable{
 		//this is example code copied from java docs
 		//basically just an echo server at this point.
 		try {
-			String inputLine, outputLine;
-			while ((inputLine = in.readLine()) != null) {
-		        outputLine = inputLine;
-		        out.println(outputLine);
-		        if (outputLine.equals("Bye."))
-		            break;
+			PacketHeader nextPacket = null;
+			while ((nextPacket = (PacketHeader)in.readObject()) != null) {
+		        if (nextPacket.getCommand() == Command.CLOSE)
+		        	break; // leave the loop
+		        else
+		        	processPacket(nextPacket);
 		    }
 		} catch (IOException e) {
 			Log.Error("Error while trying to read or write to socket");
+			Log.Error(e.toString());
+		} catch (ClassNotFoundException e)
+		{
+			Log.Error("Error while trying to get object from network. Class not found");
 			Log.Error(e.toString());
 		}
 		
@@ -60,5 +64,10 @@ public class ClientHandler implements Runnable{
 			System.err.println(e);
 			Log.Error(e.toString());
 		}
+	}
+	
+	private void processPacket(PacketHeader ph)
+	{
+		Log.Debug("Processing packet for command " + ph.getCommand());
 	}
 }
