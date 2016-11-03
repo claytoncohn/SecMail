@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 
 public class EmailStruct {
 	private LinkedList<String> recipients = new LinkedList<String>();
-	private LinkedList<File> attachments = new LinkedList<File>();
+	private transient LinkedList<File> attachments = new LinkedList<File>();
 	private String subject = null;
 	private String body = null;
 	
