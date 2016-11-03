@@ -5,8 +5,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 
-public class EmailStruct {
+public class EmailStruct implements Serializable{
 	private LinkedList<String> recipients = new LinkedList<String>();
 	private transient LinkedList<File> attachments = new LinkedList<File>();
 	private String subject = null;
