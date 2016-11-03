@@ -20,7 +20,7 @@ public class SecMailServer {
 			while (true)
 			{
 				Socket clientSocket = serverSocket.accept();
-				Log.Debug("Connected to client");
+				Log.Debug("Connected to client " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 				
 				//process the client
 				(new Thread(new ClientHandler(clientSocket))).start();

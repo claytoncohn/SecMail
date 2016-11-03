@@ -1,20 +1,27 @@
 package edu.depaul.secmail;
 
 import java.io.OutputStream;
+import java.net.Socket;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class DHEncryptionWriter extends java.io.OutputStream {
-	OutputStream os;
+	private Socket s;
+	private InputStream is;
+	private OutputStream os;
 	
-	DHEncryptionWriter(OutputStream o)
+	DHEncryptionWriter(Socket s) throws IOException
 	{
-		this.os = o;
+		this.s = s;
+		os = s.getOutputStream();
+		is = s.getInputStream();
 	}
 	
 	@Override
 	public void close() throws IOException
 	{
 		os.close();
+		is.close();
 	}
 	
 	@Override

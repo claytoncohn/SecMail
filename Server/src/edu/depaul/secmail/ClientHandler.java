@@ -18,8 +18,8 @@ public class ClientHandler implements Runnable{
 	{
 		this.clientSocket = s;
 		try {
-			out = new ObjectOutputStream(new DHEncryptionWriter(clientSocket.getOutputStream()));
-			in = new ObjectInputStream(new DHEncryptionReader(clientSocket.getInputStream()));
+			out = new ObjectOutputStream(new DHEncryptionWriter(clientSocket));
+			in = new ObjectInputStream(new DHEncryptionReader(clientSocket));
 		} catch (IOException e) {
 			//TODO: handle this. For now, just output error and abort
 			System.err.println(e);
@@ -57,6 +57,7 @@ public class ClientHandler implements Runnable{
 		
 		//we're done. close the stuff
 		try {
+			Log.Debug("Closing connection to client " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 			out.close();
 			in.close();
 			clientSocket.close();
@@ -69,5 +70,21 @@ public class ClientHandler implements Runnable{
 	private void processPacket(PacketHeader ph)
 	{
 		Log.Debug("Processing packet for command " + ph.getCommand());
+		if (ph.command == Command.CONNECT_TEST)
+			handleConnectionTest();
+	}
+	
+	private void handleConnectionTest()
+	{
+		//create successful connection packet
+		PacketHeader successfulTestPacket = new PacketHeader();
+		successfulTestPacket.setCommand(Command.CONNECT_SUCCESS);
+		
+		try {
+			out.writeObject(successfulTestPacket);
+		} catch (Exception e)
+		{
+			Log.Error("Exception thrown." + e);
+		}
 	}
 }

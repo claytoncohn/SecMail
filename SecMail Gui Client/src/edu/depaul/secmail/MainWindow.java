@@ -90,7 +90,19 @@ public class MainWindow {
 		gd_btnFetchMail.widthHint = 131;
 		btnFetchMail.setLayoutData(gd_btnFetchMail);
 		btnFetchMail.setText("Fetch Mail");
-		new Label(composite, SWT.NONE);
+		
+		Button btnTestConnection = new Button(composite, SWT.NONE);
+		btnTestConnection.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				ConnectionTestWindow test = new ConnectionTestWindow(Display.getCurrent());
+				test.open();
+			}
+		});
+		GridData gd_btnTestConnection = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnTestConnection.widthHint = 134;
+		btnTestConnection.setLayoutData(gd_btnTestConnection);
+		btnTestConnection.setText("Test Connection");
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);

@@ -1,14 +1,20 @@
 package edu.depaul.secmail;
 
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.io.IOException;
 
 public class DHEncryptionReader extends java.io.InputStream {
+	private Socket s;
 	private InputStream is;
+	private OutputStream os;
 	
-	DHEncryptionReader(InputStream i)
+	DHEncryptionReader(Socket socket) throws IOException
 	{
-		this.is = i;
+		this.s = socket;
+		this.is = s.getInputStream();
+		this.os = s.getOutputStream();
 	}
 	
 	@Override
@@ -45,6 +51,7 @@ public class DHEncryptionReader extends java.io.InputStream {
 	public void close() throws IOException
 	{
 		is.close();
+		os.close();
 	}
 	
 	@Override

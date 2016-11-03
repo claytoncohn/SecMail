@@ -19,7 +19,7 @@ public class EmailStruct {
 	
 	//Constructor for reading an email from a file.
 	EmailStruct(File f)
-	{
+	{		
 		try {
 			BufferedReader input = new BufferedReader(new FileReader(f));
 			String line = null;
@@ -71,6 +71,7 @@ public class EmailStruct {
 					fileFormatError(line);
 				}
 			}
+			input.close();
 		} catch (Exception e)
 		{
 			System.out.println(e);
