@@ -6,14 +6,15 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class DHEncryptionWriter extends java.io.OutputStream {
+	//@SuppressWarnings("unused")
 	private Socket s;
 	private InputStream is;
 	private OutputStream os;
 	
 	DHEncryptionWriter(Socket s) throws IOException {
 		this.s = s;
-		os = s.getOutputStream();
-		is = s.getInputStream();
+		os = this.s.getOutputStream();
+		is = this.s.getInputStream();
 	}
 	
 	@Override

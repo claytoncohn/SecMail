@@ -1,6 +1,7 @@
 package edu.depaul.secmail;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -9,7 +10,6 @@ import java.io.PrintWriter;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 
@@ -41,6 +41,7 @@ import java.security.spec.X509EncodedKeySpec;
 
 
 
+@SuppressWarnings("unused")
 public class SecMailStaticEncryption {
 
 	private static byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //AES initialization vector, should not remain 0s
@@ -49,6 +50,15 @@ public class SecMailStaticEncryption {
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
     //									  http://www.java2s.com/Tutorial/Java/0490__Security/DiffieHellmanKeyAgreement.htm
+    
+    public static void encryptFile(File file, String password) {
+    	System.out.println("Encrypting file");
+    }
+    
+    public static void encryptText(String text, String password) {
+    	System.out.println("Encrypting text");
+    }
+
     
     public static class DHKeyServer implements Runnable{
     	private BigInteger Modulo; //also known as p
