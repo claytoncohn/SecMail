@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move 2 elements to &apos;SecMail/src&apos;&#x0A;- Original project: &apos;SecMail Client&apos;&#x0A;- Destination element: &apos;SecMail/src&apos;&#x0A;- Original elements:&#x0A;     edu.depaul.secmail.SecMailStaticEncryption.java&#x0A;     edu.depaul.secmail.Client.java&#x0A;- Update references to refactored element" description="Move compilation units" destination="=SecMail/src" element1="/src&lt;edu.depaul.secmail{SecMailStaticEncryption.java" element2="/src&lt;edu.depaul.secmail{Client.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1478457398762" units="2" version="1.0"/>
+</session>
