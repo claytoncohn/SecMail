@@ -25,6 +25,7 @@ public class DHEncryptionReader extends java.io.InputStream {
 	
 	DHEncryptionReader(Socket socket, boolean isServer) throws IOException
 	{
+		this.s=socket;
 		os = new ObjectOutputStream(s.getOutputStream());
 		is = new ObjectInputStream(s.getInputStream());
 		try {

@@ -23,9 +23,9 @@ public class DHEncryptionWriter{
 	private MessageDigest hash;
 	
 	
-	DHEncryptionWriter(Socket s, boolean isServer) throws IOException
+	DHEncryptionWriter(Socket socket, boolean isServer) throws IOException
 	{
-		this.s = s;
+		this.s = socket;
 		os = new ObjectOutputStream(s.getOutputStream());
 		is = new ObjectInputStream(s.getInputStream());
 		try {
