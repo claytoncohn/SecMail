@@ -1,4 +1,0 @@
-INDEX VERSION 1.127+/Users/claytoncohn/Dropbox/DePaul/CSC376/SecMail/.metadata/.plugins/org.eclipse.jdt.core
-28447655.index
-3580526781.index
-2511944996.index
