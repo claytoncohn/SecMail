@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -18,6 +19,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyAgreement;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SealedObject;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
@@ -45,6 +47,7 @@ public class SecMailStaticEncryption {
 
 	private static byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //AES initialization vector, should not remain 0s
     private static IvParameterSpec ivspec = new IvParameterSpec(iv);
+    private static final String ENCRYPTIONSPEC = "AES/CBC/PKCS5Padding";
 
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
@@ -60,21 +63,26 @@ public class SecMailStaticEncryption {
     	private KeyAgreement serverKeyAgree;
     	private KeyPair serverPair;
     	private KeyPairGenerator kpg;
+    	private byte key[];
     	
     	private InputStream clientIn;
     	private OutputStream clientOut;
     	private PrintWriter out;
     	private BufferedReader in;
     	
+    	public byte[] getKey() {
+			return key;
+		}
     	
     	public void run(){
     		this.serverInit();
-    		this.doExchange();
+    		this.key = this.doExchange();
     	}
     	
     	public DHKeyServer(int Port, int BitLen){
     	    this.port = Port;
     	    this.bitLen = BitLen;
+    	    this.key = null;
     	    try {
 				serverSocket = new ServerSocket(port);
 			} catch (IOException e) {
@@ -90,7 +98,6 @@ public class SecMailStaticEncryption {
     	    this.Modulo = BigInteger.probablePrime(bitLen, rnd);
     	    this.Base = BigInteger.probablePrime(bitLen, rnd);
     	    //send these over the socket
-    	    
     	    
     	    try {
     	    	
@@ -154,16 +161,7 @@ public class SecMailStaticEncryption {
 			    return serverKeyAgree.generateSecret();
 			    
 			    
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (InvalidKeySpecException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (InvalidKeyException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(1);
 			}
@@ -171,6 +169,8 @@ public class SecMailStaticEncryption {
     		return null;
     		
     	}
+    	
+    	
     	
     }
     
@@ -182,17 +182,18 @@ public class SecMailStaticEncryption {
     	private InputStream serverIn;
     	private OutputStream serverOut;
     	private KeyPairGenerator kpg;
-    	
+    	private byte key[];
     	
     	
     	
     	public void run(){
     		this.clientInit();
-    		this.doExchange();
+    		this.key = this.doExchange();
     	}
     	
-    	public DHKeyClient(int Port, int BitLen){
+    	public DHKeyClient(int Port){
     	    this.port = Port;
+    	    
     	}
     	
     	public void clientInit(){
@@ -201,14 +202,9 @@ public class SecMailStaticEncryption {
     	    	this.serverIn = serverSocket.getInputStream();
     	    	this.serverOut = serverSocket.getOutputStream();
 				this.kpg = KeyPairGenerator.getInstance("DiffieHellman");
+				this.key = null;
 			    
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(1);
 			}
@@ -250,28 +246,20 @@ public class SecMailStaticEncryption {
 			    
 			    return clientKeyAgree.generateSecret();
 			    
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (InvalidKeyException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (InvalidAlgorithmParameterException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (InvalidKeySpecException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(1);
 			}
     		
     		return null;
     	}
+
+
+    	public byte[] getKey() {
+			return key;
+		}
+
+
     		
     }
     
@@ -290,20 +278,9 @@ public class SecMailStaticEncryption {
 			Cipher c = Cipher.getInstance("AES/CBC/NoPadding");
 			c.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
 			cipherText = c.doFinal(messageBytes);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		}
-		catch (InvalidAlgorithmParameterException e) {
-			e.printStackTrace();
-		}
+		} 
 		return cipherText;
 	}
 	
@@ -321,24 +298,11 @@ public class SecMailStaticEncryption {
 			message = ConvertByteArrayToString(c.doFinal(cipherText));
 			
 			
-		} catch (NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			e.printStackTrace(); //this already prints, no need to call System.out.println
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidAlgorithmParameterException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return message;
 	}
-	
 	
 	//Clayton Newmiller
 	//Note: Java chars are unicode, 2 bytes long
@@ -382,7 +346,44 @@ public class SecMailStaticEncryption {
 		return s.toString();
 	}
 	
+	public static SealedObject encryptObject(Serializable packet, byte keyBytes[]){
+		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
+		Cipher c=null;
+		SealedObject encryptedPacket=null;
+		try {
+			c = Cipher.getInstance(ENCRYPTIONSPEC);
+			c.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
+			encryptedPacket = new SealedObject(packet, c);
+			
+			return encryptedPacket;
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
+	public static Serializable decryptPacket(SealedObject packet, byte keyBytes[]){ //needs to be cast to what it actually is
+		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
+		Cipher c=null;
+		Serializable decryptedObject=null;
+		try {
+			c = Cipher.getInstance(ENCRYPTIONSPEC);
+			c.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
+			decryptedObject = (Serializable) packet.getObject(c);
+			
+			return decryptedObject;
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
 	
 	
 	
@@ -390,7 +391,7 @@ public class SecMailStaticEncryption {
 		
 		
 		
-//		byte ciphertext[] = SecMailEncryptAES("FAT CAT NOT CATS", "12345678");
+		
 //		String changed = SecMailDecryptAES(ciphertext, "12345678");
 //		
 //		System.out.println(changed);
@@ -402,10 +403,26 @@ public class SecMailStaticEncryption {
 		server.start();
 		
 		
-		DHKeyClient test2 = new DHKeyClient(port, 512);
+		DHKeyClient test2 = new DHKeyClient(port);
 		Thread client = new Thread(test2, "clientThread");
 		client.start();
 		
+		while (client.isAlive() || server.isAlive()){
+			
+		}
+		MessageDigest hash;
+		try {
+			hash = MessageDigest.getInstance("SHA-256");
+			byte clientKey[] = hash.digest(test2.key);
+			byte serverKey[] = hash.digest(test1.key);
+			
+//			byte ciphertext[] = SecMailEncryptAES("FAT CAT NOT CATS", serverKey);
+			
+			
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 
