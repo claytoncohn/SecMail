@@ -1,21 +1,49 @@
 package edu.depaul.secmail;
 
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.SealedObject;
+
+import edu.depaul.secmail.SecMailStaticEncryption.DHKeyClient;
+import edu.depaul.secmail.SecMailStaticEncryption.DHKeyServer;
+
 import java.io.IOException;
 
 public class DHEncryptionReader extends java.io.InputStream {
-	private Socket s;
-	private InputStream is;
-	private OutputStream os;
+	private Socket s; //clientSocket
+	private ObjectInputStream is;
+	private ObjectOutputStream os;
+	private byte key[];
+	private MessageDigest hash;
 	
-	DHEncryptionReader(Socket socket) throws IOException
+	DHEncryptionReader(Socket socket, boolean isServer) throws IOException, NoSuchAlgorithmException
 	{
-		this.s = socket;
-		this.is = s.getInputStream();
-		this.os = s.getOutputStream();
+		os = new ObjectOutputStream(s.getOutputStream());
+		is = new ObjectInputStream(s.getInputStream());
+		this.hash = MessageDigest.getInstance("MD5"); //it's java's fault that this is not SHA-256; Java doesn't implement AES with 256 bit keys 
+		
+		if (isServer){
+			DHKeyServer server = new DHKeyServer(s, 512);
+			server.run();
+			this.key= hash.digest(server.getKey());
+		}
+		else{
+			DHKeyClient client = new DHKeyClient(s);
+			client.run();
+			this.key= hash.digest(client.getKey());
+		}
 	}
+	public Serializable readObject() throws ClassNotFoundException, IOException{
+		return SecMailStaticEncryption.decryptPacket(((SealedObject)is.readObject()), this.key);
+	}
+	
 	
 	@Override
 	public int read() throws IOException
