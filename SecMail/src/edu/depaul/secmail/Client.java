@@ -40,10 +40,15 @@ public class Client {
 		else{System.out.print("Error, username or password unrecognized");}
 		
 		//pull notification 
-		//tel server we want notication = 
+		//tell server we want notication = 
 		//client sends request - it sends a packet header that has the command for enum (took care of it)
 		//it's just the command - packetheader object in packetheader.java
 		
+		//email needs to be complete and closed as a packet
+		//server needs to know i will accept email, server is listening specifically for email and not packet
+		//give it packet header for that - SEND_EMAIL command
+		//send EMAIL OBJECT
+		//after email is received communiction from server to client that says email received
 		
 		//server recieves message that client wants mail messages
 		//server sends back notification which is (packet header)
