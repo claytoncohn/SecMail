@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+<<<<<<< HEAD
 /*
  * to write object, override WriteObject()
  * 		take the object, seal it, send sealed object
@@ -24,6 +25,10 @@ import java.io.ObjectOutputStream;
 
 
 public class DHEncryptionWriter{
+=======
+public class DHEncryptionWriter extends java.io.OutputStream {
+	//@SuppressWarnings("unused")
+>>>>>>> ee2fce933ef95eaf24a9bb8d7b050ab12740e7c1
 	private Socket s;
 	
 	private ObjectInputStream is;
@@ -42,11 +47,16 @@ public class DHEncryptionWriter{
 	DHEncryptionWriter(Socket s, boolean isServer) throws IOException
 	{
 		this.s = s;
+<<<<<<< HEAD
 		os = new ObjectOutputStream(s.getOutputStream());
 		is = new ObjectInputStream(s.getInputStream());
 		
 		
 		
+=======
+		os = this.s.getOutputStream();
+		is = this.s.getInputStream();
+>>>>>>> ee2fce933ef95eaf24a9bb8d7b050ab12740e7c1
 	}
 	
 	

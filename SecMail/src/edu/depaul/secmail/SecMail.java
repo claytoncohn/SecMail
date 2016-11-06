@@ -12,8 +12,13 @@ import java.util.regex.Pattern;
 
 public class SecMail {
 	public static void main(String[] args) {
-		
+//Geri Toncheva		
 		Client client = new Client();
+		
+		//do log in
+		//ask for username
+		//ask for password
+		
 
         //email stuff, maybe place in own class?
         String testemail ="test@email.com";
