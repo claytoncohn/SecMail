@@ -70,11 +70,31 @@ public class ClientHandler implements Runnable{
 	private void processPacket(PacketHeader ph)
 	{
 		Log.Debug("Processing packet for command " + ph.getCommand());
-		if (ph.command == Command.CONNECT_TEST)
-			handleConnectionTest();
+		
+		switch(ph.getCommand()){
+			case CONNECT_TEST:
+				handleTestConnection();
+				break;
+			case LOGIN:
+				handleLogin();
+				break;
+			case PASSWORD:
+				handlePassword();
+				break;
+			case EMAIL:
+				handleEmail();
+				break;
+			case ERROR:
+				handleError();
+				break;
+		default:
+			break;
+				
+			
+		}
 	}
 	
-	private void handleConnectionTest()
+	private void handleTestConnection()
 	{
 		//create successful connection packet
 		PacketHeader successfulTestPacket = new PacketHeader();
@@ -86,5 +106,21 @@ public class ClientHandler implements Runnable{
 		{
 			Log.Error("Exception thrown." + e);
 		}
+	}
+	
+	private void handleLogin(){
+		// Handle Login packet here
+	}
+	
+	private void handlePassword(){
+		// Handle Password packet here
+	}
+	
+	private void handleEmail(){
+		// Handle Email packet here
+	}
+	
+	private void handleError(){
+		// Handle Error packet here
 	}
 }
