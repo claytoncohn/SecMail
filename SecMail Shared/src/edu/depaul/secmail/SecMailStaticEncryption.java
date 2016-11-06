@@ -47,7 +47,7 @@ public class SecMailStaticEncryption {
 
 	private static byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //AES initialization vector, should not remain 0s
     private static IvParameterSpec ivspec = new IvParameterSpec(iv);
-    private static final String ENCRYPTIONSPEC = "AES/CBC/PKCS5Padding"; //
+    private static final String ENCRYPTIONSPEC = "Rijndael/CBC/PKCS5Padding"; //
 
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
@@ -329,14 +329,14 @@ public class SecMailStaticEncryption {
 		return s.toString();
 	}
 	
-	public static SealedObject encryptObject(Serializable packet, byte keyBytes[]){
-		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
+	public static SealedObject encryptObject(Serializable object, byte keyBytes[]){
+		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "Rijndael");
 		Cipher c=null;
 		SealedObject encryptedPacket=null;
 		try {
 			c = Cipher.getInstance(ENCRYPTIONSPEC);
 			c.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
-			encryptedPacket = new SealedObject(packet, c);
+			encryptedPacket = new SealedObject(object, c);
 			
 			return encryptedPacket;
 			
@@ -348,14 +348,14 @@ public class SecMailStaticEncryption {
 		return null;
 	}
 	
-	public static Serializable decryptPacket(SealedObject packet, byte keyBytes[]){ //needs to be cast to what it actually is
-		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
+	public static Serializable decryptObject(SealedObject object, byte keyBytes[]){ //needs to be cast to what it actually is
+		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "Rijndael");
 		Cipher c=null;
 		Serializable decryptedObject=null;
 		try {
 			c = Cipher.getInstance(ENCRYPTIONSPEC);
 			c.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
-			decryptedObject = (Serializable) packet.getObject(c);
+			decryptedObject = (Serializable) object.getObject(c);
 			
 			return decryptedObject;
 			
@@ -372,44 +372,13 @@ public class SecMailStaticEncryption {
 	
 	public static void main(String[] args) {		
 		
+		String s = "hello";
+		byte[] key = ConvertStringToByteArray("12345678");
+		SealedObject enc = encryptObject(s, key);
+		String b = (String) decryptObject(enc, key);
+		System.out.println(b);
 		
 		
-		
-//		
-////		
-////		System.out.println(changed);
-//				
-//		int port = 50505;
-//		
-//		DHKeyServer test1 = new DHKeyServer(port, 512);
-//		Thread server = new Thread(test1, "serverThread");
-//		server.start();
-//		
-//		
-//		DHKeyClient test2 = new DHKeyClient(port);
-//		Thread client = new Thread(test2, "clientThread");
-//		client.start();
-//		
-//		while (client.isAlive() || server.isAlive()){
-//			
-//		}
-//		MessageDigest hash;
-//		try {
-//			
-//			byte clientKey[] = hash.digest(test2.key);
-//			byte serverKey[] = hash.digest(test1.key);
-//			System.out.println("client hashkey length is "+clientKey.length);
-//			
-//			byte ciphertext[] = SecMailEncryptAES("FAT CAT NOT CATS", serverKey);
-//			String changed = SecMailDecryptAES(ciphertext, clientKey);
-//			System.out.println(changed);
-//			
-//		} catch (NoSuchAlgorithmException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		
 
 	}
 

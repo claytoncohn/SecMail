@@ -28,13 +28,13 @@ public class DHEncryptionReader{
 		if (socket==null){
 			throw new NullPointerException("INSANITY");
 		}
+		
 		this.s=socket;
 		os = new ObjectOutputStream(s.getOutputStream());
 		is = new ObjectInputStream(s.getInputStream());
 		try {
 			this.hash = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} //it's java's fault that this is not SHA-256; Java doesn't implement AES with 256 bit keys 
 		
@@ -50,7 +50,7 @@ public class DHEncryptionReader{
 		}
 	}
 	public Serializable readObject() throws ClassNotFoundException, IOException{
-		return SecMailStaticEncryption.decryptPacket(((SealedObject)is.readObject()), this.key);
+		return SecMailStaticEncryption.decryptObject(((SealedObject)is.readObject()), this.key);
 	}
 	
 	

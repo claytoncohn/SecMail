@@ -48,6 +48,7 @@ public class DHEncryptionWriter{
 	}
 	
 	public void writeObject(Serializable obj) throws IOException{
+		
 		this.os.writeObject(SecMailStaticEncryption.encryptObject(obj, this.key));
 	}
 	
