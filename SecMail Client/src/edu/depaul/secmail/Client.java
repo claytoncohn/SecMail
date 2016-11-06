@@ -41,7 +41,23 @@ public class Client {
 	// gets input from user
 	if (userInput.equals(username) && passInput.equals(password)){System.out.print("Login Succesful!");}
 	
-	else{System.out.print("Error, username or password unrecognized");}}
+	else{System.out.print("Error, username or password unrecognized");}
+	
+	{
+	//user prompt for pulling notifications and emails
+	if (buttonForYesNotificationsIsPressedInGUI) 
+	{
+	//send command to server for notification to be sent to client from server
+	//prompt if user wants to pull emails notified by the notifications sent as well 
+	//leads to 	
+		if (userSaysYesToPullingEmails) 
+		{
+			//pull some goddamn emails son
+			//emails stored on own server?
+		}
+	}
+	}
+	
 	
 	//PSEUDOCODE NEED 
 	//pull notification  
@@ -68,10 +84,7 @@ public class Client {
 	//we run out of notifications and we gota tell client that
 	//while loop and send notifications until its' done and client will receive notifications
 	//another command needed! - end notification
-	//
 
-	
-	//pull mail
 
 
 //Geri Toncheva
