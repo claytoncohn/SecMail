@@ -46,8 +46,15 @@ public class Client {
 		
 		
 		//server recieves message that client wants mail messages
-		//server sends back notifications (packet header)
+		//server sends back notification which is (packet header)
 		//multiple packets with notification
+		//send notification object, but we gotta come up with a notification object
+		//sends another command for get notification
+		//now server is sending packts and client is waiting
+		//we run out of notifications and we gota tell client that
+		//while loop and send notifications until its' done and client will receive notifications
+		//another command needed! - end notification
+		//
 	
 		
 		//pull mail
