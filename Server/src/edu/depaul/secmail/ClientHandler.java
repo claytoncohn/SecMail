@@ -70,7 +70,7 @@ public class ClientHandler implements Runnable{
 	private void processPacket(PacketHeader ph)
 	{
 		Log.Debug("Processing packet for command " + ph.getCommand());
-		
+	
 		switch(ph.getCommand()){
 			case CONNECT_TEST:
 				handleTestConnection();
@@ -82,6 +82,7 @@ public class ClientHandler implements Runnable{
 				handlePassword();
 				break;
 			case EMAIL:
+				Log.Debug("Start Email Handler");
 				handleEmail();
 				break;
 			case ERROR:
@@ -89,9 +90,8 @@ public class ClientHandler implements Runnable{
 				break;
 		default:
 			break;
-				
-			
 		}
+	
 	}
 	
 	private void handleTestConnection()
@@ -117,7 +117,19 @@ public class ClientHandler implements Runnable{
 	}
 	
 	private void handleEmail(){
-		// Handle Email packet here
+		//Read Email from input stream
+		try {
+			EmailStruct newEmail = (EmailStruct)in.readObject();
+			System.out.println("Recipient: " + newEmail.getToString());
+			System.out.println("Subject: " + newEmail.getSubject());
+			System.out.println("Body: " + newEmail.getBody());
+			PacketHeader successfulTestPacket = new PacketHeader();
+			successfulTestPacket.setCommand(Command.CONNECT_SUCCESS);
+			out.writeObject(successfulTestPacket);
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void handleError(){

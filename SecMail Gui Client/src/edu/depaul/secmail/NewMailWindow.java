@@ -10,6 +10,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 
 import java.io.File;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 import swing2swt.layout.BoxLayout;
 import org.eclipse.swt.layout.GridLayout;
@@ -136,6 +139,14 @@ public class NewMailWindow {
 		btnCancel.setText("Cancel");
 		
 		Button btnSend = new Button(shlNewSecmail, SWT.NONE);
+		btnSend.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				loadToEmailStruct();
+				System.out.println(testEmail());
+				shlNewSecmail.close();
+			}
+		});
 		FormData fd_btnSend = new FormData();
 		fd_btnSend.top = new FormAttachment(btnAddAttachment, 0, SWT.TOP);
 		fd_btnSend.right = new FormAttachment(btnCancel, -6);
@@ -212,5 +223,52 @@ public class NewMailWindow {
 		toText.setText(email.getToString());
 		bodyText.setText(email.getBody());
 		subjectText.setText(email.getSubject());
+	}
+	
+	private String testEmail()
+	{
+		String txtServer = ":57890";
+		String[] server = txtServer.split(":");
+		String returnString;
+		if (server.length != 2)
+		{
+			return "Invalid Server format. Please use format <server>:<port>\n";
+		}
+		
+		try {
+			Socket s = new Socket(server[0], Integer.valueOf(server[1]));
+			ObjectOutputStream output = new ObjectOutputStream(new DHEncryptionWriter(s));
+			ObjectInputStream input = new ObjectInputStream(new DHEncryptionReader(s));
+			
+			//create the appropriate packet
+			PacketHeader testPacketHeader = new PacketHeader();
+			testPacketHeader.setCommand(Command.EMAIL);
+			
+			//send the packet
+			output.writeObject(testPacketHeader);
+			output.flush();
+			output.writeObject(email);
+			
+			//get the response
+			PacketHeader responsePacket = (PacketHeader)input.readObject();
+			
+			if (responsePacket.getCommand() != Command.CONNECT_SUCCESS)
+				returnString = "Response Packet contained non-success command";
+			else
+				returnString = "Successfully connected to remote server.\nSuccessfully transmitted test packet.\n"
+						+ "Recieved valid Success packet\n"
+						+ "Connection test successful!\n"
+						+ "Connection closing...";
+			
+			output.writeObject(new PacketHeader(Command.CLOSE));
+			
+			output.close();
+			input.close();
+			s.close();
+		} catch (Exception e)
+		{
+			returnString = "Exception thrown while trying to connect.\n" + e;
+		}
+		return returnString;
 	}
 }
