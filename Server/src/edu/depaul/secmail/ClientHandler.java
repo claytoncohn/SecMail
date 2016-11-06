@@ -2,6 +2,7 @@ package edu.depaul.secmail;
 
 import java.util.concurrent.*;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
 import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,21 +12,24 @@ import java.io.ObjectInputStream;
 
 public class ClientHandler implements Runnable{
 	private Socket clientSocket = null;
-	private ObjectOutputStream out = null;
-	private ObjectInputStream in = null;
+	private DHEncryptionWriter out = null;
+	private DHEncryptionReader in = null;
 	
 	ClientHandler(Socket s)
 	{
 		this.clientSocket = s;
 		try {
-			out = new ObjectOutputStream(new DHEncryptionWriter(clientSocket));
-			in = new ObjectInputStream(new DHEncryptionReader(clientSocket));
+			out = new DHEncryptionWriter(clientSocket, true);
+			in = new DHEncryptionReader(clientSocket, true);
 		} catch (IOException e) {
 			//TODO: handle this. For now, just output error and abort
 			System.err.println(e);
 			Log.Error("Exception creating ClientHandler: ");
 			Log.Error(e.toString());
 			System.exit(10);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		

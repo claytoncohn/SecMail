@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="C:/Users/jacob/.p2/pool/plugins/org.eclipse.ui.forms_3.7.0.v20160518-1929.jar" sourcepath="C:/Users/jacob/.p2/pool/plugins/org.eclipse.ui.forms_3.7.0.v20160518-1929.jar"/>
 	<classpathentry kind="lib" path="swing2swt.jar"/>
 	<classpathentry kind="lib" path="../SecMail-Shared.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -23,11 +23,16 @@ public class DHEncryptionReader extends java.io.InputStream {
 	private byte key[];
 	private MessageDigest hash;
 	
-	DHEncryptionReader(Socket socket, boolean isServer) throws IOException, NoSuchAlgorithmException
+	DHEncryptionReader(Socket socket, boolean isServer) throws IOException
 	{
 		os = new ObjectOutputStream(s.getOutputStream());
 		is = new ObjectInputStream(s.getInputStream());
-		this.hash = MessageDigest.getInstance("MD5"); //it's java's fault that this is not SHA-256; Java doesn't implement AES with 256 bit keys 
+		try {
+			this.hash = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} //it's java's fault that this is not SHA-256; Java doesn't implement AES with 256 bit keys 
 		
 		if (isServer){
 			DHKeyServer server = new DHKeyServer(s, 512);
