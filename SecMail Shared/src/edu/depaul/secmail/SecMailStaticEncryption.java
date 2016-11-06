@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -18,6 +19,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyAgreement;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SealedObject;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
@@ -45,6 +47,7 @@ public class SecMailStaticEncryption {
 
 	private static byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //AES initialization vector, should not remain 0s
     private static IvParameterSpec ivspec = new IvParameterSpec(iv);
+    private static final String ENCRYPTIONSPEC = "AES/CBC/PKCS5Padding"; //
 
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
@@ -55,32 +58,30 @@ public class SecMailStaticEncryption {
     	private BigInteger Base; //also known as generator, g
     	private int port;
     	private int bitLen;
-    	private ServerSocket serverSocket;
     	private Socket clientSocket;
     	private KeyAgreement serverKeyAgree;
     	private KeyPair serverPair;
     	private KeyPairGenerator kpg;
+    	private byte key[];
     	
     	private InputStream clientIn;
     	private OutputStream clientOut;
     	private PrintWriter out;
     	private BufferedReader in;
     	
+    	public byte[] getKey() {
+			return key;
+		}
     	
     	public void run(){
     		this.serverInit();
-    		this.doExchange();
+    		this.key = this.doExchange();
     	}
     	
-    	public DHKeyServer(int Port, int BitLen){
-    	    this.port = Port;
+    	public DHKeyServer(Socket client, int BitLen){
+    	    this.clientSocket = client;
     	    this.bitLen = BitLen;
-    	    try {
-				serverSocket = new ServerSocket(port);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
+    	    this.key = null;
     	    
     	}
     	
@@ -91,14 +92,12 @@ public class SecMailStaticEncryption {
     	    this.Base = BigInteger.probablePrime(bitLen, rnd);
     	    //send these over the socket
     	    
-    	    
     	    try {
     	    	
     	    	this.kpg = KeyPairGenerator.getInstance("DiffieHellman");
     	    	kpg.initialize(bitLen);
     	    	this.serverKeyAgree = KeyAgreement.getInstance("DH");
     	    	this.serverPair = kpg.generateKeyPair();
-    	    	this.clientSocket = serverSocket.accept();
     	    	
     	    	
     	    	this.clientIn = clientSocket.getInputStream();
@@ -146,24 +145,11 @@ public class SecMailStaticEncryption {
 			    
 			    //does the Diffie-Hellman operations
 			    serverKeyAgree.init(serverPair.getPrivate());
-			    serverKeyAgree.doPhase(clientPubKey, true);			    
-			    
-			    //closes sockets
-			    serverSocket.close();
-			    clientSocket.close();
+			    serverKeyAgree.doPhase(clientPubKey, true);
 			    return serverKeyAgree.generateSecret();
 			    
 			    
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (InvalidKeySpecException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (InvalidKeyException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(1);
 			}
@@ -171,6 +157,8 @@ public class SecMailStaticEncryption {
     		return null;
     		
     	}
+    	
+    	
     	
     }
     
@@ -182,33 +170,28 @@ public class SecMailStaticEncryption {
     	private InputStream serverIn;
     	private OutputStream serverOut;
     	private KeyPairGenerator kpg;
-    	
+    	private byte key[];
     	
     	
     	
     	public void run(){
     		this.clientInit();
-    		this.doExchange();
+    		this.key = this.doExchange();
     	}
     	
-    	public DHKeyClient(int Port, int BitLen){
-    	    this.port = Port;
+    	public DHKeyClient(Socket s){
+    	    this.serverSocket = s;
+    	    
     	}
     	
     	public void clientInit(){
     	    try {
-    	    	this.serverSocket = new Socket(InetAddress.getLocalHost(), port);
     	    	this.serverIn = serverSocket.getInputStream();
     	    	this.serverOut = serverSocket.getOutputStream();
 				this.kpg = KeyPairGenerator.getInstance("DiffieHellman");
+				this.key = null;
 			    
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(1);
 			}
@@ -246,32 +229,22 @@ public class SecMailStaticEncryption {
 			    clientKeyAgree.init(clientPair.getPrivate());
 			    clientKeyAgree.doPhase(serverPubKey, true);
 			    
-			    serverSocket.close();
-			    
 			    return clientKeyAgree.generateSecret();
 			    
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (InvalidKeyException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (InvalidAlgorithmParameterException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (InvalidKeySpecException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(1);
 			}
     		
     		return null;
     	}
+
+
+    	public byte[] getKey() {
+			return key;
+		}
+
+
     		
     }
     
@@ -279,70 +252,44 @@ public class SecMailStaticEncryption {
     
 	//Clayton Newmiller
 	//This method currently requires a key length of 8 chars and a message length of 16 chars... will figure out padding later
-	public static byte[] SecMailEncryptAES(String message, String key){
+	public static byte[] SecMailEncryptAES(String message, byte keyBytes[]){
 				
 		byte cipherText[] = null;
-		byte keyBytes[] = ConvertStringToByteArray(key);
 		byte messageBytes[] = ConvertStringToByteArray(message);
 		
 		try {
 			SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
-			Cipher c = Cipher.getInstance("AES/CBC/NoPadding");
+			Cipher c = Cipher.getInstance(ENCRYPTIONSPEC);
+			System.out.println(Cipher.getMaxAllowedKeyLength(ENCRYPTIONSPEC));
 			c.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
 			cipherText = c.doFinal(messageBytes);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		}
-		catch (InvalidAlgorithmParameterException e) {
-			e.printStackTrace();
-		}
+		} 
 		return cipherText;
 	}
 	
 	//Clayton Newmiller
-	public static String SecMailDecryptAES(byte[] cipherText, String key){ //returns true if successful
+	public static String SecMailDecryptAES(byte[] cipherText, byte keyBytes[]){ //returns true if successful
 		
 		String message = null;
-		byte keyBytes[] = ConvertStringToByteArray(key);
-		
 		
 		try {
 			SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
-			Cipher c = Cipher.getInstance("AES/CBC/NoPadding");
+			Cipher c = Cipher.getInstance(ENCRYPTIONSPEC);
 			c.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
 			message = ConvertByteArrayToString(c.doFinal(cipherText));
 			
 			
-		} catch (NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			e.printStackTrace(); //this already prints, no need to call System.out.println
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidAlgorithmParameterException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return message;
 	}
 	
-	
 	//Clayton Newmiller
 	//Note: Java chars are unicode, 2 bytes long
-	private static byte[] ConvertStringToByteArray(String input){
+	public static byte[] ConvertStringToByteArray(String input){
 		byte ret[] = new byte[input.length()*2];
 		for (int i=0; i<ret.length;i+=2){
 			char c = input.charAt(i/2);
@@ -355,7 +302,7 @@ public class SecMailStaticEncryption {
 	}
 	
 	//Clayton Newmiller
-	private static String ConvertByteArrayToString(byte input[]) throws IOException { //returns 4 unicode chars in a string
+	public static String ConvertByteArrayToString(byte input[]) throws IOException { //returns 4 unicode chars in a string
 		if (input == null || input.length%8!=0){
 			throw new IOException("wrong size input");
 		}
@@ -382,7 +329,44 @@ public class SecMailStaticEncryption {
 		return s.toString();
 	}
 	
+	public static SealedObject encryptObject(Serializable packet, byte keyBytes[]){
+		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
+		Cipher c=null;
+		SealedObject encryptedPacket=null;
+		try {
+			c = Cipher.getInstance(ENCRYPTIONSPEC);
+			c.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
+			encryptedPacket = new SealedObject(packet, c);
+			
+			return encryptedPacket;
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
+	public static Serializable decryptPacket(SealedObject packet, byte keyBytes[]){ //needs to be cast to what it actually is
+		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
+		Cipher c=null;
+		Serializable decryptedObject=null;
+		try {
+			c = Cipher.getInstance(ENCRYPTIONSPEC);
+			c.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
+			decryptedObject = (Serializable) packet.getObject(c);
+			
+			return decryptedObject;
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
 	
 	
 	
@@ -390,24 +374,42 @@ public class SecMailStaticEncryption {
 		
 		
 		
-//		byte ciphertext[] = SecMailEncryptAES("FAT CAT NOT CATS", "12345678");
-//		String changed = SecMailDecryptAES(ciphertext, "12345678");
+		
 //		
-//		System.out.println(changed);
-				
-		int port = 50505;
-		
-		DHKeyServer test1 = new DHKeyServer(port, 512);
-		Thread server = new Thread(test1, "serverThread");
-		server.start();
-		
-		
-		DHKeyClient test2 = new DHKeyClient(port, 512);
-		Thread client = new Thread(test2, "clientThread");
-		client.start();
-		
-		
-		
+////		
+////		System.out.println(changed);
+//				
+//		int port = 50505;
+//		
+//		DHKeyServer test1 = new DHKeyServer(port, 512);
+//		Thread server = new Thread(test1, "serverThread");
+//		server.start();
+//		
+//		
+//		DHKeyClient test2 = new DHKeyClient(port);
+//		Thread client = new Thread(test2, "clientThread");
+//		client.start();
+//		
+//		while (client.isAlive() || server.isAlive()){
+//			
+//		}
+//		MessageDigest hash;
+//		try {
+//			
+//			byte clientKey[] = hash.digest(test2.key);
+//			byte serverKey[] = hash.digest(test1.key);
+//			System.out.println("client hashkey length is "+clientKey.length);
+//			
+//			byte ciphertext[] = SecMailEncryptAES("FAT CAT NOT CATS", serverKey);
+//			String changed = SecMailDecryptAES(ciphertext, clientKey);
+//			System.out.println(changed);
+//			
+//		} catch (NoSuchAlgorithmException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		
 
 	}
 
