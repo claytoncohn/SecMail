@@ -40,7 +40,7 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 
-
+//debug connection: 127.0.0.1:57890
 
 
 public class SecMailStaticEncryption {
@@ -260,7 +260,6 @@ public class SecMailStaticEncryption {
 		try {
 			SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
 			Cipher c = Cipher.getInstance(ENCRYPTIONSPEC);
-			System.out.println(Cipher.getMaxAllowedKeyLength(ENCRYPTIONSPEC));
 			c.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
 			cipherText = c.doFinal(messageBytes);
 		} catch (Exception e) {
@@ -330,7 +329,7 @@ public class SecMailStaticEncryption {
 	}
 	
 	public static SealedObject encryptObject(Serializable object, byte keyBytes[]){
-		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "Rijndael");
+		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
 		Cipher c=null;
 		SealedObject encryptedPacket=null;
 		try {
@@ -349,13 +348,23 @@ public class SecMailStaticEncryption {
 	}
 	
 	public static Serializable decryptObject(SealedObject object, byte keyBytes[]){ //needs to be cast to what it actually is
-		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "Rijndael");
+		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
 		Cipher c=null;
 		Serializable decryptedObject=null;
 		try {
 			c = Cipher.getInstance(ENCRYPTIONSPEC);
 			c.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
-			decryptedObject = (Serializable) object.getObject(c);
+			decryptedObject = (Serializable) object.getObject(c); //problem here: improperly padded - WRONG KEYS
+			
+			/*
+			 * key exchange not functioning
+			 * encrypt and decrypt functioning PERFECTLY
+			 * 
+			 * need to: somehow get information on key exchanges (use Log.out? ask jacob)
+			 * 			verify hashing algorithm is reliable
+			 * 
+			 * */
+			
 			
 			return decryptedObject;
 			
@@ -370,7 +379,9 @@ public class SecMailStaticEncryption {
 	
 	
 	
-	public static void main(String[] args) {		
+	public static void main(String[] args) {	
+		
+		
 		
 		String s = "hello";
 		byte[] key = ConvertStringToByteArray("12345678");

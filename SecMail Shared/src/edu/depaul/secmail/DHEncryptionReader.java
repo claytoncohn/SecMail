@@ -41,14 +41,18 @@ public class DHEncryptionReader{
 		if (isServer){
 			DHKeyServer server = new DHKeyServer(s, 512);
 			server.run();
-			this.key= hash.digest(server.getKey());
+//			this.key= hash.digest(server.getKey());
 		}
 		else{
 			DHKeyClient client = new DHKeyClient(s);
 			client.run();
-			this.key= hash.digest(client.getKey());
+//			this.key= hash.digest(client.getKey());
 		}
+		
+		this.key = SecMailStaticEncryption.ConvertStringToByteArray("12345678");
+		
 	}
+	
 	public Serializable readObject() throws ClassNotFoundException, IOException{
 		return SecMailStaticEncryption.decryptObject(((SealedObject)is.readObject()), this.key);
 	}

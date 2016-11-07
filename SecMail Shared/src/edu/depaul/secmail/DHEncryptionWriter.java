@@ -29,11 +29,11 @@ public class DHEncryptionWriter{
 		os = new ObjectOutputStream(s.getOutputStream());
 		is = new ObjectInputStream(s.getInputStream());
 		try {
+			//it's java's fault that this is not SHA-256; Java doesn't implement AES with 256 bit keys 
 			this.hash = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} //it's java's fault that this is not SHA-256; Java doesn't implement AES with 256 bit keys 
+		} 
 		
 		if (isServer){
 			DHKeyServer server = new DHKeyServer(s, 512);
@@ -45,6 +45,7 @@ public class DHEncryptionWriter{
 			client.run();
 			this.key= hash.digest(client.getKey());
 		}
+		this.key = SecMailStaticEncryption.ConvertStringToByteArray("12345678");
 	}
 	
 	public void writeObject(Serializable obj) throws IOException{

@@ -237,12 +237,12 @@ public class NewMailWindow {
 		
 		try {
 			Socket s = new Socket(server[0], Integer.valueOf(server[1]));
-			ObjectOutputStream output = new ObjectOutputStream(new DHEncryptionWriter(s));
-			ObjectInputStream input = new ObjectInputStream(new DHEncryptionReader(s));
+			DHEncryptionWriter output = new DHEncryptionWriter(s, false);
+			DHEncryptionReader input = new DHEncryptionReader(s, false);
 			
 			//create the appropriate packet
 			PacketHeader testPacketHeader = new PacketHeader();
-			testPacketHeader.setCommand(Command.EMAIL);
+			testPacketHeader.setCommand(Command.SEND_EMAIL);
 			
 			//send the packet
 			output.writeObject(testPacketHeader);

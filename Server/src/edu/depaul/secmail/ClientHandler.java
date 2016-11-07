@@ -27,9 +27,6 @@ public class ClientHandler implements Runnable{
 			Log.Error("Exception creating ClientHandler: ");
 			Log.Error(e.toString());
 			System.exit(10);
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 		
@@ -85,7 +82,7 @@ public class ClientHandler implements Runnable{
 			case PASSWORD:
 				handlePassword();
 				break;
-			case EMAIL:
+			case SEND_EMAIL:
 				Log.Debug("Start Email Handler");
 				handleEmail();
 				break;
