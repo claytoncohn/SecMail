@@ -1,6 +1,7 @@
 package edu.depaul.secmail;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,7 +11,6 @@ import java.io.Serializable;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 
@@ -49,6 +49,14 @@ public class SecMailStaticEncryption {
     private static IvParameterSpec ivspec = new IvParameterSpec(iv);
     private static final String ENCRYPTIONSPEC = "Rijndael/CBC/PKCS5Padding"; //
 
+    
+    public static void encryptText(String text, String key) {
+    	//TODO
+    }
+    
+    public static void encryptFile(File file, String key) {
+    	//TODO
+    }
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
     //									  http://www.java2s.com/Tutorial/Java/0490__Security/DiffieHellmanKeyAgreement.htm
