@@ -1,15 +1,24 @@
 package edu.depaul.secmail;
 
 import java.io.BufferedReader;
+<<<<<<< HEAD
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+=======
+>>>>>>> 4a6b177e6b81828959ba47d999788d86418dd377
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+<<<<<<< HEAD
 
 
+=======
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+>>>>>>> 4a6b177e6b81828959ba47d999788d86418dd377
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 
@@ -38,6 +47,14 @@ public class SecMailStaticEncryption {
     private static IvParameterSpec ivspec = new IvParameterSpec(iv);
     private static final String ENCRYPTIONSPEC = "AES/CBC/PKCS5Padding"; //
     
+    
+    public static void encryptText(String text, String key) {
+    	//TODO
+    }
+    
+    public static void encryptFile(File file, String key) {
+    	//TODO
+    }
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
     //									  http://www.java2s.com/Tutorial/Java/0490__Security/DiffieHellmanKeyAgreement.htm
