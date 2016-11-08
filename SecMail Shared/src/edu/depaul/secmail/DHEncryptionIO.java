@@ -16,14 +16,14 @@ import edu.depaul.secmail.SecMailStaticEncryption.DHKeyServer;
 
 import java.io.IOException;
 
-public class DHEncryptionReader{
+public class DHEncryptionIO{
 	private Socket s; //clientSocket
 	private ObjectInputStream is;
 	private ObjectOutputStream os;
 	private byte key[];
 	private MessageDigest hash;
 	
-	DHEncryptionReader(Socket socket, boolean isServer) throws IOException
+	DHEncryptionIO(Socket socket, boolean isServer) throws IOException
 	{
 		if (socket==null){
 			throw new NullPointerException("INSANITY");
@@ -32,6 +32,7 @@ public class DHEncryptionReader{
 		this.s=socket;
 		os = new ObjectOutputStream(s.getOutputStream());
 		is = new ObjectInputStream(s.getInputStream());
+		
 		try {
 			this.hash = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
@@ -41,20 +42,23 @@ public class DHEncryptionReader{
 		if (isServer){
 			DHKeyServer server = new DHKeyServer(s, 512);
 			server.run();
-//			this.key= hash.digest(server.getKey());
+			this.key= hash.digest(server.getKey());
 		}
 		else{
 			DHKeyClient client = new DHKeyClient(s);
 			client.run();
-//			this.key= hash.digest(client.getKey());
+			this.key= hash.digest(client.getKey());
 		}
-		
-		this.key = SecMailStaticEncryption.ConvertStringToByteArray("12345678");
-		
+				
 	}
 	
 	public Serializable readObject() throws ClassNotFoundException, IOException{
 		return SecMailStaticEncryption.decryptObject(((SealedObject)is.readObject()), this.key);
+	}
+	
+	public void writeObject(Serializable obj) throws IOException{
+		
+		this.os.writeObject(SecMailStaticEncryption.encryptObject(obj, this.key));
 	}
 	
 	
@@ -105,4 +109,27 @@ public class DHEncryptionReader{
 	{
 		return is.markSupported();
 	}
+	
+	public void flush() throws IOException
+	{
+		os.flush();
+	}
+	
+	
+	
+	public void write(byte[] b) throws IOException
+	{
+		os.write(b);
+	}
+	
+	public void write(byte[] b, int off, int len) throws IOException
+	{
+		os.write(b, off, len);
+	}
+	
+	public void write(int b) throws IOException
+	{
+		os.write(b);
+	}
+	
 }

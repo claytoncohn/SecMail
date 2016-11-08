@@ -12,15 +12,13 @@ import java.io.ObjectInputStream;
 
 public class ClientHandler implements Runnable{
 	private Socket clientSocket = null;
-	private DHEncryptionWriter out = null;
-	private DHEncryptionReader in = null;
+	private DHEncryptionIO io = null;
 	
 	ClientHandler(Socket s)
 	{
 		this.clientSocket = s;
 		try {
-			out = new DHEncryptionWriter(clientSocket, true);
-			in = new DHEncryptionReader(clientSocket, true);
+			io = new DHEncryptionIO(clientSocket, true);
 		} catch (IOException e) {
 			//TODO: handle this. For now, just output error and abort
 			System.err.println(e);
@@ -41,7 +39,7 @@ public class ClientHandler implements Runnable{
 		//basically just an echo server at this point.
 		try {
 			PacketHeader nextPacket = null;
-			while ((nextPacket = (PacketHeader)in.readObject()) != null) {
+			while ((nextPacket = (PacketHeader)io.readObject()) != null) {
 		        if (nextPacket.getCommand() == Command.CLOSE)
 		        	break; // leave the loop
 		        else
@@ -59,8 +57,7 @@ public class ClientHandler implements Runnable{
 		//we're done. close the stuff
 		try {
 			Log.Debug("Closing connection to client " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
-			out.close();
-			in.close();
+			io.close();
 			clientSocket.close();
 		} catch (IOException e) {
 			System.err.println(e);
@@ -102,7 +99,7 @@ public class ClientHandler implements Runnable{
 		successfulTestPacket.setCommand(Command.CONNECT_SUCCESS);
 		
 		try {
-			out.writeObject(successfulTestPacket);
+			io.writeObject(successfulTestPacket);
 		} catch (Exception e)
 		{
 			Log.Error("Exception thrown." + e);
@@ -120,13 +117,13 @@ public class ClientHandler implements Runnable{
 	private void handleEmail(){
 		//Read Email from input stream
 		try {
-			EmailStruct newEmail = (EmailStruct)in.readObject();
+			EmailStruct newEmail = (EmailStruct)io.readObject();
 			System.out.println("Recipient: " + newEmail.getToString());
 			System.out.println("Subject: " + newEmail.getSubject());
 			System.out.println("Body: " + newEmail.getBody());
 			PacketHeader successfulTestPacket = new PacketHeader();
 			successfulTestPacket.setCommand(Command.CONNECT_SUCCESS);
-			out.writeObject(successfulTestPacket);
+			io.writeObject(successfulTestPacket);
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

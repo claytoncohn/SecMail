@@ -1,43 +1,32 @@
 package edu.depaul.secmail;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
+
 
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyAgreement;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SealedObject;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 
 import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.UnknownHostException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 
 //debug connection: 127.0.0.1:57890
@@ -47,8 +36,8 @@ public class SecMailStaticEncryption {
 
 	private static byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //AES initialization vector, should not remain 0s
     private static IvParameterSpec ivspec = new IvParameterSpec(iv);
-    private static final String ENCRYPTIONSPEC = "Rijndael/CBC/PKCS5Padding"; //
-
+    private static final String ENCRYPTIONSPEC = "AES/CBC/PKCS5Padding"; //
+    
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
     //									  http://www.java2s.com/Tutorial/Java/0490__Security/DiffieHellmanKeyAgreement.htm
@@ -56,7 +45,6 @@ public class SecMailStaticEncryption {
     public static class DHKeyServer implements Runnable{
     	private BigInteger Modulo; //also known as p
     	private BigInteger Base; //also known as generator, g
-    	private int port;
     	private int bitLen;
     	private Socket clientSocket;
     	private KeyAgreement serverKeyAgree;
@@ -65,9 +53,8 @@ public class SecMailStaticEncryption {
     	private byte key[];
     	
     	private InputStream clientIn;
+    	private DataOutputStream clientDataOut;
     	private OutputStream clientOut;
-    	private PrintWriter out;
-    	private BufferedReader in;
     	
     	public byte[] getKey() {
 			return key;
@@ -102,8 +89,9 @@ public class SecMailStaticEncryption {
     	    	
     	    	this.clientIn = clientSocket.getInputStream();
     	    	this.clientOut = clientSocket.getOutputStream();
-    	    	this.out = new PrintWriter(clientSocket.getOutputStream());
-    	    	this.in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+    	    	
+    	    	this.clientDataOut = new DataOutputStream(clientOut);
+    	    	
     	    	    	    	
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
@@ -120,21 +108,20 @@ public class SecMailStaticEncryption {
     		try{
     			
     			//sends the server's generated key to the client
-    			
+    			    			
     			byte serverPublicKey[] = serverPair.getPublic().getEncoded();    			
     			int len = serverPublicKey.length;
-    			clientOut.write(len);
-    			clientOut.flush();    			
-    			clientOut.write(serverPublicKey);
-    			clientOut.flush();
-				
+    			
+    			clientDataOut.writeInt(len);
+    			clientDataOut.flush();    			
+    			clientDataOut.write(serverPublicKey);
+    			clientDataOut.flush();
     			
     			//receives the key the client generated
     			
 			    int clientPubKeyLen = clientIn.read();
 			    byte clientPubKeyBytes[] = new byte[clientPubKeyLen];
 			    clientIn.read(clientPubKeyBytes, 0, clientPubKeyLen);
-
 			    
 			    //decodes the client's key
 			    
@@ -146,7 +133,9 @@ public class SecMailStaticEncryption {
 			    //does the Diffie-Hellman operations
 			    serverKeyAgree.init(serverPair.getPrivate());
 			    serverKeyAgree.doPhase(clientPubKey, true);
-			    return serverKeyAgree.generateSecret();
+			    byte temp[] = serverKeyAgree.generateSecret();
+			    
+			    return temp;
 			    
 			    
 			} catch (Exception e) {
@@ -165,9 +154,10 @@ public class SecMailStaticEncryption {
     	
     //Clayton Newmiller
     public static class DHKeyClient implements Runnable{
-    	private int port;
     	private Socket serverSocket;
     	private InputStream serverIn;
+    	//DataOutputStream readInt()
+    	private DataInputStream serverDataIn;
     	private OutputStream serverOut;
     	private KeyPairGenerator kpg;
     	private byte key[];
@@ -190,6 +180,8 @@ public class SecMailStaticEncryption {
     	    	this.serverOut = serverSocket.getOutputStream();
 				this.kpg = KeyPairGenerator.getInstance("DiffieHellman");
 				this.key = null;
+				
+				
 			    
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -200,9 +192,9 @@ public class SecMailStaticEncryption {
 	    }
     	public byte[] doExchange(){
     		try{
-    			
+    			this.serverDataIn= new DataInputStream(serverIn);
     			//reads the server's key
-				int serverPubKeyLen = serverIn.read();
+				int serverPubKeyLen = serverDataIn.readInt();
 				byte serverPubKeyBytes[] = new byte[serverPubKeyLen];
 				this.serverIn.read(serverPubKeyBytes, 0, serverPubKeyLen);
 				
@@ -217,19 +209,21 @@ public class SecMailStaticEncryption {
 				KeyAgreement clientKeyAgreement = KeyAgreement.getInstance("DH");
 			    KeyPair clientPair = kpg.generateKeyPair();
 			    clientKeyAgreement.init(clientPair.getPrivate());
+			    
 			    //sends client key back to server
 			    byte clientPublicKey[] = clientPair.getPublic().getEncoded();
 			    serverOut.write(clientPublicKey.length);
 			    serverOut.flush();
-			    serverOut.write(clientPublicKey, 0, clientPublicKey.length);
+			    serverOut.write(clientPublicKey);
 			    serverOut.flush();
 			    
 			    //does the Diffie-Hellman operations
 			    KeyAgreement clientKeyAgree = KeyAgreement.getInstance("DH");
 			    clientKeyAgree.init(clientPair.getPrivate());
 			    clientKeyAgree.doPhase(serverPubKey, true);
+			    byte temp[] = clientKeyAgree.generateSecret();
 			    
-			    return clientKeyAgree.generateSecret();
+			    return temp;			    
 			    
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -303,7 +297,7 @@ public class SecMailStaticEncryption {
 	//Clayton Newmiller
 	public static String ConvertByteArrayToString(byte input[]) throws IOException { //returns 4 unicode chars in a string
 		if (input == null || input.length%8!=0){
-			throw new IOException("wrong size input");
+			throw new IOException("wrong size input: "+input.length);
 		}
 		StringBuilder s=new StringBuilder();
 		byte split [][] = new byte[input.length/8][8];

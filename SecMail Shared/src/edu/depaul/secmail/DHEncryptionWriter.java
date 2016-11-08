@@ -36,22 +36,26 @@ public class DHEncryptionWriter{
 		} 
 		
 		if (isServer){
+			System.out.println("creating server writer");
 			DHKeyServer server = new DHKeyServer(s, 512);
 			server.run();
 			this.key= hash.digest(server.getKey());
+			System.out.println("Writer-Server key: "+this.key.toString());
 		}
 		else{
+			System.out.println("creating client writer");
 			DHKeyClient client = new DHKeyClient(s);
 			client.run();
 			this.key= hash.digest(client.getKey());
+			System.out.println("Writer-client key: "+this.key.toString());
 		}
 		this.key = SecMailStaticEncryption.ConvertStringToByteArray("12345678");
 	}
 	
-	public void writeObject(Serializable obj) throws IOException{
-		
-		this.os.writeObject(SecMailStaticEncryption.encryptObject(obj, this.key));
-	}
+//	public void writeObject(Serializable obj) throws IOException{
+//		
+//		this.os.writeObject(SecMailStaticEncryption.encryptObject(obj, this.key));
+//	}
 	
 	
 	
@@ -63,28 +67,28 @@ public class DHEncryptionWriter{
 		is.close();
 	}
 	
-	public void flush() throws IOException
-	{
-		os.flush();
-	}
-	
-	
-	
-	public void write(byte[] b) throws IOException
-	{
+//	public void flush() throws IOException
+//	{
+//		os.flush();
+//	}
+//	
+//	
+//	
+//	public void write(byte[] b) throws IOException
+//	{
+////		os.write(b);
+//		
+//		
+//		
+//	}
+//	
+//	public void write(byte[] b, int off, int len) throws IOException
+//	{
+//		os.write(b, off, len);
+//	}
+//	
+//	public void write(int b) throws IOException
+//	{
 //		os.write(b);
-		
-		
-		
-	}
-	
-	public void write(byte[] b, int off, int len) throws IOException
-	{
-		os.write(b, off, len);
-	}
-	
-	public void write(int b) throws IOException
-	{
-		os.write(b);
-	}
+//	}
 }
