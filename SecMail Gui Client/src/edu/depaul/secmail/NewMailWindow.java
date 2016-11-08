@@ -237,20 +237,19 @@ public class NewMailWindow {
 		
 		try {
 			Socket s = new Socket(server[0], Integer.valueOf(server[1]));
-			DHEncryptionWriter output = new DHEncryptionWriter(s, false);
-			DHEncryptionReader input = new DHEncryptionReader(s, false);
+			DHEncryptionIO io = new DHEncryptionIO(s, false);
 			
 			//create the appropriate packet
 			PacketHeader testPacketHeader = new PacketHeader();
 			testPacketHeader.setCommand(Command.SEND_EMAIL);
 			
 			//send the packet
-			output.writeObject(testPacketHeader);
-			output.flush();
-			output.writeObject(email);
+			io.writeObject(testPacketHeader);
+			io.flush();
+			io.writeObject(email);
 			
 			//get the response
-			PacketHeader responsePacket = (PacketHeader)input.readObject();
+			PacketHeader responsePacket = (PacketHeader)io.readObject();
 			
 			if (responsePacket.getCommand() != Command.CONNECT_SUCCESS)
 				returnString = "Response Packet contained non-success command";
@@ -260,10 +259,9 @@ public class NewMailWindow {
 						+ "Connection test successful!\n"
 						+ "Connection closing...";
 			
-			output.writeObject(new PacketHeader(Command.CLOSE));
+			io.writeObject(new PacketHeader(Command.CLOSE));
 			
-			output.close();
-			input.close();
+			io.close();
 			s.close();
 		} catch (Exception e)
 		{

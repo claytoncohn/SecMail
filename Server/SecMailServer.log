@@ -1,0 +1,6 @@
+Log: SecMailServer.main():14: Set up Server onfig and log file.
+Log: SecMailServer.main():16: Binding to port 57890 backlog 15
+DEBUG: SecMailServer.main():23:  Connected to client /127.0.0.1:54321
+DEBUG: ClientHandler.run():35:  Starting ClientHandler
+DEBUG: ClientHandler.processPacket():70:  Processing packet for command CONNECT_TEST
+DEBUG: ClientHandler.run():59:  Closing connection to client /127.0.0.1:54321
