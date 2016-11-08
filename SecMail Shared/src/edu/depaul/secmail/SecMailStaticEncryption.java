@@ -1,25 +1,19 @@
 package edu.depaul.secmail;
 
 import java.io.BufferedReader;
-<<<<<<< HEAD
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-=======
->>>>>>> 4a6b177e6b81828959ba47d999788d86418dd377
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
-<<<<<<< HEAD
 
-
-=======
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
->>>>>>> 4a6b177e6b81828959ba47d999788d86418dd377
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 
@@ -33,14 +27,13 @@ import javax.crypto.spec.SecretKeySpec;
 
 import java.math.BigInteger;
 import java.net.Socket;
-<<<<<<< HEAD
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-=======
->>>>>>> 455e0401cf16ba8164a436245215482c9efab26d
+
+
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -49,7 +42,9 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Scanner;
 
 //debug connection: 127.0.0.1:57890
-
+//<<<<<<< HEAD ======= >>>>>>> 4a6b177e6b81828959ba47d999788d86418dd377
+//<<<<<<< HEAD ======= >>>>>>> 4a6b177e6b81828959ba47d999788d86418dd377
+//<<<<<<< HEAD >>>>>>> ======= 455e0401cf16ba8164a436245215482c9efab26d
 
 public class SecMailStaticEncryption {
 
