@@ -2,6 +2,7 @@ package edu.depaul.secmail;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,6 +33,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -39,6 +43,7 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Scanner;
 
 //debug connection: 127.0.0.1:57890
 
@@ -50,12 +55,26 @@ public class SecMailStaticEncryption {
     private static final String ENCRYPTIONSPEC = "Rijndael/CBC/PKCS5Padding"; //
 
     
-    public static void encryptText(String text, String key) {
-    	//TODO
+    public static void encryptText(String text, byte[] key) {
+    	byte[] strEncrypt = SecMailEncryptAES(text, key);
+    	try {
+    		PrintWriter out = new PrintWriter("secmail.txt");
+    	    out.println(strEncrypt);
+    	    out.close();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
     
-    public static void encryptFile(File file, String key) {
+    public static void encryptFile(File file, byte[] key) throws IOException {
     	//TODO
+    	
+    }
+    
+    static String fileToString(String path, Charset encoding) throws IOException {  
+    	byte[] encoded = Files.readAllBytes(Paths.get(path));
+    	System.out.println(new String(encoded, encoding));
+    	return new String(encoded, encoding);
     }
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
@@ -248,12 +267,7 @@ public class SecMailStaticEncryption {
     	}
 
 
-    	public byte[] getKey() {
-			return key;
-		}
-
-
-    		
+    	public byte[] getKey() { return key; }    		
     }
     
     
@@ -397,7 +411,7 @@ public class SecMailStaticEncryption {
 		String b = (String) decryptObject(enc, key);
 		System.out.println(b);
 		
-		
+		encryptText("hello world", key);
 
 	}
 

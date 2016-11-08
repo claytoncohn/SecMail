@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="SecMail Client/src"/>
+	<classpathentry kind="src" path="SecMail Gui Client/src"/>
+	<classpathentry kind="src" path="SecMail Shared/src"/>
+	<classpathentry kind="src" path="Server/src"/>
+	<classpathentry kind="lib" path="SecMail Gui Client/swing2swt.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
+	<classpathentry kind="output" path="SecMail Shared/bin"/>
+</classpath>
