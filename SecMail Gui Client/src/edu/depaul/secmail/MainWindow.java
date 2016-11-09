@@ -46,11 +46,7 @@ public class MainWindow {
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
-		
-		
-		
-		
-		
+				
 		shlSecmail.open();
 		shlSecmail.layout();
 		
