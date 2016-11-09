@@ -63,5 +63,11 @@ public class SecMailServer {
 		//don't forget to synchronize! (thread safety!)
 		return;
 	}
+	
+	//returns the Config object being used by the server
+	public static Config getGlobalConfig()
+	{
+		return serverConfig;
+	}
 
 }

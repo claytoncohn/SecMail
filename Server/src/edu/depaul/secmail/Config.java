@@ -12,6 +12,7 @@ public class Config {
 	private File configFile = null;
 	private String logFilePath = "./SecMailServer.log";
 	private File logFile = new File(logFilePath);
+	private String mailDir = "./";
 	
 	Config(String[] args) 
 	{
@@ -56,6 +57,17 @@ public class Config {
 	public int getPort()
 	{
 		return this.port;
+	}
+	
+	public String getMailRoot()
+	{
+		return mailDir;
+	}
+	
+	//Get the directory for the user on this server
+	public String getUserDirectory(String user)
+	{
+		return mailDir + user + "/";
 	}
 	
 	private void LoadConfigFile(String path)
