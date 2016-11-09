@@ -6,12 +6,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.security.SecureRandom;
+import java.math.BigInteger;
 
 public class EmailStruct implements Serializable{
 	private LinkedList<UserStruct> recipients = new LinkedList<UserStruct>();
 	private transient LinkedList<File> attachments = new LinkedList<File>();
 	private String subject = null;
 	private String body = null;
+	private String id = null;
 	
 	EmailStruct()
 	{
@@ -77,6 +80,12 @@ public class EmailStruct implements Serializable{
 		{
 			System.out.println(e);
 		}
+	}
+	
+	EmailStruct(File f, String ID)
+	{
+		this(f);
+		this.id = ID;
 	}
 	
 	
@@ -167,6 +176,17 @@ public class EmailStruct implements Serializable{
 			return false;
 		}
 			
+	}
+	
+	public String getID()
+	{
+		if (this.id == null)
+		{
+			//generate a random id string
+			this.id = new BigInteger(130, new SecureRandom()).toString(32);
+		}
+		
+		return id;
 	}
 
 }
