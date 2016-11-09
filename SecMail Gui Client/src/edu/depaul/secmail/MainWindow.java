@@ -51,7 +51,7 @@ public class MainWindow {
 		shlSecmail.layout();
 		
 		//get login info
-		LoginDialog login = new LoginDialog(shlSecmail, SWT.PRIMARY_MODAL);
+		LoginDialog login = new LoginDialog(shlSecmail, SWT.DIALOG_TRIM | SWT.PRIMARY_MODAL);
 		LoginDialog.Status result = login.open();
 		
 		if (result != LoginDialog.Status.LOGIN_SUCCESS) // we exited or the login failed
