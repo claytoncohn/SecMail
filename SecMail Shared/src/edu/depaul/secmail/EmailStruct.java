@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 
 public class EmailStruct implements Serializable{
-	private LinkedList<String> recipients = new LinkedList<String>();
+	private LinkedList<UserStruct> recipients = new LinkedList<UserStruct>();
 	private transient LinkedList<File> attachments = new LinkedList<File>();
 	private String subject = null;
 	private String body = null;
@@ -33,7 +33,7 @@ public class EmailStruct implements Serializable{
 					if (split.length > 2)
 						 fileFormatError(line);
 					else
-						recipients.add(split[1].trim());
+						recipients.add(new UserStruct(split[1].trim()));
 				}
 				else if (line.startsWith("attachment:"))
 				{
@@ -86,9 +86,10 @@ public class EmailStruct implements Serializable{
 		System.out.println("Format error reading email from file. offending line:");
 		System.out.println(line);
 	}
+	
 	public void addRecipient(String to)
 	{
-		recipients.add(to);
+		recipients.add(new UserStruct(to));
 	}
 	
 	public void addAttachment(File attachment)
@@ -109,8 +110,8 @@ public class EmailStruct implements Serializable{
 	public String getToString()
 	{
 		StringBuffer buffer = new StringBuffer();
-		for (String recipient : recipients)
-			buffer.append(recipient + ",");
+		for (UserStruct recipient : recipients)
+			buffer.append(recipient.compile() + ",");
 		buffer.setLength(buffer.length() - 1); // delete the last character
 		return buffer.toString();
 	}
@@ -137,10 +138,10 @@ public class EmailStruct implements Serializable{
 		try {
 			PrintWriter out = new PrintWriter(f);
 			//write the recipients
-			for (String recipient : recipients)
+			for (UserStruct recipient : recipients)
 			{
 				out.print("to: ");
-				out.println(recipient);
+				out.println(recipient.compile());
 			}
 			
 			//write the attachments

@@ -109,50 +109,21 @@ public class LoginDialog extends Dialog {
 	
 	private void doLogin()
 	{
-		//parse the username
-		String user, domain, portString = null;
-		int port;
-		
-		//user part first
-		int atLocation = txtUsername.getText().indexOf("@");
-		if (atLocation <= 0)
+		UserStruct user = new UserStruct(txtUsername.getText());
+		if (!user.isValid())
 		{
-			outputUserFormatError();
+			outputUserFormatError(user.getFormat());
 			return;
 		}
-		
-		user = txtUsername.getText().substring(0,atLocation);
-		
-		//check if there is a port
-		int colonLocation = txtUsername.getText().indexOf(":");
-		if (colonLocation > atLocation)
-		{
-			domain = txtUsername.getText().substring(atLocation+1,colonLocation);
-			portString = txtUsername.getText().substring(colonLocation+1); // get to end
-		}
-		else if (colonLocation < atLocation && colonLocation > 0)
-		{
-			outputUserFormatError();
-			return;
-		}
-		else
-			domain = txtUsername.getText().substring(atLocation+1);
-		
-		if (portString != null)
-			port = Integer.valueOf(portString);
-		else
-			port = 57890;
-		
-		
 		try {
 			//make the connection
-			Socket s = new Socket(domain, port);
+			Socket s = new Socket(user.getDomain(), user.getPort());
 			serverConnection = new DHEncryptionIO(s, false);
 			
 			//do the actual login
 			PacketHeader loginPacket = new PacketHeader(Command.LOGIN);
 			serverConnection.writeObject(loginPacket);
-			serverConnection.writeObject(user);
+			serverConnection.writeObject(user.getUser());
 			serverConnection.writeObject(txtPassword.getText());
 			
 			//get the response
@@ -186,11 +157,11 @@ public class LoginDialog extends Dialog {
 		}
 	}
 	
-	private void outputUserFormatError()
+	private void outputUserFormatError(String format)
 	{
 		MessageBox messageBox = new MessageBox(shell, SWT.OK);
 		messageBox.setText("Invalid Username");
-		messageBox.setMessage("Username format invalid.\nPlease use format \"<user>@<domain>:<port>\"\n port is optional");
+		messageBox.setMessage("Username format invalid.\nPlease use format \""+format+"\"");
 		messageBox.open();
 		returnStatus = Status.LOGIN_FAIL;
 	}
