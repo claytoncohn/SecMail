@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,14 +31,11 @@ import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.SecureRandom;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Scanner;
 
 //debug connection: 127.0.0.1:57890
 //<<<<<<< HEAD ======= >>>>>>> 4a6b177e6b81828959ba47d999788d86418dd377
@@ -53,26 +49,12 @@ public class SecMailStaticEncryption {
     private static final String ENCRYPTIONSPEC = "AES/CBC/PKCS5Padding"; //
     
     
-    public static void encryptText(String text, byte[] key) {
-    	byte[] strEncrypt = SecMailEncryptAES(text, key);
-    	try {
-    		PrintWriter out = new PrintWriter("secmail.txt");
-    	    out.println(strEncrypt);
-    	    out.close();
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    }
-    
-    public static void encryptFile(File file, byte[] key) throws IOException {
+    public static void encryptText(String text, String key) {
     	//TODO
-    	
     }
     
-    static String fileToString(String path, Charset encoding) throws IOException {  
-    	byte[] encoded = Files.readAllBytes(Paths.get(path));
-    	System.out.println(new String(encoded, encoding));
-    	return new String(encoded, encoding);
+    public static void encryptFile(File file, String key) {
+    	//TODO
     }
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
@@ -270,7 +252,12 @@ public class SecMailStaticEncryption {
     	}
 
 
-    	public byte[] getKey() { return key; }    		
+    	public byte[] getKey() {
+			return key;
+		}
+
+
+    		
     }
     
     
@@ -414,7 +401,7 @@ public class SecMailStaticEncryption {
 		String b = (String) decryptObject(enc, key);
 		System.out.println(b);
 		
-		encryptText("hello world", key);
+		
 
 	}
 
