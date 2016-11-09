@@ -188,5 +188,10 @@ public class EmailStruct implements Serializable{
 		
 		return id;
 	}
+	
+	public LinkedList<UserStruct> getToList()
+	{
+		return recipients;
+	}
 
 }

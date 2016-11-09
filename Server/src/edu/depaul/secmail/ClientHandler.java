@@ -1,5 +1,6 @@
 package edu.depaul.secmail;
 
+import java.util.LinkedList;
 import java.util.concurrent.*;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
@@ -35,9 +36,6 @@ public class ClientHandler implements Runnable{
 	{
 		Log.Debug("Starting ClientHandler");
 		
-		//do stuff here
-		//this is example code copied from java docs
-		//basically just an echo server at this point.
 		try {
 			PacketHeader nextPacket = null;
 			while ((nextPacket = (PacketHeader)io.readObject()) != null) {
@@ -83,6 +81,9 @@ public class ClientHandler implements Runnable{
 				break;
 			case ERROR:
 				handleError();
+				break;
+			case GET_NOTIFICATION:
+				handleGetNotification();
 				break;
 		default:
 			break;
@@ -147,6 +148,12 @@ public class ClientHandler implements Runnable{
 		//Read Email from input stream
 		try {
 			EmailStruct newEmail = (EmailStruct)io.readObject();
+			for (UserStruct recipient : newEmail.getToList())
+				sendNotificationToServer(recipient, newEmail.getSubject(), newEmail.getID());
+			
+			storeEmail(newEmail);
+			
+			//debug code
 			System.out.println("Recipient: " + newEmail.getToString());
 			System.out.println("Subject: " + newEmail.getSubject());
 			System.out.println("Body: " + newEmail.getBody());
@@ -163,8 +170,32 @@ public class ClientHandler implements Runnable{
 		// Handle Error packet here
 	}
 	
+	private void handleGetNotification()
+	{
+		//TODO:
+		//Handle get notification command for this.username
+		LinkedList<Notification> notifications = SecMailServer.getNotificationList(this.username);
+		
+		//send all the notifications in the above linked list to the client.
+	}
+	
 	private String getIdentifier()
 	{
 		return clientSocket.getInetAddress() + ":" + clientSocket.getPort();
+	}
+	
+	private void sendNotificationToServer(UserStruct to, String subject, String id)
+	{
+		//TODO:
+		//Implement code to send a notification to the server of the user "to" here. (including if that is this server!)
+		return;
+	}
+	
+	private void storeEmail(EmailStruct email)
+	{
+		//TODO:
+		//Implement code to write the email to somewhere applicable
+		//NOTE: see email.writeToFile, file name should be email.getID(), stored in a directory that identifies the user (this.username)
+		return;
 	}
 }
