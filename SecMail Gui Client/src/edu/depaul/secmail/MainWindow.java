@@ -33,7 +33,8 @@ public class MainWindow {
 	public static void main(String[] args) {
 		try {
 			MainWindow window = new MainWindow();
-			window.open();
+			window.open();	
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -45,8 +46,21 @@ public class MainWindow {
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
+		
+		
+		
+		
+		
 		shlSecmail.open();
 		shlSecmail.layout();
+		
+		//get login info
+		LoginDialog login = new LoginDialog(shlSecmail, SWT.PRIMARY_MODAL);
+		LoginDialog.Status result = login.open();
+		
+		if (result != LoginDialog.Status.LOGIN_SUCCESS) // we exited or the login failed
+			System.exit(0);
+		
 		while (!shlSecmail.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();

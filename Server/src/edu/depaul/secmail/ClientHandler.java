@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
 public class ClientHandler implements Runnable{
 	private Socket clientSocket = null;
 	private DHEncryptionIO io = null;
+	String username = null;
 	
 	ClientHandler(Socket s)
 	{
@@ -76,9 +77,6 @@ public class ClientHandler implements Runnable{
 			case LOGIN:
 				handleLogin();
 				break;
-			case PASSWORD:
-				handlePassword();
-				break;
 			case SEND_EMAIL:
 				Log.Debug("Start Email Handler");
 				handleEmail();
@@ -107,14 +105,45 @@ public class ClientHandler implements Runnable{
 	}
 	
 	private void handleLogin(){
-		// Handle Login packet here
+		try {
+			username = (String)io.readObject();
+			String password = (String)io.readObject();
+			
+			//authenticate
+			if (authenticate(username,password))
+				io.writeObject(new PacketHeader(Command.LOGIN_SUCCESS));
+			else
+			{
+				io.writeObject(new PacketHeader(Command.LOGIN_FAIL));
+				username = null; // reset the username since it wasn't valid
+				//forceably close the connection to this client.
+				io.close();
+				clientSocket.close();
+			}
+		} catch (IOException e)
+		{
+			System.out.println("Got an IOException while logging in."); //TODO should handle this with Log calls
+			System.out.println(e);
+		} catch (ClassNotFoundException e)
+		{
+			System.out.println("SecMail Protocol Error. ClassNotFoundException");
+			System.out.println(e);
+		}
 	}
 	
-	private void handlePassword(){
-		// Handle Password packet here
+	//authenticate the user vs the password store
+	private boolean authenticate(String user, String password)
+	{
+		Log.Out("Got authentication request for user: "+user+","+getIdentifier());
+		//remove this and implement logic.
+		return false;
 	}
 	
 	private void handleEmail(){
+		//die early if the user hasn't authenticated.
+		if (username == null)
+			return;
+		
 		//Read Email from input stream
 		try {
 			EmailStruct newEmail = (EmailStruct)io.readObject();
@@ -132,5 +161,10 @@ public class ClientHandler implements Runnable{
 	
 	private void handleError(){
 		// Handle Error packet here
+	}
+	
+	private String getIdentifier()
+	{
+		return clientSocket.getInetAddress() + ":" + clientSocket.getPort();
 	}
 }
