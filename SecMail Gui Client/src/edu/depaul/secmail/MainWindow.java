@@ -25,6 +25,7 @@ import org.eclipse.swt.events.MouseEvent;
 public class MainWindow {
 
 	protected Shell shlSecmail;
+	private DHEncryptionIO serverIO;
 
 	/**
 	 * Launch the application.
@@ -56,6 +57,8 @@ public class MainWindow {
 		
 		if (result != LoginDialog.Status.LOGIN_SUCCESS) // we exited or the login failed
 			System.exit(0);
+		
+		serverIO = login.getServerConnection();
 		
 		while (!shlSecmail.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -96,6 +99,13 @@ public class MainWindow {
 		btnNewEmail.setText("New Email");
 		
 		Button btnFetchMail = new Button(composite, SWT.NONE);
+		btnFetchMail.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				RecvMailWindow recvMail = new RecvMailWindow(Display.getCurrent(), serverIO);
+				recvMail.open();
+			}
+		});
 		GridData gd_btnFetchMail = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
 		gd_btnFetchMail.widthHint = 131;
 		btnFetchMail.setLayoutData(gd_btnFetchMail);

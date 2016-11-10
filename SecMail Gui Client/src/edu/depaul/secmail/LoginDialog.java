@@ -174,7 +174,7 @@ public class LoginDialog extends Dialog {
 		messageBox.open();
 	}
 	
-	private DHEncryptionIO getServerConnection()
+	public DHEncryptionIO getServerConnection()
 	{
 		return serverConnection;
 	}
