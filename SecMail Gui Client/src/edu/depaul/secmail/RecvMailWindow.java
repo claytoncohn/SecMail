@@ -1,5 +1,9 @@
 package edu.depaul.secmail;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -13,6 +17,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import com.ibm.icu.text.DateFormat;
+import com.sun.nio.sctp.Notification;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.MouseAdapter;
@@ -132,9 +137,11 @@ public class RecvMailWindow extends Shell {
 	{
 		//TODO:
 		//for each new notification we get, 
+		Notification n = (Notification)i.getData();
 		//	check to see if an email matching the notifications ID already exists in the maildir
 		//	if yes, mark received column as true, else false.
 		//add new table item for the notification
+		addNewTableItem(n)
 		//write the notification to disk as well
 		return;
 	}
@@ -144,16 +151,50 @@ public class RecvMailWindow extends Shell {
 	{
 		//TODO:
 		//open the notification file
+		List<String> filelist = new ArrayList<String>();
+		File notificationfile = new File("file.txt");
+		BufferedReader reader = null;
+		//Notification n = (Notification)i.getData();
+		
 		//read the file
-		//for each notification read, 
-		//	check to see if an email matching the notifications ID already exists in the maildir
-		//	if yes, mark received column as true, else false.
-		//add new table item for the notification
+		try 
+		{
+		    reader = new BufferedReader(new FileReader(notificationfile));
+		    String text = null;
+
+		    while ((text = reader.readLine()) != null) {
+		        filelist.add(text);
+				//for each notification read,
+				//	check to see if an email matching the notifications ID already exists in the maildir
+		        if (text.ExistsIn(maildir))
+		        {
+					//	if yes, mark received column as true, else false.
+					
+		        	//add new table item for the notification
+					
+		        	//add it to the table
+					addNewTableItem(text, true);		        	
+		        }
+
+		        
+		}
+		        try {
+		            if (reader != null) {reader.close();}
+		            }
 	}
 	
 	//put the notifications in the notifications list into the notifications file so they are saved.
 	private void dumpNotificationsToFile()
 	{
+		List<String> filelist = new ArrayList<String>();
+		Notification n = (Notification)i.getData();
+		
+		FileWriter writer = new FileWriter("file.txt"); 
+		for(String notifications: filelist) {writer.write(n);}
+		writer.close();
+
+
+	}
 
 		//for each item in the table
 		for (TableItem i : table.getItems())
