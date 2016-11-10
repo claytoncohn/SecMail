@@ -192,13 +192,6 @@ public class ClientHandler implements Runnable{
 		return clientSocket.getInetAddress() + ":" + clientSocket.getPort();
 	}
 	
-	private void sendNotificationToServer(UserStruct to, String subject, String id)
-	{
-		//TODO:
-		//Implement code to send a notification to the server of the user "to" here. (including if that is this server!)
-		return;
-	}
-	
 	private void storeEmail(EmailStruct email)
 	{
 		//TODO:
