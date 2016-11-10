@@ -16,6 +16,7 @@ public class EmailStruct implements Serializable{
 	private String body = null;
 	private String id = null;
 	
+	//default empty constructor.
 	EmailStruct()
 	{
 		
@@ -82,40 +83,46 @@ public class EmailStruct implements Serializable{
 		}
 	}
 	
+	//reads the email from file f, and sets the id to ID
 	EmailStruct(File f, String ID)
 	{
 		this(f);
 		this.id = ID;
-	}
+	}	
 	
-	
-	
+	//helper function. Simply writes an error message to stdout.
 	private void fileFormatError(String line)
 	{
 		System.out.println("Format error reading email from file. offending line:");
 		System.out.println(line);
 	}
 	
+	//add the user denoted by the string to the recipients list
+	//creates the appropriate UserStruct from the incoming string first.
 	public void addRecipient(String to)
 	{
 		recipients.add(new UserStruct(to));
 	}
 	
+	//Add the File attachment to the list of attachments for this email
 	public void addAttachment(File attachment)
 	{
 		attachments.add(attachment);
 	}
 	
+	//set the subject of the email
 	public void setSubject(String subject)
 	{
 		this.subject = subject;
 	}
 	
+	//set the body of the email
 	public void setBody(String body)
 	{
 		this.body = body;
 	}
 	
+	//Generates a single string with comma separated entries for each user in the recipients list
 	public String getToString()
 	{
 		StringBuffer buffer = new StringBuffer();
@@ -125,16 +132,19 @@ public class EmailStruct implements Serializable{
 		return buffer.toString();
 	}
 	
+	//returns the list of attachments for this email
 	public LinkedList<File> getAttachmentList()
 	{
 		return attachments;
 	}
 	
+	//returns the subject of the email
 	public String getSubject()
 	{
 		return subject;
 	}
 	
+	//returns the body of the email
 	public String getBody()
 	{
 		return body;
@@ -178,6 +188,7 @@ public class EmailStruct implements Serializable{
 			
 	}
 	
+	//get the unique ID for this email. Generates the ID if the email doesn't already have one.
 	public String getID()
 	{
 		if (this.id == null)
@@ -189,9 +200,21 @@ public class EmailStruct implements Serializable{
 		return id;
 	}
 	
+	//return the entire list of recipients
 	public LinkedList<UserStruct> getToList()
 	{
 		return recipients;
+	}
+	
+	//returns a list of notifications of type NEW_EMAIL appropriate for this email
+	public LinkedList<Notification> getNotificationList(UserStruct fromUser)
+	{
+		LinkedList<Notification> ret = new LinkedList<Notification>();
+		for (UserStruct recipient : recipients)
+		{
+			ret.add(new Notification(recipient, fromUser, NotificationType.NEW_EMAIL, this));
+		}
+		return ret;
 	}
 
 }
