@@ -3,6 +3,9 @@ package edu.depaul.secmail;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Menu;
+
+import java.io.IOException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -21,6 +24,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 
 public class MainWindow {
 
@@ -56,7 +61,7 @@ public class MainWindow {
 		LoginDialog.Status result = login.open();
 		
 		if (result != LoginDialog.Status.LOGIN_SUCCESS) // we exited or the login failed
-			System.exit(0);
+			shlSecmail.close();
 		
 		serverIO = login.getServerConnection();
 		
@@ -72,6 +77,20 @@ public class MainWindow {
 	 */
 	protected void createContents() {
 		shlSecmail = new Shell();
+		shlSecmail.addShellListener(new ShellAdapter() {
+			@Override
+			public void shellClosed(ShellEvent e) {
+				if (serverIO != null)
+					try {
+						serverIO.writeObject(new PacketHeader(Command.CLOSE));
+						serverIO.close();
+					} catch (IOException ex)
+					{
+						System.out.println("IOException while trying to close application");
+						System.out.println(ex);
+					}
+			}
+		});
 		shlSecmail.setSize(466, 378);
 		shlSecmail.setText("SecMail");
 		shlSecmail.setLayout(new FormLayout());
