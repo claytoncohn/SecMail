@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 
 import com.ibm.icu.text.DateFormat;
@@ -18,6 +19,7 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.TableColumn;
 
 public class EmailReader extends Shell {
@@ -93,6 +95,15 @@ public class EmailReader extends Shell {
 		txtSubject.setBounds(71, 79, 563, 21);
 		
 		tblAttachments = new Table(this, SWT.BORDER | SWT.FULL_SELECTION);
+		tblAttachments.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				Point pt = new Point(e.x, e.y);
+				TableItem clickedItem = tblAttachments.getItem(pt);
+				if (clickedItem != null)
+					handleAttachment((File)clickedItem.getData());
+			}
+		});
 		tblAttachments.setBounds(10, 130, 624, 45);
 		tblAttachments.setHeaderVisible(true);
 		tblAttachments.setLinesVisible(true);
@@ -127,16 +138,44 @@ public class EmailReader extends Shell {
 		btnReply.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				MailWriter newMail = new MailWriter( Display.getCurrent(), 
+							txtFrom.getText(),
+							"Re: " + txtSubject.getText(),
+							stxtBody.getText()
+						);
+				newMail.open();
 			}
 		});
 		btnReply.setBounds(10, 426, 75, 25);
 		btnReply.setText("Reply");
 		
 		Button btnReplyall = new Button(this, SWT.NONE);
+		btnReplyall.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				MailWriter newMail = new MailWriter( Display.getCurrent(), 
+						txtTo.getText() + "," + txtFrom.getText(),
+						"Re: " + txtSubject.getText(),
+						stxtBody.getText()
+					);
+			newMail.open();
+			}
+		});
 		btnReplyall.setBounds(91, 426, 75, 25);
 		btnReplyall.setText("Reply-All");
 		
 		Button btnForward = new Button(this, SWT.NONE);
+		btnForward.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				MailWriter newMail = new MailWriter( Display.getCurrent(), 
+						null,
+						"Re: " + txtSubject.getText(),
+						stxtBody.getText()
+					);
+			newMail.open();
+			}
+		});
 		btnForward.setBounds(172, 426, 75, 25);
 		btnForward.setText("Forward");
 		createContents();
@@ -176,5 +215,14 @@ public class EmailReader extends Shell {
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
+	}
+	
+	private void handleAttachment(File f)
+	{
+		//TODO: Handle the attachment.
+		MessageBox messageBox = new MessageBox(this);
+		messageBox.setText("Attachment Clicked");
+		messageBox.setMessage("Attachment handling currently not implemented.\n\nYou clicked on file: "+f.getName());
+		messageBox.open();
 	}
 }

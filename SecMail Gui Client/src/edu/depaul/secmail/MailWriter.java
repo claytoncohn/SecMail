@@ -62,8 +62,9 @@ public class MailWriter extends Shell {
 		
 		Composite composite = new Composite(this, SWT.NONE);
 		FormData fd_composite = new FormData();
-		fd_composite.top = new FormAttachment(0, 33);
+		fd_composite.top = new FormAttachment(0);
 		fd_composite.right = new FormAttachment(100, -16);
+		fd_composite.left = new FormAttachment(0, 10);
 		composite.setLayoutData(fd_composite);
 		composite.setLayout(new GridLayout(2, false));
 		
@@ -84,11 +85,10 @@ public class MailWriter extends Shell {
 		subjectText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Composite composite_1 = new Composite(this, SWT.NONE);
-		fd_composite.bottom = new FormAttachment(composite_1, -6);
-		fd_composite.left = new FormAttachment(composite_1, 0, SWT.LEFT);
+		fd_composite.bottom = new FormAttachment(100, -175);
 		FormData fd_composite_1 = new FormData();
-		fd_composite_1.top = new FormAttachment(0, 105);
-		fd_composite_1.left = new FormAttachment(0, 10);
+		fd_composite_1.top = new FormAttachment(composite, 6);
+		fd_composite_1.left = new FormAttachment(composite, 0, SWT.LEFT);
 		fd_composite_1.right = new FormAttachment(100, -10);
 		composite_1.setLayoutData(fd_composite_1);
 		
@@ -97,7 +97,7 @@ public class MailWriter extends Shell {
 		lblMailBody.setText("Mail Body:");
 		
 		bodyText = new Text(composite_1, SWT.BORDER);
-		bodyText.setBounds(10, 31, 583, 315);
+		bodyText.setBounds(10, 31, 394, 87);
 		
 		Button btnAddAttachment = new Button(this, SWT.NONE);
 		fd_composite_1.bottom = new FormAttachment(btnAddAttachment, -6);
@@ -186,6 +186,16 @@ public class MailWriter extends Shell {
 		
 		MenuItem mntmClose = new MenuItem(menu_1, SWT.NONE);
 		mntmClose.setText("Close");
+	}
+	
+	//constructor for creating the window with default values
+	MailWriter(Display d, String to, String subject, String body)
+	{
+		this(d);
+		if (to != null)
+			toText.setText(to);
+		subjectText.setText(subject);
+		bodyText.setText(body);
 	}
 
 	/**

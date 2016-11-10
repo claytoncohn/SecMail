@@ -210,6 +210,9 @@ public class RecvMailWindow extends Shell {
 		//otherwise cancel.
 		
 		//open the mail in the mail reader window here
+		//EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate());
+		//reader.open()
+		
 		
 		//test code, remove
 		MessageBox testBox = new MessageBox(this);
