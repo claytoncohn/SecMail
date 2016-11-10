@@ -13,6 +13,7 @@ public class Config {
 	private String logFilePath = "./SecMailServer.log";
 	private File logFile = new File(logFilePath);
 	private String mailDir = "./";
+	private String domain = "localhost";
 	
 	Config(String[] args) 
 	{
@@ -107,6 +108,9 @@ public class Config {
 				case "LogFile":
 					this.SetLogFile(parts[1]);
 					break;
+				case "Domain":
+					this.setDomain(parts[1]);
+					break;
 				default:
 					System.err.println("Invalid configuration option: " + parts[0]);
 				}
@@ -130,5 +134,15 @@ public class Config {
 		}
 		else
 			System.err.println("Unable to open file \""+newLogFilePath+"\" for writing as log file");
+	}
+	
+	private void setDomain(String newDomain)
+	{
+		this.domain = newDomain;
+	}
+	
+	public String getDomain()
+	{
+		return this.domain;
 	}
 }

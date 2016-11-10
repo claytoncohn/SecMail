@@ -55,7 +55,7 @@ public class SecMailServer {
 		//for now, just return an empty list.
 		LinkedList<Notification> ret = new LinkedList<Notification>();
 		for (Notification n : notifications){
-			if (n.getTo().equals(username)){
+			if (n.getTo().compile().equals(username)){
 				ret.add(n);
 			}
 		}

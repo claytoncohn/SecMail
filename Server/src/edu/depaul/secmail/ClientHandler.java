@@ -14,7 +14,7 @@ import java.io.ObjectInputStream;
 public class ClientHandler implements Runnable{
 	private Socket clientSocket = null;
 	private DHEncryptionIO io = null;
-	String username = null;
+	UserStruct user = null;
 	
 	ClientHandler(Socket s)
 	{
@@ -107,17 +107,20 @@ public class ClientHandler implements Runnable{
 	
 	private void handleLogin(){
 		try {
-			username = (String)io.readObject();
+			String username = (String)io.readObject();
 			String password = (String)io.readObject();
 			
 			//authenticate
 			if (authenticate(username,password))
+			{
 				io.writeObject(new PacketHeader(Command.LOGIN_SUCCESS));
+				user = new UserStruct(username, SecMailServer.getGlobalConfig().getDomain(), SecMailServer.getGlobalConfig().getPort());
+			}
 			else
 			{
 				io.writeObject(new PacketHeader(Command.LOGIN_FAIL));
-				username = null; // reset the username since it wasn't valid
 				//forceably close the connection to this client.
+				//TODO: Make this more graceful?
 				io.close();
 				clientSocket.close();
 			}
@@ -142,18 +145,18 @@ public class ClientHandler implements Runnable{
 	
 	private void handleEmail(){
 		//die early if the user hasn't authenticated.
-		if (username == null)
+		if (user == null)
 			return;
 		
 		//Read Email from input stream
 		try {
 			EmailStruct newEmail = (EmailStruct)io.readObject();
-			for (UserStruct recipient : newEmail.getToList())
-				sendNotificationToServer(recipient, newEmail.getSubject(), newEmail.getID());
-			
+			LinkedList<Notification> newNotificationList = newEmail.getNotificationList(user);
+			//spawn a new thread to handle sending out the notifications here
+			//(new Thread(new ServerCommunicator(newNotificationList));
 			storeEmail(newEmail);
 			
-			//debug code
+			//debug code, delete for release
 			System.out.println("Recipient: " + newEmail.getToString());
 			System.out.println("Subject: " + newEmail.getSubject());
 			System.out.println("Body: " + newEmail.getBody());
@@ -173,7 +176,7 @@ public class ClientHandler implements Runnable{
 	private void handleGetNotification()
 	{
 		//TODO: test this
-		LinkedList<Notification> notifications = SecMailServer.getNotificationList(this.username);
+		LinkedList<Notification> notifications = SecMailServer.getNotificationList(this.user.compile());
 		
 		try {
 			this.io.writeObject(notifications);

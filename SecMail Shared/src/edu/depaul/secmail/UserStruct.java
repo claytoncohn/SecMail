@@ -49,6 +49,15 @@ public class UserStruct implements Serializable {
 				
 	}
 	
+	//Creates a UserStruct object from the given name, domain, and port
+	UserStruct(String name, String domain, int port)
+	{
+		this.name = name;
+		this.domain = domain;
+		this.port = port;
+		this.isValid = true;
+	}
+	
 	private void setNulls()
 	{
 		this.name = null;
