@@ -1,40 +1,30 @@
 package edu.depaul.secmail;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Label;
+import java.io.File;
+import java.net.Socket;
 
 import javax.swing.JFileChooser;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Text;
-
-import java.io.File;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-
-import swing2swt.layout.BoxLayout;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
-public class NewMailWindow {
-
-	protected Shell shlNewSecmail;
+public class MailWriter extends Shell {
 	private Text toText;
 	private Text subjectText;
 	private Text bodyText;
@@ -44,41 +34,33 @@ public class NewMailWindow {
 	 * Launch the application.
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String args[]) {
 		try {
-			NewMailWindow window = new NewMailWindow();
-			window.open();
+			Display display = Display.getDefault();
+			MailWriter shell = new MailWriter(display);
+			shell.open();
+			shell.layout();
+			while (!shell.isDisposed()) {
+				if (!display.readAndDispatch()) {
+					display.sleep();
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Open the window.
+	 * Create the shell.
+	 * @param display
+	 * @wbp.parser.constructor
 	 */
-	public void open() {
-		email = new EmailStruct();
-		Display display = Display.getDefault();
+	public MailWriter(Display display) {
+		super(display, SWT.SHELL_TRIM);
 		createContents();
-		shlNewSecmail.open();
-		shlNewSecmail.layout();
-		while (!shlNewSecmail.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-	}
-
-	/**
-	 * Create contents of the window.
-	 */
-	protected void createContents() {
-		shlNewSecmail = new Shell();
-		shlNewSecmail.setSize(639, 531);
-		shlNewSecmail.setText("New SecMail");
-		shlNewSecmail.setLayout(new FormLayout());
+		this.setLayout(new FormLayout());
 		
-		Composite composite = new Composite(shlNewSecmail, SWT.NONE);
+		Composite composite = new Composite(this, SWT.NONE);
 		FormData fd_composite = new FormData();
 		fd_composite.top = new FormAttachment(0, 33);
 		fd_composite.right = new FormAttachment(100, -16);
@@ -101,7 +83,7 @@ public class NewMailWindow {
 		subjectText = new Text(composite, SWT.BORDER);
 		subjectText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Composite composite_1 = new Composite(shlNewSecmail, SWT.NONE);
+		Composite composite_1 = new Composite(this, SWT.NONE);
 		fd_composite.bottom = new FormAttachment(composite_1, -6);
 		fd_composite.left = new FormAttachment(composite_1, 0, SWT.LEFT);
 		FormData fd_composite_1 = new FormData();
@@ -117,7 +99,7 @@ public class NewMailWindow {
 		bodyText = new Text(composite_1, SWT.BORDER);
 		bodyText.setBounds(10, 31, 583, 315);
 		
-		Button btnAddAttachment = new Button(shlNewSecmail, SWT.NONE);
+		Button btnAddAttachment = new Button(this, SWT.NONE);
 		fd_composite_1.bottom = new FormAttachment(btnAddAttachment, -6);
 		FormData fd_btnAddAttachment = new FormData();
 		fd_btnAddAttachment.left = new FormAttachment(0, 10);
@@ -125,11 +107,11 @@ public class NewMailWindow {
 		btnAddAttachment.setLayoutData(fd_btnAddAttachment);
 		btnAddAttachment.setText("Add Attachment");
 		
-		Button btnCancel = new Button(shlNewSecmail, SWT.NONE);
+		Button btnCancel = new Button(this, SWT.NONE);
 		btnCancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				shlNewSecmail.close();
+				MailWriter.this.close();
 			}
 		});
 		FormData fd_btnCancel = new FormData();
@@ -138,13 +120,13 @@ public class NewMailWindow {
 		btnCancel.setLayoutData(fd_btnCancel);
 		btnCancel.setText("Cancel");
 		
-		Button btnSend = new Button(shlNewSecmail, SWT.NONE);
+		Button btnSend = new Button(this, SWT.NONE);
 		btnSend.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				loadToEmailStruct();
 				System.out.println(testEmail());
-				shlNewSecmail.close();
+				MailWriter.this.close();
 			}
 		});
 		FormData fd_btnSend = new FormData();
@@ -153,8 +135,8 @@ public class NewMailWindow {
 		btnSend.setLayoutData(fd_btnSend);
 		btnSend.setText("Send");
 		
-		Menu menu = new Menu(shlNewSecmail, SWT.BAR);
-		shlNewSecmail.setMenuBar(menu);
+		Menu menu = new Menu(this, SWT.BAR);
+		this.setMenuBar(menu);
 		
 		MenuItem mntmFile = new MenuItem(menu, SWT.CASCADE);
 		mntmFile.setText("File");
@@ -204,7 +186,20 @@ public class NewMailWindow {
 		
 		MenuItem mntmClose = new MenuItem(menu_1, SWT.NONE);
 		mntmClose.setText("Close");
+	}
 
+	/**
+	 * Create contents of the shell.
+	 */
+	protected void createContents() {
+		setText("New Mail");
+		setSize(450, 300);
+
+	}
+
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
 	}
 	
 	private void loadToEmailStruct()
@@ -269,4 +264,5 @@ public class NewMailWindow {
 		}
 		return returnString;
 	}
+
 }

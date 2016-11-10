@@ -108,8 +108,8 @@ public class MainWindow {
 		btnNewEmail.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				NewMailWindow newMailWindow = new NewMailWindow();
-				newMailWindow.open();
+				MailWriter newMail = new MailWriter(Display.getCurrent());
+				newMail.open();
 			}
 		});
 		GridData gd_btnNewEmail = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
