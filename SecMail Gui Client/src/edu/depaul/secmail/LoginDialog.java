@@ -134,6 +134,9 @@ public class LoginDialog extends Dialog {
 			else if (responseCommand == Command.LOGIN_FAIL)
 			{
 				returnStatus = Status.LOGIN_FAIL;
+				
+				//close the connection to the server
+				serverConnection.writeObject(new PacketHeader(Command.CLOSE)); // be polite, tell the server we're closing
 				serverConnection.close();
 				s.close();
 				serverConnection = null;
