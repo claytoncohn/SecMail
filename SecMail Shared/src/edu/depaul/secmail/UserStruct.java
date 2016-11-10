@@ -82,6 +82,7 @@ public class UserStruct implements Serializable {
 		return "<user>@<domain>(:<port>)";
 	}
 	
+	//Compile this UserStruct into a single string representation
 	public String compile()
 	{
 		StringBuilder ret = new StringBuilder(this.name+"@"+this.domain);
