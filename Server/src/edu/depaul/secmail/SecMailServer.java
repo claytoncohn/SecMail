@@ -48,19 +48,30 @@ public class SecMailServer {
 	
 	public static synchronized LinkedList<Notification> getNotificationList(String username)
 	{
-		//TODO:
+		//TODO: test this
+		
 		//search the notification list and return a new linked list containing notifications for the user only
-		//don't forget to make this thread safe!
+		//don't forget to make this thread safe! Apparently this done
 		//for now, just return an empty list.
 		LinkedList<Notification> ret = new LinkedList<Notification>();
+		for (Notification n : notifications){
+			if (n.getTo().equals(username)){
+				ret.add(n);
+			}
+		}
+		
 		return ret;
 	}
 	
 	public static synchronized void addNotificationToList(Notification n)
 	{
-		//TODO:
+		//TODO: test this
+		
 		//add the notification to the list.
 		//don't forget to synchronize! (thread safety!)
+		
+		notifications.add(n);
+		
 		return;
 	}
 	

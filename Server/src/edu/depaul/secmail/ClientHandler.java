@@ -172,9 +172,14 @@ public class ClientHandler implements Runnable{
 	
 	private void handleGetNotification()
 	{
-		//TODO:
-		//Handle get notification command for this.username
+		//TODO: test this
 		LinkedList<Notification> notifications = SecMailServer.getNotificationList(this.username);
+		
+		try {
+			this.io.writeObject(notifications);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		//send all the notifications in the above linked list to the client.
 	}
