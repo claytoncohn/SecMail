@@ -15,9 +15,15 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.GridData;
 
 public class ConnectionTestWindow extends Shell {
 	private Text txtServer;
+	private Text txtResult;
 
 	/**
 	 * Launch the application.
@@ -45,32 +51,22 @@ public class ConnectionTestWindow extends Shell {
 	 */
 	public ConnectionTestWindow(Display display) {
 		super(display, SWT.SHELL_TRIM);
+		setLayout(new GridLayout(3, false));
 		
-		Label lblServer = new Label(this, SWT.NONE);
-		lblServer.setBounds(37, 24, 41, 15);
-		lblServer.setText("Server:");
+		Label lblLblserver = new Label(this, SWT.NONE);
+		lblLblserver.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblLblserver.setText("Server:");
 		
 		txtServer = new Text(this, SWT.BORDER);
-		txtServer.setBounds(84, 24, 164, 21);
+		txtServer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		
 		Label lblResult = new Label(this, SWT.NONE);
-		lblResult.setBounds(37, 63, 55, 15);
 		lblResult.setText("Result:");
+		new Label(this, SWT.NONE);
+		new Label(this, SWT.NONE);
 		
-		Button btnClose = new Button(this, SWT.NONE);
-		btnClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ConnectionTestWindow.this.close();
-			}
-		});
-		btnClose.setBounds(215, 226, 75, 25);
-		btnClose.setText("Close");		
-		
-		StyledText txtResult = new StyledText(this, SWT.BORDER);
-		txtResult.setEditable(false);
-		txtResult.setBounds(37, 84, 211, 136);
-		createContents();
+		txtResult = new Text(this, SWT.BORDER);
+		txtResult.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 		
 		Button btnConnect = new Button(this, SWT.NONE);
 		btnConnect.addMouseListener(new MouseAdapter() {
@@ -80,8 +76,20 @@ public class ConnectionTestWindow extends Shell {
 				txtResult.setText(testConnection());
 			}
 		});
-		btnConnect.setBounds(134, 226, 75, 25);
+		btnConnect.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		btnConnect.setText("Connect");
+		new Label(this, SWT.NONE);
+		
+		Button btnClose = new Button(this, SWT.NONE);
+		btnClose.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				ConnectionTestWindow.this.close();
+			}
+		});
+		btnClose.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		btnClose.setText("Close");
+		createContents();
 	}
 
 	/**
