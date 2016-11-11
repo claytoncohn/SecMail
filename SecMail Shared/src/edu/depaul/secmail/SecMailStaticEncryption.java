@@ -4,12 +4,13 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
-
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -49,11 +50,28 @@ public class SecMailStaticEncryption {
     private static final String ENCRYPTIONSPEC = "AES/CBC/PKCS5Padding"; //
     
     
-    public static void encryptText(String text, String key) {
+    public static void encryptText(String text, byte[] key) throws IOException {
+    	byte[] encryptedText = SecMailEncryptAES(text, key);
+    	File tempFile = File.createTempFile("smTEXT", ".tmp", null);
+    	FileOutputStream fileOut = new FileOutputStream(tempFile);
+    	fileOut.write(encryptedText);
+    	fileOut.close();
+    }
+    
+    public static void encryptFile(File file, byte[] key) throws IOException {
+    	SealedObject obj = encryptObject(file, key);
+    	File tempFile = File.createTempFile("smFILE", ".tmp", null);
+    	FileOutputStream fileOut = new FileOutputStream(tempFile);
+    	ObjectOutputStream opStream = new ObjectOutputStream(fileOut);
+    	opStream.writeObject(obj);
+    	opStream.close();
+    }
+    
+    public static void decryptText(String text, byte[] key) throws IOException {
     	//TODO
     }
     
-    public static void encryptFile(File file, String key) {
+    public static void decryptFile(File file, byte[] key) throws IOException {
     	//TODO
     }
     
