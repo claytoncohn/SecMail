@@ -39,9 +39,6 @@ import java.security.SecureRandom;
 import java.security.spec.X509EncodedKeySpec;
 
 //debug connection: 127.0.0.1:57890
-//<<<<<<< HEAD ======= >>>>>>> 4a6b177e6b81828959ba47d999788d86418dd377
-//<<<<<<< HEAD ======= >>>>>>> 4a6b177e6b81828959ba47d999788d86418dd377
-//<<<<<<< HEAD >>>>>>> ======= 455e0401cf16ba8164a436245215482c9efab26d
 
 public class SecMailStaticEncryption {
 
