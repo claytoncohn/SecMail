@@ -16,6 +16,7 @@ public class ClientHandler implements Runnable{
 	private Socket clientSocket = null;
 	private DHEncryptionIO io = null;
 	UserStruct user = null;
+	Config config = null;
 	
 	ClientHandler(Socket s)
 	{
@@ -86,6 +87,8 @@ public class ClientHandler implements Runnable{
 			case GET_NOTIFICATION:
 				handleGetNotification();
 				break;
+			case RECEIVE_EMAIL:
+				retrieveEmail(getNotificationID());
 		default:
 			break;
 		}
@@ -155,16 +158,18 @@ public class ClientHandler implements Runnable{
 			Log.Debug("BODY: " + newEmail.getBody());
 			LinkedList<Notification> newNotificationList = newEmail.getNotificationList(user);
 			//spawn a new thread to handle sending out the notifications here
-			( new Thread( new NotificationSender(newNotificationList) ) ).start();
+			//(new Thread(new ServerCommunicator(newNotificationList));
 			storeEmail(newEmail);
 			
 			//debug code, delete for release
 			System.out.println("Recipient: " + newEmail.getToString());
 			System.out.println("Subject: " + newEmail.getSubject());
 			System.out.println("Body: " + newEmail.getBody());
+			
 			PacketHeader successfulTestPacket = new PacketHeader();
 			successfulTestPacket.setCommand(Command.CONNECT_SUCCESS);
 			io.writeObject(successfulTestPacket);
+		
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -205,4 +210,42 @@ public class ClientHandler implements Runnable{
 		Log.Debug("Wrote new email file: "+writeTo.getAbsolutePath());
 		return;
 	}
+	
+	
+	private void retrieveEmail(String id)
+	{
+		
+		String directory = config.getUserDirectory(user.getUser());
+		try {
+			File[] files = new File(directory).listFiles();
+			for (File file : files){
+				if (file.getName() == id){
+					EmailStruct email = new EmailStruct(file);
+					io.writeObject(email);
+					Log.Debug("Email written to stream");
+					} 
+				}
+			}
+		catch (IOException | NullPointerException e) {
+					Log.Error("Email does not exist");
+					e.printStackTrace();
+				}		
+		
+	}
+	
+	private String getNotificationID(){
+		
+		try {
+			String id = (String)io.readObject();
+			return id;
+		} catch (ClassNotFoundException e) {
+			System.err.println(e);
+			Log.Error(e.toString());
+		} catch (IOException e) {
+			System.err.println(e);
+			Log.Error(e.toString());
+		}
+		return null;	
+	}
+	
 }
