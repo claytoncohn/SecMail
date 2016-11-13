@@ -69,7 +69,15 @@ public class RecvMailWindow extends Shell {
 				Point pt = new Point(e.x, e.y);
 				TableItem clickedItem = table.getItem(pt);
 				if (clickedItem != null)
-					OpenOrFetchMail((Notification)clickedItem.getData());
+					try {
+						OpenOrFetchMail((Notification)clickedItem.getData());
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 			}
 		});
 		table.setBounds(10, 31, 623, 325);
@@ -259,7 +267,7 @@ public class RecvMailWindow extends Shell {
 	//will possibly fetch that email from the remote server if necessary
 	
 	//Yovana
-	private void OpenOrFetchMail(Notification n)
+	private void OpenOrFetchMail(Notification n) throws ClassNotFoundException, IOException
 	{
 		//TODO:
 		//check if the mail is already on the local system
@@ -276,7 +284,7 @@ public class RecvMailWindow extends Shell {
 		//open the mail in the mail reader window here
 		EmailStruct email = new EmailStruct(f);
 			
-		EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate());
+		EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate(), io);
 		reader.open();
 		}
 		//--------------------------------------------
@@ -295,7 +303,7 @@ public class RecvMailWindow extends Shell {
 			EmailStruct email = (EmailStruct)io.readObject();
 			
 			//open in mail reader
-			EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate());
+			EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate(), io);
 			reader.open();
 		}
 		}
@@ -336,12 +344,12 @@ public class RecvMailWindow extends Shell {
 	    }
 		*/
 		//end extra code
-		*/
+		
 		
 		//test code, remove
 		//MessageBox testBox = new MessageBox(this);
 		//testBox.setText("Test Open Email MessageBox");
 		//testBox.setMessage("You tried to open the email from notification with id: "+n.getID());
 		//testBox.open();
-	}
 }
+

@@ -125,6 +125,7 @@ public class MailWriter extends Shell {
 		btnSend.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				email = new EmailStruct();
 				loadToEmailStruct();
 				System.out.println(testEmail());
 				MailWriter.this.close();

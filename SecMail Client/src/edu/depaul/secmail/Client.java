@@ -43,9 +43,9 @@ public class Client {
 	
 	else{System.out.print("Error, username or password unrecognized");}
 	
-	{
+	
 	//user prompt for pulling notifications and emails
-	if (buttonForYesNotificationsIsPressedInGUI) 
+/*	if (buttonForYesNotificationsIsPressedInGUI) 
 	{
 		case GET_NOTIFICATION:
 			System.out.println();
@@ -61,9 +61,9 @@ public class Client {
 			//pull some goddamn emails son
 			//emails stored on own server?
 		}
-	}
-	}
+	}*/
 	
+	}
 	
 	//PSEUDOCODE NEED 
 	//pull notification  

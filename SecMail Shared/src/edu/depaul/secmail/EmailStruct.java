@@ -163,12 +163,12 @@ public class EmailStruct implements Serializable{
 				out.println(recipient.compile());
 			}
 			
-			//write the attachments
+/*			//write the attachments
 			for (File attachment : attachments)
 			{
 				out.print("attachment: ");
 				out.println(attachment.getAbsolutePath());
-			}
+			}*/
 			
 			//write the subject
 			out.print("subject: ");
