@@ -30,7 +30,7 @@ import org.eclipse.swt.events.ShellEvent;
 public class MainWindow {
 
 	protected Shell shlSecmail;
-	private DHEncryptionIO serverIO;
+	private DHEncryptionIO serverIO = null;
 
 	/**
 	 * Launch the application.
@@ -108,7 +108,7 @@ public class MainWindow {
 		btnNewEmail.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				MailWriter newMail = new MailWriter(Display.getCurrent());
+				MailWriter newMail = new MailWriter(Display.getCurrent(), MainWindow.this.serverIO);
 				newMail.open();
 			}
 		});
