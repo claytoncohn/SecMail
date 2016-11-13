@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
@@ -31,6 +33,7 @@ import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -41,36 +44,66 @@ import java.security.spec.X509EncodedKeySpec;
 //debug connection: 127.0.0.1:57890
 
 public class SecMailStaticEncryption {
+	
+	private static String filePath;
 
 	private static byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //AES initialization vector, should not remain 0s
     private static IvParameterSpec ivspec = new IvParameterSpec(iv);
     private static final String ENCRYPTIONSPEC = "AES/CBC/PKCS5Padding"; //
     
-    
+    //MARK: - Text Encryption
     public static void encryptText(String text, byte[] key) throws IOException {
     	byte[] encryptedText = SecMailEncryptAES(text, key);
     	File tempFile = File.createTempFile("smTEXT", ".tmp", null);
     	FileOutputStream fileOut = new FileOutputStream(tempFile);
     	fileOut.write(encryptedText);
     	fileOut.close();
+    	filePath = tempFile.getAbsolutePath();
+    	System.out.println("Text to encrypt: " + text);
+    	System.out.println("Text encrypted: " + ConvertByteArrayToString(encryptedText));
+    	System.out.println("File path of encrypted text: " + filePath);
     }
     
-    public static void encryptFile(File file, byte[] key) throws IOException {
-    	SealedObject obj = encryptObject(file, key);
-    	File tempFile = File.createTempFile("smFILE", ".tmp", null);
-    	FileOutputStream fileOut = new FileOutputStream(tempFile);
-    	ObjectOutputStream opStream = new ObjectOutputStream(fileOut);
-    	opStream.writeObject(obj);
-    	opStream.close();
+    public static String readFile(String filename) throws IOException{
+        String content = null;
+        File file = new File(filename); 
+        FileReader reader = null;
+        try {
+            reader = new FileReader(file);
+            char[] chars = new char[(int) file.length()];
+            reader.read(chars);
+            content = new String(chars);
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(reader !=null){reader.close();}
+        }
+        return content;
     }
     
-    public static void decryptText(String text, byte[] key) throws IOException {
-    	//TODO
+    public static String decryptText(String filePathString, byte[] key) throws IOException {
+    	String encryptedText = readFile(filePathString);
+    	System.out.println("Encrypted text read from temp file: " + encryptedText);
+    	byte[] cipherText = ConvertStringToByteArray(encryptedText);
+    	String decryptedText = SecMailDecryptAES(cipherText, key);
+    	System.out.println("Decrypted Text: " + decryptedText);
+    	return decryptedText;
     }
     
-    public static void decryptFile(File file, byte[] key) throws IOException {
-    	//TODO
-    }
+//    //MARK: - File Encryption
+//    public static void encryptFile(File file, byte[] key) throws IOException {
+//    	SealedObject obj = encryptObject(file, key);
+//    	File tempFile = File.createTempFile("smFILE", ".tmp", null);
+//    	FileOutputStream fileOut = new FileOutputStream(tempFile);
+//    	ObjectOutputStream opStream = new ObjectOutputStream(fileOut);
+//    	opStream.writeObject(obj);
+//    	opStream.close();
+//    }
+//    
+//    public static File decryptFile(File file, byte[] key) throws IOException {
+//    	//TODO
+//    }
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
     //									  http://www.java2s.com/Tutorial/Java/0490__Security/DiffieHellmanKeyAgreement.htm
@@ -406,15 +439,15 @@ public class SecMailStaticEncryption {
 	
 	
 	
-	public static void main(String[] args) {	
+	public static void main(String[] args) throws IOException {	
 		
-		
-		
-		String s = "hello";
-		byte[] key = ConvertStringToByteArray("12345678");
-		SealedObject enc = encryptObject(s, key);
-		String b = (String) decryptObject(enc, key);
-		System.out.println(b);
+		encryptText("this is the encrypted text", iv);
+		decryptText(filePath, iv);
+//		String s = "hello";
+//		byte[] key = ConvertStringToByteArray("12345678");
+//		SealedObject enc = encryptObject(s, key);
+//		String b = (String) decryptObject(enc, key);
+//		System.out.println(b);
 		
 		
 
