@@ -30,8 +30,12 @@ import org.eclipse.swt.events.ShellEvent;
 public class MainWindow {
 
 	protected Shell shlSecmail;
+<<<<<<< HEAD
 	private DHEncryptionIO serverIO;
 	private static String mailDir = "./mail/";
+=======
+	private DHEncryptionIO serverIO = null;
+>>>>>>> origin/master
 
 	/**
 	 * Launch the application.
@@ -109,7 +113,7 @@ public class MainWindow {
 		btnNewEmail.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				MailWriter newMail = new MailWriter(Display.getCurrent());
+				MailWriter newMail = new MailWriter(Display.getCurrent(), MainWindow.this.serverIO);
 				newMail.open();
 			}
 		});

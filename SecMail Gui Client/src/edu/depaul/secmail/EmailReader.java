@@ -29,6 +29,7 @@ public class EmailReader extends Shell {
 	private Text txtSubject;
 	private Table tblAttachments;
 	private StyledText stxtBody;
+	private DHEncryptionIO io;
 
 	/**
 	 * Launch the application.
@@ -141,7 +142,8 @@ public class EmailReader extends Shell {
 				MailWriter newMail = new MailWriter( Display.getCurrent(), 
 							txtFrom.getText(),
 							"Re: " + txtSubject.getText(),
-							stxtBody.getText()
+							stxtBody.getText(),
+							io
 						);
 				newMail.open();
 			}
@@ -156,7 +158,8 @@ public class EmailReader extends Shell {
 				MailWriter newMail = new MailWriter( Display.getCurrent(), 
 						txtTo.getText() + "," + txtFrom.getText(),
 						"Re: " + txtSubject.getText(),
-						stxtBody.getText()
+						stxtBody.getText(),
+						io
 					);
 			newMail.open();
 			}
@@ -171,7 +174,8 @@ public class EmailReader extends Shell {
 				MailWriter newMail = new MailWriter( Display.getCurrent(), 
 						null,
 						"Re: " + txtSubject.getText(),
-						stxtBody.getText()
+						stxtBody.getText(),
+						io
 					);
 			newMail.open();
 			}
@@ -181,9 +185,15 @@ public class EmailReader extends Shell {
 		createContents();
 	}
 	
-	EmailReader(Display d, EmailStruct email, UserStruct from, Date emailDate)
+	EmailReader(Display d, DHEncryptionIO serverIO)
 	{
 		this(d);
+		this.io = serverIO;
+	}
+	
+	EmailReader(Display d, EmailStruct email, UserStruct from, Date emailDate, DHEncryptionIO serverIO)
+	{
+		this(d, serverIO);
 		txtTo.setText(email.getToString());
 		txtFrom.setText(from.compile());
 		txtDate.setText(DateFormat.getDateTimeInstance().format(emailDate));
