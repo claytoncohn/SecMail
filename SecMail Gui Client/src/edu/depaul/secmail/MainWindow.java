@@ -30,12 +30,8 @@ import org.eclipse.swt.events.ShellEvent;
 public class MainWindow {
 
 	protected Shell shlSecmail;
-<<<<<<< HEAD
-	private DHEncryptionIO serverIO;
-	private static String mailDir = "./mail/";
-=======
 	private DHEncryptionIO serverIO = null;
->>>>>>> origin/master
+	private static String mailDir = "./mail/";
 
 	/**
 	 * Launch the application.
