@@ -138,10 +138,20 @@ public class RecvMailWindow extends Shell {
 		//TODO:
 		//for each new notification we get, 
 		Notification n = (Notification)i.getData();
+		For (Notification n :)
+		//store mail in C://config?
+		//maildir = 
+		String mailDir = MainWindow.getMailDir();
 		//	check to see if an email matching the notifications ID already exists in the maildir
-		//	if yes, mark received column as true, else false.
+        if (text.ExistsIn(mailDir))
+        {
+    		//	if yes, mark received column as true, else false.
+    		TableColumn tblclm = new TableColumn();
+    		tblclmnFileName.setBoolean(TRUE);
+        }
+		
 		//add new table item for the notification
-		addNewTableItem(n)
+		addNewTableItem(n, true);
 		//write the notification to disk as well
 		return;
 	}
@@ -161,26 +171,29 @@ public class RecvMailWindow extends Shell {
 		{
 		    reader = new BufferedReader(new FileReader(notificationfile));
 		    String text = null;
+	        //Notification n = (Notification)i.getData(); 
 
 		    while ((text = reader.readLine()) != null) {
 		        filelist.add(text);
-				//for each notification read,
-				//	check to see if an email matching the notifications ID already exists in the maildir
-		        if (text.ExistsIn(maildir))
-		        {
-					//	if yes, mark received column as true, else false.
-					
-		        	//add new table item for the notification
-					
-		        	//add it to the table
-					addNewTableItem(text, true);		        	
-		        }
+		        //for each notification read,
+				for (Notification n : n.getID())
+				{
+					//	check to see if an email matching the notifications ID already exists in the maildir
+			        if (text.ExistsIn(maildir))
+			        { //id.mail
+						//if yes, mark received column as true, else false.
+						addNewTableItem(text, true);	
+			    		// for each notification, find out if a file exists in mail directory, mark 
+			    		//addnewtableitem (notification, true)
+			    		
+			        	//add new table item for the notification					
+			        	//add it to the table        	
+			        }
+				}
 
 		        
 		}
-		        try {
-		            if (reader != null) {reader.close();}
-		            }
+		        try {if (reader != null) {reader.close();}}
 	}
 	
 	//put the notifications in the notifications list into the notifications file so they are saved.

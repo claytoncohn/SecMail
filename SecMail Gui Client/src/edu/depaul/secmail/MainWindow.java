@@ -31,6 +31,7 @@ public class MainWindow {
 
 	protected Shell shlSecmail;
 	private DHEncryptionIO serverIO;
+	private static String mailDir = "./mail/";
 
 	/**
 	 * Launch the application.
@@ -160,5 +161,9 @@ public class MainWindow {
 		btnClose.setLayoutData(gd_btnClose);
 		btnClose.setText("Close");
 
+	}
+	public static String getMailDir()
+	{
+		return mailDir;
 	}
 }
