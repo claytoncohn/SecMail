@@ -189,20 +189,20 @@ public class MailWriter extends Shell {
 		mntmClose.setText("Close");
 	}
 	
-	//constructor for creating the window with default values
-	MailWriter(Display d, String to, String subject, String body)
-	{
-		this(d);
-		if (to != null)
-			toText.setText(to);
-		subjectText.setText(subject);
-		bodyText.setText(body);
-	}
-	
 	MailWriter(Display d, DHEncryptionIO serverIO)
 	{
 		this(d);
 		this.io = serverIO;
+	}
+	
+	//constructor for creating the window with default values
+	MailWriter(Display d, String to, String subject, String body, DHEncryptionIO serverIO)
+	{
+		this(d, serverIO);
+		if (to != null)
+			toText.setText(to);
+		subjectText.setText(subject);
+		bodyText.setText(body);
 	}
 
 	/**
