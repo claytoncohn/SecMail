@@ -1,8 +1,15 @@
 package edu.depaul.secmail;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -16,8 +23,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import com.ibm.icu.text.DateFormat;
-import com.sun.nio.sctp.Notification;
+import java.text.DateFormat;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.MouseAdapter;
@@ -135,6 +141,7 @@ public class RecvMailWindow extends Shell {
 	//Connect to the server and get the new notifications
 	private void getNewNotifications()
 	{
+		/*
 		//TODO:
 		//for each new notification we get, 
 		Notification n = (Notification)i.getData();
@@ -151,71 +158,68 @@ public class RecvMailWindow extends Shell {
 		
 		//add new table item for the notification
 		addNewTableItem(n, true);
-		//write the notification to disk as well
+		//write the notification to disk as well */
 		return;
 	}
 	
 	//Reads the notifications file from the filesystem and loads all the old notifications that we've already gotten.
 	private void loadNotificationsFromFile()
 	{
-		//TODO:
 		//open the notification file
-		List<String> filelist = new ArrayList<String>();
-		File notificationfile = new File("file.txt");
-		BufferedReader reader = null;
-		String mailDir = MainWindow.getMailDir();
+		File notificationfile = new File("notifications.bin");
+		ObjectInputStream reader = null;
 		//read the file
 		try 
 		{
-		    reader = new BufferedReader(new FileReader(notificationfile));
-		    String text = null;
-	        //Notification n = (Notification)i.getData(); 
+		    reader = new ObjectInputStream(new FileInputStream(notificationfile));
+		    Notification n = null; 
 
-		    while ((text = reader.readLine()) != null) {
-		        filelist.add(text);
+		    while ((n = (Notification)reader.readObject()) != null) {
 		        //for each notification read,
-				for (Notification n : n.getID())
-				{
-					//	check to see if an email matching the notifications ID already exists in the maildir
-			        if (text.ExistsIn(mailDir))
-			        { //id.mail
-						//if yes, mark received column as true, else false.
-						addNewTableItem(text, true);	
-			    		// for each notification, find out if a file exists in mail directory, mark 
-			    		//addnewtableitem (notification, true)
-			        	//add new table item for the notification					
-			        	//add it to the table        	
-			        }
-				}
-
+				//	check to see if an email matching the notifications ID already exists in the maildir
+		        File email = new File(MainWindow.getMailDir() + n.getID());
+		        addNewTableItem(n, email.exists());
+		    }
 		        
+		} catch (FileNotFoundException e) {
+			// if the file isn't found, that's fine, there just aren't notifications yet.
+		} catch (IOException e) {
+			System.out.println("IOExceoption trying to read notifications file.");
+			System.out.println(e);
+		} catch (ClassNotFoundException e) {
+			System.out.println("Error while reading notifications file.");
+			System.out.println(e);
 		}
-		        try {if (reader != null) {reader.close();}}
+        try {
+        	if (reader != null) 
+        		reader.close();
+        } catch (Exception e){
+        	System.out.println("Exception while tring to close notification file");
+        	System.out.println(e);
+        }
 	}
 	
 	//put the notifications in the notifications list into the notifications file so they are saved.
 	private void dumpNotificationsToFile()
 	{
-		List<String> filelist = new ArrayList<String>();
-		Notification n = (Notification)i.getData();
-		
-		FileWriter writer = new FileWriter("file.txt"); 
-		for(String notifications: filelist) {writer.write(n);}
-		writer.close();
-
-
-	}
-
-		//for each item in the table
-		for (TableItem i : table.getItems())
-		{
-			Notification n = (Notification)i.getData(); // get the original notification used
-			
-			//TODO: write the notifications to a file
-			FileWriter notiwriter = new FileWriter("file.txt"); 
-			for(String notifications: filelist) {notiwriter.write(n);}
-			writer.close();
-			continue; // deletethis
+		try {
+			FileOutputStream f = new FileOutputStream("notifications.bin", false);
+			ObjectOutputStream notiwriter = new ObjectOutputStream(f);
+			//for each item in the table
+			for (TableItem i : table.getItems())
+			{
+				Notification n = (Notification)i.getData(); // get the original notification used
+				
+				//TODO: write the notifications to a file
+				notiwriter.writeObject(n);
+			}
+			notiwriter.close();
+		} catch (FileNotFoundException e) {
+			System.err.println("Error, unable to open File to write notifications");
+			System.err.println(e);
+		} catch (IOException e) {
+			System.out.println("Error whilewriting to file");
+			System.out.println(e);
 		}
 	}
 	
