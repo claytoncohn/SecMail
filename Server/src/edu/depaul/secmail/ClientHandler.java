@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.io.PrintWriter;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -38,7 +39,7 @@ public class ClientHandler implements Runnable{
 		
 		try {
 			PacketHeader nextPacket = null;
-			while ((nextPacket = (PacketHeader)io.readObject()) != null) {
+			while ((nextPacket = (PacketHeader) io.readObject()) != null) {
 		        if (nextPacket.getCommand() == Command.CLOSE)
 		        	break; // leave the loop
 		        else
@@ -140,7 +141,7 @@ public class ClientHandler implements Runnable{
 	{
 		Log.Out("Got authentication request for user: "+user+","+getIdentifier());
 		//remove this and implement logic.
-		return false;
+		return true;
 	}
 	
 	private void handleEmail(){
@@ -151,6 +152,7 @@ public class ClientHandler implements Runnable{
 		//Read Email from input stream
 		try {
 			EmailStruct newEmail = (EmailStruct)io.readObject();
+			Log.Debug("BODY: " + newEmail.getBody());
 			LinkedList<Notification> newNotificationList = newEmail.getNotificationList(user);
 			//spawn a new thread to handle sending out the notifications here
 			//(new Thread(new ServerCommunicator(newNotificationList));
@@ -192,11 +194,15 @@ public class ClientHandler implements Runnable{
 		return clientSocket.getInetAddress() + ":" + clientSocket.getPort();
 	}
 	
-	private void storeEmail(EmailStruct email)
+	private void storeEmail(EmailStruct email) throws IOException
 	{
 		//TODO:
 		//Implement code to write the email to somewhere applicable
 		//NOTE: see email.writeToFile, file name should be email.getID(), stored in a directory that identifies the user (this.username)
+		File writeTo = new File(this.user.getUser() + "/" + email.getID() + ".txt");
+		writeTo.createNewFile();
+		email.writeToFile(writeTo);
+		Log.Debug("Wrote new email file: "+writeTo.getAbsolutePath());
 		return;
 	}
 }

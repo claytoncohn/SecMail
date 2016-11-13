@@ -12,9 +12,9 @@ import java.math.BigInteger;
 public class EmailStruct implements Serializable{
 	private LinkedList<UserStruct> recipients = new LinkedList<UserStruct>();
 	private transient LinkedList<File> attachments = new LinkedList<File>();
-	private String subject = null;
-	private String body = null;
-	private String id = null;
+	private String subject = "DEFAULT_SUBJECT";
+	private String body = "DEFAULT_BODY";
+	private String id = "DEFAULT_ID";
 	
 	//default empty constructor.
 	EmailStruct()

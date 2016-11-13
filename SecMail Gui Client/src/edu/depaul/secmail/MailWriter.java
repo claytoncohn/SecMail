@@ -124,6 +124,7 @@ public class MailWriter extends Shell {
 		btnSend.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				email = new EmailStruct();
 				loadToEmailStruct();
 				System.out.println(testEmail());
 				MailWriter.this.close();
@@ -216,9 +217,11 @@ public class MailWriter extends Shell {
 	{
 		//to field
 		String[] recipients = toText.getText().split(",");
-		for (String recipient : recipients)
+		for (String recipient : recipients){
 			email.addRecipient(recipient);
-		
+			//System.out.println(recipient);
+		}
+		//System.out.println(email.getBody());
 		email.setSubject(subjectText.getText());
 		email.setBody(bodyText.getText());
 	}
@@ -232,6 +235,7 @@ public class MailWriter extends Shell {
 	
 	private String testEmail()
 	{
+		//System.out.println("TESTING EMAIL!");
 		String txtServer = ":57890";
 		String[] server = txtServer.split(":");
 		String returnString;
@@ -251,6 +255,7 @@ public class MailWriter extends Shell {
 			//send the packet
 			io.writeObject(testPacketHeader);
 			io.flush();
+			//TODO: Race condition???
 			io.writeObject(email);
 			
 			//get the response

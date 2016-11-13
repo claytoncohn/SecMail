@@ -45,18 +45,18 @@ public class Client {
 	
 	{
 	//user prompt for pulling notifications and emails
-	if (buttonForYesNotificationsIsPressedInGUI) 
+	//if (buttonForYesNotificationsIsPressedInGUI) 
 	{
-		case GET_NOTIFICATION:
-			System.out.println();
-		case SEND_NOTIFICATION:
-			System.out.println();
+		//case GET_NOTIFICATION:
+		//	System.out.println();
+		//case SEND_NOTIFICATION:
+		//	System.out.println();
 			
 	}
 	//send command to server for notification to be sent to client from server
 	//prompt if user wants to pull emails notified by the notifications sent as well 
 	//leads to 	
-		if (userSaysYesToPullingEmails) 
+		//if (userSaysYesToPullingEmails) 
 		{
 			//pull some goddamn emails son
 			//emails stored on own server?
