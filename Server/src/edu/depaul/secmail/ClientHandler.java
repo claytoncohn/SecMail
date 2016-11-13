@@ -153,7 +153,7 @@ public class ClientHandler implements Runnable{
 			EmailStruct newEmail = (EmailStruct)io.readObject();
 			LinkedList<Notification> newNotificationList = newEmail.getNotificationList(user);
 			//spawn a new thread to handle sending out the notifications here
-			//(new Thread(new ServerCommunicator(newNotificationList));
+			( new Thread( new NotificationSender(newNotificationList) ) ).start();
 			storeEmail(newEmail);
 			
 			//debug code, delete for release
