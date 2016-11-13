@@ -116,6 +116,7 @@ public class ClientHandler implements Runnable{
 			{
 				io.writeObject(new PacketHeader(Command.LOGIN_SUCCESS));
 				user = new UserStruct(username, SecMailServer.getGlobalConfig().getDomain(), SecMailServer.getGlobalConfig().getPort());
+				assert(user != null);
 			}
 			else
 			{
@@ -146,16 +147,17 @@ public class ClientHandler implements Runnable{
 	
 	private void handleEmail(){
 		//die early if the user hasn't authenticated.
-		if (user == null)
-			return;
+		if (user == null){
+			Log.Error("Handling email with Null user. What's your deal?");
+			return;}
 		
 		//Read Email from input stream
 		try {
 			EmailStruct newEmail = (EmailStruct)io.readObject();
-			Log.Debug("BODY: " + newEmail.getBody());
+			Log.Debug("read email packet.");
 			LinkedList<Notification> newNotificationList = newEmail.getNotificationList(user);
 			//spawn a new thread to handle sending out the notifications here
-			( new Thread( new NotificationSender(newNotificationList) ) ).start();
+			//(new Thread(new ServerCommunicator(newNotificationList));
 			storeEmail(newEmail);
 			
 			//debug code, delete for release
@@ -199,8 +201,16 @@ public class ClientHandler implements Runnable{
 		//TODO:
 		//Implement code to write the email to somewhere applicable
 		//NOTE: see email.writeToFile, file name should be email.getID(), stored in a directory that identifies the user (this.username)
-		File writeTo = new File(this.user.getUser() + "/" + email.getID() + ".txt");
-		writeTo.createNewFile();
+		
+		String root = SecMailServer.getGlobalConfig().getMailRoot();
+		String directoryName = this.user.getUser();
+		String filename = email.getID();
+		
+		File directory = new File(String.valueOf(root)+"/"+String.valueOf(directoryName));
+		if (! directory.exists()){
+			directory.mkdir();
+		}
+		File writeTo = new File(directory + "/" + filename + ".txt");
 		email.writeToFile(writeTo);
 		Log.Debug("Wrote new email file: "+writeTo.getAbsolutePath());
 		return;

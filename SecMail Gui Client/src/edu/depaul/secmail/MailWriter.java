@@ -29,6 +29,7 @@ public class MailWriter extends Shell {
 	private Text subjectText;
 	private Text bodyText;
 	EmailStruct email;
+	DHEncryptionIO io;
 
 	/**
 	 * Launch the application.
@@ -189,10 +190,16 @@ public class MailWriter extends Shell {
 		mntmClose.setText("Close");
 	}
 	
-	//constructor for creating the window with default values
-	MailWriter(Display d, String to, String subject, String body)
+	MailWriter(Display d, DHEncryptionIO serverIO)
 	{
 		this(d);
+		this.io = serverIO;
+	}
+	
+	//constructor for creating the window with default values
+	MailWriter(Display d, String to, String subject, String body, DHEncryptionIO serverIO)
+	{
+		this(d, serverIO);
 		if (to != null)
 			toText.setText(to);
 		subjectText.setText(subject);
@@ -235,18 +242,14 @@ public class MailWriter extends Shell {
 	
 	private String testEmail()
 	{
+<<<<<<< HEAD
 		//System.out.println("TESTING EMAIL!");
 		String txtServer = ":57890";
 		String[] server = txtServer.split(":");
+=======
+>>>>>>> 3b8fd6db33d1ea1a672a945975af2e2b70dcef97
 		String returnString;
-		if (server.length != 2)
-		{
-			return "Invalid Server format. Please use format <server>:<port>\n";
-		}
-		
 		try {
-			Socket s = new Socket(server[0], Integer.valueOf(server[1]));
-			DHEncryptionIO io = new DHEncryptionIO(s, false);
 			
 			//create the appropriate packet
 			PacketHeader testPacketHeader = new PacketHeader();
@@ -272,7 +275,6 @@ public class MailWriter extends Shell {
 			io.writeObject(new PacketHeader(Command.CLOSE));
 			
 			io.close();
-			s.close();
 		} catch (Exception e)
 		{
 			returnString = "Exception thrown while trying to connect.\n" + e;

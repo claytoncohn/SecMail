@@ -138,10 +138,19 @@ public class RecvMailWindow extends Shell {
 		//TODO:
 		//for each new notification we get, 
 		Notification n = (Notification)i.getData();
+		For (Notification n :)
+		//store mail  
+		String mailDir = MainWindow.getMailDir();
 		//	check to see if an email matching the notifications ID already exists in the maildir
-		//	if yes, mark received column as true, else false.
+        if (text.ExistsIn(mailDir))
+        {
+    		//	if yes, mark received column as true, else false.
+    		TableColumn tblclm = new TableColumn();
+    		tblclmnFileName.setBoolean(TRUE);
+        }
+		
 		//add new table item for the notification
-		addNewTableItem(n)
+		addNewTableItem(n, true);
 		//write the notification to disk as well
 		return;
 	}
@@ -154,33 +163,34 @@ public class RecvMailWindow extends Shell {
 		List<String> filelist = new ArrayList<String>();
 		File notificationfile = new File("file.txt");
 		BufferedReader reader = null;
-		//Notification n = (Notification)i.getData();
-		
+		String mailDir = MainWindow.getMailDir();
 		//read the file
 		try 
 		{
 		    reader = new BufferedReader(new FileReader(notificationfile));
 		    String text = null;
+	        //Notification n = (Notification)i.getData(); 
 
 		    while ((text = reader.readLine()) != null) {
 		        filelist.add(text);
-				//for each notification read,
-				//	check to see if an email matching the notifications ID already exists in the maildir
-		        if (text.ExistsIn(maildir))
-		        {
-					//	if yes, mark received column as true, else false.
-					
-		        	//add new table item for the notification
-					
-		        	//add it to the table
-					addNewTableItem(text, true);		        	
-		        }
+		        //for each notification read,
+				for (Notification n : n.getID())
+				{
+					//	check to see if an email matching the notifications ID already exists in the maildir
+			        if (text.ExistsIn(mailDir))
+			        { //id.mail
+						//if yes, mark received column as true, else false.
+						addNewTableItem(text, true);	
+			    		// for each notification, find out if a file exists in mail directory, mark 
+			    		//addnewtableitem (notification, true)
+			        	//add new table item for the notification					
+			        	//add it to the table        	
+			        }
+				}
 
 		        
 		}
-		        try {
-		            if (reader != null) {reader.close();}
-		            }
+		        try {if (reader != null) {reader.close();}}
 	}
 	
 	//put the notifications in the notifications list into the notifications file so they are saved.
@@ -202,6 +212,9 @@ public class RecvMailWindow extends Shell {
 			Notification n = (Notification)i.getData(); // get the original notification used
 			
 			//TODO: write the notifications to a file
+			FileWriter notiwriter = new FileWriter("file.txt"); 
+			for(String notifications: filelist) {notiwriter.write(n);}
+			writer.close();
 			continue; // deletethis
 		}
 	}
@@ -260,5 +273,11 @@ public class RecvMailWindow extends Shell {
 		testBox.setText("Test Open Email MessageBox");
 		testBox.setMessage("You tried to open the email from notification with id: "+n.getID());
 		testBox.open();
+	}
+	private void HandleSendNotification(Notification n)
+	{
+		//needs accept a notification from which had been sent to it from the other server, needs to go on server side
+		
+		return;
 	}
 }
