@@ -31,52 +31,6 @@ public class Auth {
     private static File file = new File("users.bin");
     private static FileInputStream fromFile;
 
-
-    public static void main(String[] args) throws NoSuchAlgorithmException{
-
-        boolean allow;
-        System.out.println("Create Account? (Y/N)");
-        try
-        {
-          BufferedReader readCreate = new BufferedReader(new InputStreamReader(System.in));
-          String siNo = readCreate.readLine();
-
-          if (siNo.toUpperCase().equals("Y"))
-          {
-            System.out.println("Enter Username:");
-            BufferedReader readName = new BufferedReader(new InputStreamReader(System.in));
-            String username = readName.readLine();
-
-            System.out.println("Enter Password:");
-            BufferedReader readPass = new BufferedReader(new InputStreamReader(System.in));
-            String password = readPass.readLine();
-
-            createAccount(username, password);
-          }
-          else
-          {
-            System.out.println("Login");
-            System.out.println("Enter Username:");
-            BufferedReader readLoginName = new BufferedReader(new InputStreamReader(System.in));
-            String userLogin = readLoginName.readLine();
-
-            System.out.println("Enter Password:");
-            BufferedReader readLoginPass = new BufferedReader(new InputStreamReader(System.in));
-            String loginPassword = readLoginPass.readLine();
-            allow = login(userLogin, loginPassword);
-
-            if (allow)
-              System.out.println("You shall pass!");
-            else
-              System.out.println("You shall not pass!");
-        }
-      }
-
-        catch (Exception e) {
-          System.out.println(e.getMessage());
-        }
-    }
-
 /********************** DOUG ***********************************************/
 
      private static String getHashedPassword(String passwordToHash, byte[] salt)
