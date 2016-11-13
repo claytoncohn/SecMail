@@ -257,6 +257,8 @@ public class RecvMailWindow extends Shell {
 	
 	//Opens the email associated with the notification n
 	//will possibly fetch that email from the remote server if necessary
+	
+	//Yovana
 	private void OpenOrFetchMail(Notification n)
 	{
 		//TODO:
@@ -267,21 +269,79 @@ public class RecvMailWindow extends Shell {
 		//if the user says yes, fetch the mail
 		//otherwise cancel.
 		
+		//--------------------------------------------------------------
+		//get mail from local system
+		File f = new File(MainWindow.getMailDir() + n.getID());
+		if (f.exists()){
 		//open the mail in the mail reader window here
-		//EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate());
-		//reader.open()
-		
+		EmailStruct email = new EmailStruct(f);
+			
+		EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate());
+		reader.open();
+		}
+		//--------------------------------------------
+		//get mail from server
+		else
+		{
+			//make packet header to send to server
+			PacketHeader getEmailHeader = new PacketHeader(Command.RECEIVE_EMAIL);
+			//send packet header to server 
+			io.writeObject(getEmailHeader);
+			//send ID to server 
+			io.writeObject(n.getID());
+			
+			
+			//server sends back the email / packet header
+			EmailStruct email = (EmailStruct)io.readObject();
+			
+			//open in mail reader
+			EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate());
+			reader.open();
+		}
+		}
+		//else (return to mail notification);
+		/*
+		//extra code
+			if (!file.exists()) 
+			{
+	            context.addMessage(new ErrorMessage("msg.file.notdownloaded"));
+	            context.setForwardName("failure");
+	        } 
+			else 
+			{
+	            response.setContentType("DOWNLOADING MAIL");
+	            response.setHeader("Content", "filename=" + file.getName());
+	            stream = new FileInputStream(file);
+	            response.setContentLength(stream.available());
+	            OutputStream os = response.getOutputStream();      
+	            os.close();
+	            //response.flushBuffer();
+	        }
+		catch (IOException e) 
+		{    e.printStackTrace();} 
+		/*
+		finally 
+		{
+	        if (stream != null) 
+	        {
+	            try 
+	            {
+	                stream.close();
+	            } 
+	            catch (IOException e) 
+	            {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+		*/
+		//end extra code
+		*/
 		
 		//test code, remove
-		MessageBox testBox = new MessageBox(this);
-		testBox.setText("Test Open Email MessageBox");
-		testBox.setMessage("You tried to open the email from notification with id: "+n.getID());
-		testBox.open();
-	}
-	private void HandleSendNotification(Notification n)
-	{
-		//needs accept a notification from which had been sent to it from the other server, needs to go on server side
-		
-		return;
+		//MessageBox testBox = new MessageBox(this);
+		//testBox.setText("Test Open Email MessageBox");
+		//testBox.setMessage("You tried to open the email from notification with id: "+n.getID());
+		//testBox.open();
 	}
 }
