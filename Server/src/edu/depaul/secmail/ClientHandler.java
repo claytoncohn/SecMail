@@ -201,10 +201,9 @@ public class ClientHandler implements Runnable{
 	
 	private void storeEmail(EmailStruct email) throws IOException
 	{
-		//TODO:
 		//Implement code to write the email to somewhere applicable
 		//NOTE: see email.writeToFile, file name should be email.getID(), stored in a directory that identifies the user (this.username)
-		File writeTo = new File(this.user.getUser() + "/" + email.getID() + ".txt");
+		File writeTo = new File(SecMailServer.getGlobalConfig().getMailRoot() + this.user.getUser() + "/" + email.getID());
 		writeTo.createNewFile();
 		email.writeToFile(writeTo);
 		Log.Debug("Wrote new email file: "+writeTo.getAbsolutePath());
