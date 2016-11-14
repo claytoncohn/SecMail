@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_vJ1lMKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.e4.legacy.ide.application" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_vJ1lMad2Eeaolp-iYo7Yrg" bindingContexts="_vJ4o96d2Eeaolp-iYo7Yrg">
-  <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;workbench>&#xA;&lt;mruList>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SecMailServer.java&quot; tooltip=&quot;Server/src/edu/depaul/secmail/SecMailServer.java&quot;>&#xA;&lt;persistable path=&quot;/Server/src/edu/depaul/secmail/SecMailServer.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;ClientHandler.java&quot; tooltip=&quot;Server/src/edu/depaul/secmail/ClientHandler.java&quot;>&#xA;&lt;persistable path=&quot;/Server/src/edu/depaul/secmail/ClientHandler.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SecMailStaticEncryption.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/SecMailStaticEncryption.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Shared/src/edu/depaul/secmail/SecMailStaticEncryption.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;EmailStruct.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/EmailStruct.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Shared/src/edu/depaul/secmail/EmailStruct.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Client.java&quot; tooltip=&quot;SecMail Client/src/edu/depaul/secmail/Client.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Client/src/edu/depaul/secmail/Client.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.jdt.ui.ClassFileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.ClassFileEditor&quot; name=&quot;SecMailStaticEncryption.class&quot; tooltip=&quot;edu.depaul.secmail.SecMailStaticEncryption&quot;>&#xA;&lt;persistable org.eclipse.jdt.ui.ClassFileIdentifier=&quot;=SecMail Gui Client/\/Users\/Clay\/Desktop\/Coding\/SecMail\/SecMail-Shared.jar&amp;lt;edu.depaul.secmail(SecMailStaticEncryption.class&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;ConnectionTestWindow.java&quot; tooltip=&quot;SecMail Gui Client/src/edu/depaul/secmail/ConnectionTestWindow.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Gui Client/src/edu/depaul/secmail/ConnectionTestWindow.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.jdt.ui.ClassFileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.ClassFileEditor&quot; name=&quot;DHEncryptionIO.class&quot; tooltip=&quot;edu.depaul.secmail.DHEncryptionIO&quot;>&#xA;&lt;persistable org.eclipse.jdt.ui.ClassFileIdentifier=&quot;=SecMail Gui Client/\/Users\/Clay\/Desktop\/Coding\/SecMail\/SecMail-Shared.jar&amp;lt;edu.depaul.secmail(DHEncryptionIO.class&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;NewMailWindow.java&quot; tooltip=&quot;SecMail Gui Client/src/edu/depaul/secmail/NewMailWindow.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Gui Client/src/edu/depaul/secmail/NewMailWindow.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Log.java&quot; tooltip=&quot;Server/src/edu/depaul/secmail/Log.java&quot;>&#xA;&lt;persistable path=&quot;/Server/src/edu/depaul/secmail/Log.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.jdt.ui.ClassFileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.ClassFileEditor&quot; name=&quot;DHEncryptionReader.class&quot; tooltip=&quot;edu.depaul.secmail.DHEncryptionReader&quot;>&#xA;&lt;persistable org.eclipse.jdt.ui.ClassFileIdentifier=&quot;=SecMail Gui Client/\/Users\/Clay\/Desktop\/Coding\/SecMail\/SecMail-Shared.jar&amp;lt;edu.depaul.secmail(DHEncryptionReader.class&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;DHEncryptionWriter.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/DHEncryptionWriter.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Shared/src/edu/depaul/secmail/DHEncryptionWriter.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MainWindow.java&quot; tooltip=&quot;SecMail Gui Client/src/edu/depaul/secmail/MainWindow.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Gui Client/src/edu/depaul/secmail/MainWindow.java&quot;/>&#xA;&lt;/file>&#xA;&lt;/mruList>&#xA;&lt;/workbench>"/>
+  <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;workbench>&#xA;&lt;mruList>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;ClientHandler.java&quot; tooltip=&quot;Server/src/edu/depaul/secmail/ClientHandler.java&quot;>&#xA;&lt;persistable path=&quot;/Server/src/edu/depaul/secmail/ClientHandler.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SecMailStaticEncryption.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/SecMailStaticEncryption.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Shared/src/edu/depaul/secmail/SecMailStaticEncryption.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;DHEncryptionIO.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/DHEncryptionIO.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Shared/src/edu/depaul/secmail/DHEncryptionIO.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SecMailServer.java&quot; tooltip=&quot;Server/src/edu/depaul/secmail/SecMailServer.java&quot;>&#xA;&lt;persistable path=&quot;/Server/src/edu/depaul/secmail/SecMailServer.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;EmailStruct.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/EmailStruct.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Shared/src/edu/depaul/secmail/EmailStruct.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Client.java&quot; tooltip=&quot;SecMail Client/src/edu/depaul/secmail/Client.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Client/src/edu/depaul/secmail/Client.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.jdt.ui.ClassFileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.ClassFileEditor&quot; name=&quot;SecMailStaticEncryption.class&quot; tooltip=&quot;edu.depaul.secmail.SecMailStaticEncryption&quot;>&#xA;&lt;persistable org.eclipse.jdt.ui.ClassFileIdentifier=&quot;=SecMail Gui Client/\/Users\/Clay\/Desktop\/Coding\/SecMail\/SecMail-Shared.jar&amp;lt;edu.depaul.secmail(SecMailStaticEncryption.class&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;ConnectionTestWindow.java&quot; tooltip=&quot;SecMail Gui Client/src/edu/depaul/secmail/ConnectionTestWindow.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Gui Client/src/edu/depaul/secmail/ConnectionTestWindow.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.jdt.ui.ClassFileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.ClassFileEditor&quot; name=&quot;DHEncryptionIO.class&quot; tooltip=&quot;edu.depaul.secmail.DHEncryptionIO&quot;>&#xA;&lt;persistable org.eclipse.jdt.ui.ClassFileIdentifier=&quot;=SecMail Gui Client/\/Users\/Clay\/Desktop\/Coding\/SecMail\/SecMail-Shared.jar&amp;lt;edu.depaul.secmail(DHEncryptionIO.class&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;NewMailWindow.java&quot; tooltip=&quot;SecMail Gui Client/src/edu/depaul/secmail/NewMailWindow.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Gui Client/src/edu/depaul/secmail/NewMailWindow.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Log.java&quot; tooltip=&quot;Server/src/edu/depaul/secmail/Log.java&quot;>&#xA;&lt;persistable path=&quot;/Server/src/edu/depaul/secmail/Log.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.jdt.ui.ClassFileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.ClassFileEditor&quot; name=&quot;DHEncryptionReader.class&quot; tooltip=&quot;edu.depaul.secmail.DHEncryptionReader&quot;>&#xA;&lt;persistable org.eclipse.jdt.ui.ClassFileIdentifier=&quot;=SecMail Gui Client/\/Users\/Clay\/Desktop\/Coding\/SecMail\/SecMail-Shared.jar&amp;lt;edu.depaul.secmail(DHEncryptionReader.class&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MainWindow.java&quot; tooltip=&quot;SecMail Gui Client/src/edu/depaul/secmail/MainWindow.java&quot;>&#xA;&lt;persistable path=&quot;/SecMail Gui Client/src/edu/depaul/secmail/MainWindow.java&quot;/>&#xA;&lt;/file>&#xA;&lt;/mruList>&#xA;&lt;/workbench>"/>
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
   <tags>ModelMigrationProcessor.001</tags>
   <children xsi:type="basic:TrimmedWindow" xmi:id="_vJ1lMad2Eeaolp-iYo7Yrg" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_vJ1lMqd2Eeaolp-iYo7Yrg" label="%trimmedwindow.label.eclipseSDK" x="0" y="23" width="1440" height="873">
@@ -72,7 +72,7 @@
                 </children>
                 <children xsi:type="advanced:Placeholder" xmi:id="_vJ1lQ6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.editorss" containerData="8400" ref="_vJ2zgqd2Eeaolp-iYo7Yrg"/>
               </children>
-              <children xsi:type="basic:PartStack" xmi:id="_vJ1lRKd2Eeaolp-iYo7Yrg" elementId="bottomRight" containerData="3400" selectedElement="_vJ1lRad2Eeaolp-iYo7Yrg">
+              <children xsi:type="basic:PartStack" xmi:id="_vJ1lRKd2Eeaolp-iYo7Yrg" elementId="bottomRight" containerData="3400" selectedElement="_vJ1lRqd2Eeaolp-iYo7Yrg">
                 <tags>org.eclipse.e4.secondaryDataStack</tags>
                 <tags>General</tags>
                 <children xsi:type="advanced:Placeholder" xmi:id="_vJ1lRad2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.views.TaskList" ref="_vJ2ztqd2Eeaolp-iYo7Yrg"/>
@@ -107,114 +107,29 @@
       <tags>categoryTag:Help</tags>
     </sharedElements>
     <sharedElements xsi:type="advanced:Area" xmi:id="_vJ2zgqd2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.editorss" selectedElement="_vJ2zg6d2Eeaolp-iYo7Yrg">
-      <children xsi:type="basic:PartStack" xmi:id="_vJ2zg6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.e4.primaryDataStack" selectedElement="_vJ2zhKd2Eeaolp-iYo7Yrg">
+      <children xsi:type="basic:PartStack" xmi:id="_vJ2zg6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.e4.primaryDataStack" selectedElement="_VXPfIKoOEea4I_TmsorhHA">
         <tags>org.eclipse.e4.primaryDataStack</tags>
         <tags>EditorStack</tags>
         <tags>active</tags>
-        <children xsi:type="basic:Part" xmi:id="_vJ2zhKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="SecMailServer.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SecMailServer.java&quot; partName=&quot;SecMailServer.java&quot; title=&quot;SecMailServer.java&quot; tooltip=&quot;Server/src/edu/depaul/secmail/SecMailServer.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Server/src/edu/depaul/secmail/SecMailServer.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;1733&quot; selectionTopPixel=&quot;450&quot;/>&#xA;&lt;/editor>"/>
+        <children xsi:type="basic:Part" xmi:id="_1_TBUKoMEea4I_TmsorhHA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="DHEncryptionIO.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;DHEncryptionIO.java&quot; partName=&quot;DHEncryptionIO.java&quot; title=&quot;DHEncryptionIO.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/DHEncryptionIO.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/SecMail Shared/src/edu/depaul/secmail/DHEncryptionIO.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;0&quot; selectionTopPixel=&quot;0&quot;/>&#xA;&lt;/editor>"/>
+          <tags>Editor</tags>
+          <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
+          <tags>removeOnHide</tags>
+        </children>
+        <children xsi:type="basic:Part" xmi:id="_-rk08KoMEea4I_TmsorhHA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="SecMailStaticEncryption.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SecMailStaticEncryption.java&quot; partName=&quot;SecMailStaticEncryption.java&quot; title=&quot;SecMailStaticEncryption.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/SecMailStaticEncryption.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/SecMail Shared/src/edu/depaul/secmail/SecMailStaticEncryption.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;2366&quot; selectionTopPixel=&quot;0&quot;/>&#xA;&lt;/editor>"/>
+          <tags>Editor</tags>
+          <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
+          <tags>removeOnHide</tags>
+        </children>
+        <children xsi:type="basic:Part" xmi:id="_VXPfIKoOEea4I_TmsorhHA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="ClientHandler.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;ClientHandler.java&quot; partName=&quot;ClientHandler.java&quot; title=&quot;ClientHandler.java&quot; tooltip=&quot;Server/src/edu/depaul/secmail/ClientHandler.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Server/src/edu/depaul/secmail/ClientHandler.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;566&quot; selectionTopPixel=&quot;0&quot;/>&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
           <tags>removeOnHide</tags>
           <tags>active</tags>
-          <menus xsi:type="menu:PopupMenu" xmi:id="_vJ2zhad2Eeaolp-iYo7Yrg" elementId="#CompilationUnitEditorContext">
-            <tags>menuContribution:popup</tags>
-            <tags>popup:#CompilationUnitEditorContext</tags>
-            <tags>popup:org.eclipse.jdt.ui.CompilationUnitEditor.EditorContext</tags>
-            <tags>popup:#AbstractTextEditorContext</tags>
-          </menus>
-          <menus xsi:type="menu:PopupMenu" xmi:id="_vJ2zhqd2Eeaolp-iYo7Yrg" elementId="#CompilationUnitRulerContext">
-            <tags>menuContribution:popup</tags>
-            <tags>popup:#CompilationUnitRulerContext</tags>
-            <tags>popup:org.eclipse.jdt.ui.CompilationUnitEditor.RulerContext</tags>
-            <tags>popup:#AbstractTextEditorRulerContext</tags>
-          </menus>
-          <menus xsi:type="menu:PopupMenu" xmi:id="_vJ2zh6d2Eeaolp-iYo7Yrg" elementId="#OverviewRulerContext">
-            <tags>menuContribution:popup</tags>
-            <tags>popup:#OverviewRulerContext</tags>
-          </menus>
-        </children>
-        <children xsi:type="basic:Part" xmi:id="_vJ2ziKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="MainWindow.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MainWindow.java&quot; partName=&quot;MainWindow.java&quot; title=&quot;MainWindow.java&quot; tooltip=&quot;SecMail Gui Client/src/edu/depaul/secmail/MainWindow.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/SecMail Gui Client/src/edu/depaul/secmail/MainWindow.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;986&quot; selectionTopPixel=&quot;10&quot;/>&#xA;&lt;/editor>"/>
-          <tags>Editor</tags>
-          <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
-          <tags>removeOnHide</tags>
-        </children>
-        <children xsi:type="basic:CompositePart" xmi:id="_vJ2ziad2Eeaolp-iYo7Yrg" elementId="Split Host(SecMailStaticEncryption.java)" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.addons.swt/org.eclipse.e4.ui.workbench.addons.splitteraddon.SplitHost" label="SecMailStaticEncryption.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true" selectedElement="_vJ2ziqd2Eeaolp-iYo7Yrg">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;view/>"/>
-          <tags>removeOnHide</tags>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_vJ2ziqd2Eeaolp-iYo7Yrg" selectedElement="_vJ2zi6d2Eeaolp-iYo7Yrg">
-            <children xsi:type="basic:Part" xmi:id="_vJ2zi6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.e4.ui.compatibility.editor" containerData="5000" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="SecMailStaticEncryption.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-              <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SecMailStaticEncryption.java&quot; partName=&quot;SecMailStaticEncryption.java&quot; title=&quot;SecMailStaticEncryption.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/SecMailStaticEncryption.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/SecMail Shared/src/edu/depaul/secmail/SecMailStaticEncryption.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;4&quot; selectionOffset=&quot;1884&quot; selectionTopPixel=&quot;135&quot;/>&#xA;&lt;/editor>"/>
-              <tags>Editor</tags>
-              <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
-              <tags>removeOnHide</tags>
-              <tags>Split Horizontal</tags>
-            </children>
-            <children xsi:type="basic:Part" xmi:id="_vJ2zjKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.e4.ui.compatibility.editor" containerData="5000" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="SecMailStaticEncryption.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-              <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SecMailStaticEncryption.java&quot; partName=&quot;SecMailStaticEncryption.java&quot; title=&quot;SecMailStaticEncryption.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/SecMailStaticEncryption.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/SecMail Shared/src/edu/depaul/secmail/SecMailStaticEncryption.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;6795&quot; selectionTopPixel=&quot;3098&quot;/>&#xA;&lt;/editor>"/>
-              <tags>Editor</tags>
-              <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
-              <tags>removeOnHide</tags>
-              <tags>Split Horizontal</tags>
-              <menus xsi:type="menu:PopupMenu" xmi:id="_vJ2zjad2Eeaolp-iYo7Yrg" elementId="#CompilationUnitEditorContext">
-                <tags>menuContribution:popup</tags>
-                <tags>popup:#CompilationUnitEditorContext</tags>
-                <tags>popup:org.eclipse.jdt.ui.CompilationUnitEditor.EditorContext</tags>
-                <tags>popup:#AbstractTextEditorContext</tags>
-              </menus>
-              <menus xsi:type="menu:PopupMenu" xmi:id="_vJ2zjqd2Eeaolp-iYo7Yrg" elementId="#CompilationUnitRulerContext">
-                <tags>menuContribution:popup</tags>
-                <tags>popup:#CompilationUnitRulerContext</tags>
-                <tags>popup:org.eclipse.jdt.ui.CompilationUnitEditor.RulerContext</tags>
-                <tags>popup:#AbstractTextEditorRulerContext</tags>
-              </menus>
-              <menus xsi:type="menu:PopupMenu" xmi:id="_vJ2zj6d2Eeaolp-iYo7Yrg" elementId="#OverviewRulerContext">
-                <tags>menuContribution:popup</tags>
-                <tags>popup:#OverviewRulerContext</tags>
-              </menus>
-            </children>
-          </children>
-        </children>
-        <children xsi:type="basic:Part" xmi:id="_vJ2zkKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="DHEncryptionIO.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;DHEncryptionIO.java&quot; partName=&quot;DHEncryptionIO.java&quot; title=&quot;DHEncryptionIO.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/DHEncryptionIO.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/SecMail Shared/src/edu/depaul/secmail/DHEncryptionIO.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;576&quot; selectionTopPixel=&quot;0&quot;/>&#xA;&lt;/editor>"/>
-          <tags>Editor</tags>
-          <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
-          <tags>removeOnHide</tags>
-        </children>
-        <children xsi:type="basic:Part" xmi:id="_vJ2zkad2Eeaolp-iYo7Yrg" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="ClientHandler.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;ClientHandler.java&quot; partName=&quot;ClientHandler.java&quot; title=&quot;ClientHandler.java&quot; tooltip=&quot;Server/src/edu/depaul/secmail/ClientHandler.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Server/src/edu/depaul/secmail/ClientHandler.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;4521&quot; selectionTopPixel=&quot;2383&quot;/>&#xA;&lt;/editor>"/>
-          <tags>Editor</tags>
-          <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
-          <tags>removeOnHide</tags>
-          <menus xsi:type="menu:PopupMenu" xmi:id="_vJ2zkqd2Eeaolp-iYo7Yrg" elementId="#CompilationUnitEditorContext">
-            <tags>menuContribution:popup</tags>
-            <tags>popup:#CompilationUnitEditorContext</tags>
-            <tags>popup:org.eclipse.jdt.ui.CompilationUnitEditor.EditorContext</tags>
-            <tags>popup:#AbstractTextEditorContext</tags>
-          </menus>
-          <menus xsi:type="menu:PopupMenu" xmi:id="_vJ2zk6d2Eeaolp-iYo7Yrg" elementId="#CompilationUnitRulerContext">
-            <tags>menuContribution:popup</tags>
-            <tags>popup:#CompilationUnitRulerContext</tags>
-            <tags>popup:org.eclipse.jdt.ui.CompilationUnitEditor.RulerContext</tags>
-            <tags>popup:#AbstractTextEditorRulerContext</tags>
-          </menus>
-          <menus xsi:type="menu:PopupMenu" xmi:id="_vJ2zlKd2Eeaolp-iYo7Yrg" elementId="#OverviewRulerContext">
-            <tags>menuContribution:popup</tags>
-            <tags>popup:#OverviewRulerContext</tags>
-          </menus>
-        </children>
-        <children xsi:type="basic:Part" xmi:id="_vJ2zlad2Eeaolp-iYo7Yrg" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="ConnectionTestWindow.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;ConnectionTestWindow.java&quot; partName=&quot;ConnectionTestWindow.java&quot; title=&quot;ConnectionTestWindow.java&quot; tooltip=&quot;SecMail Gui Client/src/edu/depaul/secmail/ConnectionTestWindow.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/SecMail Gui Client/src/edu/depaul/secmail/ConnectionTestWindow.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;2822&quot; selectionTopPixel=&quot;1209&quot;/>&#xA;&lt;/editor>"/>
-          <tags>Editor</tags>
-          <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
-          <tags>removeOnHide</tags>
-        </children>
-        <children xsi:type="basic:Part" xmi:id="_vJ2zlqd2Eeaolp-iYo7Yrg" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="EmailStruct.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;EmailStruct.java&quot; partName=&quot;EmailStruct.java&quot; title=&quot;EmailStruct.java&quot; tooltip=&quot;SecMail Shared/src/edu/depaul/secmail/EmailStruct.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/SecMail Shared/src/edu/depaul/secmail/EmailStruct.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;0&quot; selectionTopPixel=&quot;0&quot;/>&#xA;&lt;/editor>"/>
-          <tags>Editor</tags>
-          <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
-          <tags>removeOnHide</tags>
+          <tags>activeOnClose</tags>
         </children>
       </children>
     </sharedElements>
@@ -263,7 +178,7 @@
         <tags>popup:org.eclipse.ui.views.TaskList</tags>
         <tags>popup:org.eclipse.ui.ide.MarkersView</tags>
       </menus>
-      <toolbar xmi:id="_vJ2zw6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.views.TaskList"/>
+      <toolbar xmi:id="_vJ2zw6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.views.TaskList" visible="false"/>
     </sharedElements>
     <sharedElements xsi:type="basic:Part" xmi:id="_vJ2zxqd2Eeaolp-iYo7Yrg" elementId="org.eclipse.ant.ui.views.AntView" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" label="Ant" iconURI="platform:/plugin/org.eclipse.ant.ui/icons/full/eview16/ant_view.png" tooltip="" closeable="true">
       <tags>View</tags>
@@ -285,7 +200,7 @@
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
       </menus>
-      <toolbar xmi:id="_vJ2zy6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.console.ConsoleView" visible="false"/>
+      <toolbar xmi:id="_vJ2zy6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.console.ConsoleView"/>
     </sharedElements>
     <sharedElements xsi:type="basic:Part" xmi:id="_vJ2zzKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.views.ProblemView" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" label="Problems" iconURI="platform:/plugin/org.eclipse.ui.ide/icons/full/eview16/problems_view.png" tooltip="" closeable="true">
       <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;view PRIMARY_SORT_FIELD=&quot;org.eclipse.ui.ide.resourceField&quot; categoryGroup=&quot;org.eclipse.ui.ide.severity&quot; markerContentGenerator=&quot;org.eclipse.ui.ide.problemsGenerator&quot; partName=&quot;Problems&quot;>&#xA;&lt;columnWidths org.eclipse.ui.ide.locationField=&quot;90&quot; org.eclipse.ui.ide.markerType=&quot;90&quot; org.eclipse.ui.ide.pathField=&quot;120&quot; org.eclipse.ui.ide.resourceField=&quot;90&quot; org.eclipse.ui.ide.severityAndDescriptionField=&quot;300&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.severityAndDescriptionField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.resourceField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.pathField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.locationField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.markerType&quot;/>&#xA;&lt;/view>"/>
@@ -309,43 +224,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_vJ2z06d2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ2z1Kd2Eeaolp-iYo7Yrg" elementId="new.group">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ2z1ad2Eeaolp-iYo7Yrg" elementId="newWizardDropDown">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ2z1qd2Eeaolp-iYo7Yrg" elementId="new.ext" visible="false">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ2z16d2Eeaolp-iYo7Yrg" elementId="save.group" visible="false">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ2z2Kd2Eeaolp-iYo7Yrg" elementId="save">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ2z2ad2Eeaolp-iYo7Yrg" elementId="saveAll">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ2z2qd2Eeaolp-iYo7Yrg" elementId="save.ext" visible="false">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_vJ2z26d2Eeaolp-iYo7Yrg" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_vJ-Itqd2Eeaolp-iYo7Yrg"/>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ2z3Kd2Eeaolp-iYo7Yrg" elementId="print.ext" visible="false">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ2z3ad2Eeaolp-iYo7Yrg" elementId="build.group">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ2z3qd2Eeaolp-iYo7Yrg" elementId="build.ext" visible="false">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ2z36d2Eeaolp-iYo7Yrg" elementId="additions">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3aYKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.wb.core.wizards.actions.NewDesignerTypeDropDownAction">
-          <tags>Opaque</tags>
-        </children>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_fPTJYKoOEea5FY6vZJnsSA" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_vJ-Itqd2Eeaolp-iYo7Yrg"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_vJ3aYad2Eeaolp-iYo7Yrg" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -353,57 +232,12 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_vJ3aiad2Eeaolp-iYo7Yrg" elementId="org.eclipse.debug.ui.launchActionSet">
         <tags>Draggable</tags>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3aiqd2Eeaolp-iYo7Yrg" elementId="debug">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3ai6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.externaltools.ExternalToolMenuDelegateToolbar">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3ajKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.debug.internal.ui.actions.DebugDropDownAction">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3ajad2Eeaolp-iYo7Yrg" elementId="org.eclipse.debug.internal.ui.actions.RunDropDownAction">
-          <tags>Opaque</tags>
-        </children>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_vJ3ajqd2Eeaolp-iYo7Yrg" elementId="org.eclipse.search.searchActionSet">
         <tags>Draggable</tags>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3aj6d2Eeaolp-iYo7Yrg" elementId="Search">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3akKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.mylyn.tasks.ui.openTask">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3akad2Eeaolp-iYo7Yrg" elementId="org.eclipse.search.OpenSearchDialogPage">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3akqd2Eeaolp-iYo7Yrg" elementId="openType">
-          <tags>Opaque</tags>
-        </children>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_vJ3ak6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.edit.text.actionSet.presentation">
         <tags>Draggable</tags>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3alKd2Eeaolp-iYo7Yrg" elementId="Presentation">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3alad2Eeaolp-iYo7Yrg" elementId="org.eclipse.jdt.ui.edit.text.java.toggleBreadcrumb">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3alqd2Eeaolp-iYo7Yrg" elementId="org.eclipse.jdt.ui.edit.text.java.toggleMarkOccurrences">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3al6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.mylyn.java.ui.editor.folding.auto">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3amKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.edit.text.toggleBlockSelectionMode">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3amad2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.edit.text.toggleShowWhitespaceCharacters">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3amqd2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly" visible="false">
-          <tags>Opaque</tags>
-        </children>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_vJ3am6d2Eeaolp-iYo7Yrg" elementId="group.nav" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -411,34 +245,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_vJ3anad2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3anqd2Eeaolp-iYo7Yrg" elementId="history.group">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3an6d2Eeaolp-iYo7Yrg" elementId="group.application" visible="false">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3aoKd2Eeaolp-iYo7Yrg" elementId="backardHistory">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3aoad2Eeaolp-iYo7Yrg" elementId="forwardHistory">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3aoqd2Eeaolp-iYo7Yrg" elementId="pin.group">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_vJ3ao6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_vJ-ILKd2Eeaolp-iYo7Yrg"/>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3apKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.edit.text.gotoNextAnnotation">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3apad2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.edit.text.gotoPreviousAnnotation">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3apqd2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.edit.text.gotoLastEditPosition">
-          <tags>Opaque</tags>
-        </children>
-      </children>
-      <children xsi:type="menu:ToolBar" xmi:id="_vJ3ap6d2Eeaolp-iYo7Yrg" elementId="org.eclipse.jdt.ui.CompilationUnitEditor" visible="false">
-        <tags>Draggable</tags>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_fPYo8KoOEea5FY6vZJnsSA" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_vJ-ILKd2Eeaolp-iYo7Yrg"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_vJ3aqKd2Eeaolp-iYo7Yrg" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -450,12 +257,6 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_vJ3arKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.workbench.help" visible="false">
         <tags>Draggable</tags>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3arad2Eeaolp-iYo7Yrg" elementId="group.help">
-          <tags>Opaque</tags>
-        </children>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_vJ3arqd2Eeaolp-iYo7Yrg" elementId="group.application" visible="false">
-          <tags>Opaque</tags>
-        </children>
       </children>
       <children xsi:type="menu:ToolControl" xmi:id="_vJ3ar6d2Eeaolp-iYo7Yrg" elementId="PerspectiveSpacer" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.renderers.swt/org.eclipse.e4.ui.workbench.renderers.swt.LayoutModifierToolControl">
         <tags>stretch</tags>
@@ -846,7 +647,7 @@
       <tags>platform:cocoa</tags>
       <parameters xmi:id="_vJ4B7Kd2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.views.showView.viewId" name="org.eclipse.ui.views.showView.viewId" value="org.eclipse.team.ui.GenericHistoryView"/>
     </bindings>
-    <bindings xmi:id="_vJ4B7ad2Eeaolp-iYo7Yrg" keySequence="COMMAND+CTRL+F" command="_vJ-vZKd2Eeaolp-iYo7Yrg"/>
+    <bindings xmi:id="_eyGQAaoOEea5FY6vZJnsSA" keySequence="COMMAND+CTRL+F" command="_vJ-vZKd2Eeaolp-iYo7Yrg"/>
   </bindingTables>
   <bindingTables xmi:id="_vJ4B7qd2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.textEditorScope" bindingContext="_vJ4o-6d2Eeaolp-iYo7Yrg">
     <bindings xmi:id="_vJ4B76d2Eeaolp-iYo7Yrg" keySequence="COMMAND+SHIFT+ARROW_LEFT" command="_vJ-I7qd2Eeaolp-iYo7Yrg">
@@ -1033,7 +834,7 @@
     <bindings xmi:id="_vJ4o0ad2Eeaolp-iYo7Yrg" keySequence="CTRL+D" command="_vJ-JW6d2Eeaolp-iYo7Yrg"/>
   </bindingTables>
   <bindingTables xmi:id="_vJ4o0qd2Eeaolp-iYo7Yrg" contributorURI="platform:/fragment/org.eclipse.e4.ui.workbench.renderers.swt.cocoa" bindingContext="_vJ4pHqd2Eeaolp-iYo7Yrg">
-    <bindings xmi:id="_vJ4o06d2Eeaolp-iYo7Yrg" keySequence="M1+W" command="_vJ-vZqd2Eeaolp-iYo7Yrg"/>
+    <bindings xmi:id="_eyHeIKoOEea5FY6vZJnsSA" keySequence="M1+W" command="_vJ-vZqd2Eeaolp-iYo7Yrg"/>
   </bindingTables>
   <bindingTables xmi:id="_vJ4o1Kd2Eeaolp-iYo7Yrg" bindingContext="_vJ4pJKd2Eeaolp-iYo7Yrg"/>
   <bindingTables xmi:id="_vJ4o1ad2Eeaolp-iYo7Yrg" bindingContext="_vJ4pJad2Eeaolp-iYo7Yrg"/>
@@ -1415,6 +1216,23 @@
     <tags>View</tags>
     <tags>categoryTag:Code Recommenders</tags>
   </descriptors>
+  <trimContributions xmi:id="_2r10UF9tEeO-yojH_y4TJA" elementId="org.eclipse.ui.ide.application.trimcontribution.QuickAccess" contributorURI="platform:/plugin/org.eclipse.ui.ide.application" toBeRendered="false" parentId="org.eclipse.ui.main.toolbar" positionInParent="last">
+    <children xsi:type="menu:ToolControl" xmi:id="_76uUAF9tEeO-yojH_y4TJA" elementId="Spacer Glue" contributorURI="platform:/plugin/org.eclipse.ui.ide.application" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.renderers.swt/org.eclipse.e4.ui.workbench.renderers.swt.LayoutModifierToolControl">
+      <tags>glue</tags>
+      <tags>move_after:PerspectiveSpacer</tags>
+      <tags>SHOW_RESTORE_MENU</tags>
+    </children>
+    <children xsi:type="menu:ToolControl" xmi:id="_8tJPcF9tEeO-yojH_y4TJA" elementId="SearchField" contributorURI="platform:/plugin/org.eclipse.ui.ide.application" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.quickaccess.SearchField">
+      <tags>move_after:Spacer Glue</tags>
+      <tags>HIDEABLE</tags>
+      <tags>SHOW_RESTORE_MENU</tags>
+    </children>
+    <children xsi:type="menu:ToolControl" xmi:id="_9LgmcF9tEeO-yojH_y4TJA" elementId="Search-PS Glue" contributorURI="platform:/plugin/org.eclipse.ui.ide.application" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.renderers.swt/org.eclipse.e4.ui.workbench.renderers.swt.LayoutModifierToolControl">
+      <tags>glue</tags>
+      <tags>move_after:SearchField</tags>
+      <tags>SHOW_RESTORE_MENU</tags>
+    </children>
+  </trimContributions>
   <commands xmi:id="_vJ86sKd2Eeaolp-iYo7Yrg" elementId="org.eclipse.jdt.ui.correction.inlineLocal.assist" commandName="Quick Assist - Inline local variable" description="Invokes quick assist and selects 'Inline local variable'" category="_vJ-v-Kd2Eeaolp-iYo7Yrg"/>
   <commands xmi:id="_vJ86sad2Eeaolp-iYo7Yrg" elementId="org.eclipse.ui.edit.text.select.pageUp" commandName="Select Page Up" description="Select to the top of the page" category="_vJ-v4qd2Eeaolp-iYo7Yrg"/>
   <commands xmi:id="_vJ86sqd2Eeaolp-iYo7Yrg" elementId="org.eclipse.egit.ui.history.ResetQuickdiffBaseline" commandName="Reset quickdiff baseline" category="_vJ-v-qd2Eeaolp-iYo7Yrg">

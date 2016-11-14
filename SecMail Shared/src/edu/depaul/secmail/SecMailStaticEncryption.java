@@ -32,6 +32,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -59,35 +60,36 @@ public class SecMailStaticEncryption {
     	fileOut.write(encryptedText);
     	fileOut.close();
     	filePath = tempFile.getAbsolutePath();
-    	System.out.println("Text to encrypt: " + text);
-    	System.out.println("Text encrypted: " + ConvertByteArrayToString(encryptedText));
-    	System.out.println("File path of encrypted text: " + filePath);
+//    	System.out.println("Text to encrypt: " + text);
+//    	System.out.println("Text encrypted: " + new String (encryptedText, StandardCharsets.UTF_8));
+//    	System.out.println("File path of encrypted text: " + filePath);
     }
     
-    public static String readFile(String filename) throws IOException{
-        String content = null;
-        File file = new File(filename); 
-        FileReader reader = null;
-        try {
-            reader = new FileReader(file);
-            char[] chars = new char[(int) file.length()];
-            reader.read(chars);
-            content = new String(chars);
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if(reader !=null){reader.close();}
-        }
-        return content;
-    }
+//    public static String readFile(String filename) throws IOException{
+//        String content = null;
+//        File file = new File(filename); 
+//        FileReader reader = null;
+//        try {
+//            reader = new FileReader(file);
+//            char[] chars = new char[(int) file.length()];
+//            reader.read(chars);
+//            content = new String(chars);
+//            reader.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            if(reader !=null){reader.close();}
+//        }
+//        return content;
+//    }
     
     public static String decryptText(String filePathString, byte[] key) throws IOException {
-    	String encryptedText = readFile(filePathString);
-    	System.out.println("Encrypted text read from temp file: " + encryptedText);
-    	byte[] cipherText = ConvertStringToByteArray(encryptedText);
-    	String decryptedText = SecMailDecryptAES(cipherText, key);
-    	System.out.println("Decrypted Text: " + decryptedText);
+    	File file = new File(filePathString);
+    	FileInputStream fileStream = new FileInputStream(file);
+    	byte encryptedBytes[] = new byte[fileStream.available()];
+    	fileStream.read(encryptedBytes);
+    	String decryptedText = SecMailDecryptAES(encryptedBytes, key);
+    	fileStream.close();
     	return decryptedText;
     }
     
@@ -311,16 +313,18 @@ public class SecMailStaticEncryption {
     
     
 	//Clayton Newmiller
-	//This method currently requires a key length of 8 chars and a message length of 16 chars... will figure out padding later
-	public static byte[] SecMailEncryptAES(String message, byte keyBytes[]){
-				
+	//works on any length message or key, as long as it uses ENCRYPTIONSPEC
+    public static byte[] SecMailEncryptAES(String message, byte keyBytes[]){
+		
 		byte cipherText[] = null;
-		byte messageBytes[] = ConvertStringToByteArray(message);
+		byte messageBytes[] = message.getBytes();
+		
 		
 		try {
 			SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
 			Cipher c = Cipher.getInstance(ENCRYPTIONSPEC);
 			c.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
+			
 			cipherText = c.doFinal(messageBytes);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -329,7 +333,7 @@ public class SecMailStaticEncryption {
 	}
 	
 	//Clayton Newmiller
-	public static String SecMailDecryptAES(byte[] cipherText, byte keyBytes[]){ //returns true if successful
+    public static String SecMailDecryptAES(byte[] cipherText, byte keyBytes[]){
 		
 		String message = null;
 		
@@ -337,7 +341,8 @@ public class SecMailStaticEncryption {
 			SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
 			Cipher c = Cipher.getInstance(ENCRYPTIONSPEC);
 			c.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
-			message = ConvertByteArrayToString(c.doFinal(cipherText));
+			byte cipherBytes[] = c.doFinal(cipherText);
+			message = new String (cipherBytes, StandardCharsets.UTF_8);
 			
 			
 		} catch (Exception e) {
@@ -345,49 +350,7 @@ public class SecMailStaticEncryption {
 		}
 		return message;
 	}
-	
-	//Clayton Newmiller
-	//Note: Java chars are unicode, 2 bytes long
-	public static byte[] ConvertStringToByteArray(String input){
-		byte ret[] = new byte[input.length()*2];
-		for (int i=0; i<ret.length;i+=2){
-			char c = input.charAt(i/2);
-			byte l= (byte) (c>>>8);
-			byte r =(byte) (c);
-			ret[i]=l;
-			ret[i+1]=r;
-		}
-		return ret;
-	}
-	
-	//Clayton Newmiller
-	public static String ConvertByteArrayToString(byte input[]) throws IOException { //returns 4 unicode chars in a string
-		if (input == null || input.length%8!=0){
-			throw new IOException("wrong size input: "+input.length);
-		}
-		StringBuilder s=new StringBuilder();
-		byte split [][] = new byte[input.length/8][8];
-		for (int i=0; i<input.length/8 ;i++){
-			for (int j=0; j<8;j++){
-				split[i][j] = input[i*8+j];
-			}
-		}
-		
-		for (int i=0;i<input.length/8;i++){
-			int xL = ((split[i][0]<<24) | (split[i][1]<<16 & 0x00ff0000) | (split[i][2]<<8& 0x0000ff00) | (split[i][3]& 0x000000ff) );
-			int xR = ((split[i][4]<<24) | (split[i][5]<<16 & 0x00ff0000) | (split[i][6]<<8& 0x0000ff00) | (split[i][7]& 0x000000ff) );
-			char[] ret = new char[4];
-			ret[0] = (char) (xL>>>16);
-			ret[1] = (char) (xL);
-			ret[2] = (char) (xR>>>16);
-			ret[3] = (char) (xR);
-			for (int j=0;j<4;j++){
-				s.append(ret[j]);
-			}
-		}
-		return s.toString();
-	}
-	
+
 	public static SealedObject encryptObject(Serializable object, byte keyBytes[]){
 		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
 		Cipher c=null;
@@ -398,7 +361,6 @@ public class SecMailStaticEncryption {
 			encryptedPacket = new SealedObject(object, c);
 			
 			return encryptedPacket;
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -415,34 +377,18 @@ public class SecMailStaticEncryption {
 			c = Cipher.getInstance(ENCRYPTIONSPEC);
 			c.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
 			decryptedObject = (Serializable) object.getObject(c); //problem here: improperly padded - WRONG KEYS
-			
-			/*
-			 * key exchange not functioning
-			 * encrypt and decrypt functioning PERFECTLY
-			 * 
-			 * need to: somehow get information on key exchanges (use Log.out? ask jacob)
-			 * 			verify hashing algorithm is reliable
-			 * 
-			 * */
-			
-			
 			return decryptedObject;
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return null;
 	}
-
-	
-	
 	
 	public static void main(String[] args) throws IOException {	
 		
-		encryptText("this is the encrypted text", iv);
-		decryptText(filePath, iv);
+		
+		encryptText("this is the decrypted text", iv);
+		System.out.println(decryptText(filePath, iv));
 //		String s = "hello";
 //		byte[] key = ConvertStringToByteArray("12345678");
 //		SealedObject enc = encryptObject(s, key);
