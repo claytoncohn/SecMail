@@ -37,7 +37,7 @@ public class SecMailStaticEncryption {
     private static final String ENCRYPTIONSPEC = "AES/CBC/PKCS5Padding";
     
     //MARK: - Text Encryption
-    public static void encryptText(String text, byte[] key) throws IOException {
+    public static void encryptText(String text, byte[] key) throws IOException { //Clayton Cohn
     	byte[] encryptedText = SecMailEncryptAES(text, key);
     	File tempFile = File.createTempFile("smTEXT", ".tmp", null);
     	FileOutputStream fileOut = new FileOutputStream(tempFile);
@@ -47,7 +47,7 @@ public class SecMailStaticEncryption {
     }
     
     
-    public static String decryptText(String filePathString, byte[] key) throws IOException {
+    public static String decryptText(String filePathString, byte[] key) throws IOException { //Clayton Cohn
     	File file = new File(filePathString);
     	FileInputStream fileStream = new FileInputStream(file);
     	byte encryptedBytes[] = new byte[fileStream.available()];
@@ -56,9 +56,6 @@ public class SecMailStaticEncryption {
     	fileStream.close();
     	return decryptedText;
     }
-    
-//    //MARK: - File Encryption
-
 
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
