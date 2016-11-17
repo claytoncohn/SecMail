@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -125,10 +126,16 @@ public class MailWriter extends Shell {
 		btnSend.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				// Josh Clark
 				email = new EmailStruct();
 				loadToEmailStruct();
-				System.out.println(testEmail());
-				MailWriter.this.close();
+				if(checkValidEmailInput(email)){
+					writeEmailtoServer();
+					MailWriter.this.close();
+				}
+				else{
+					showEmailInputFailureMessage();
+				}
 			}
 		});
 		FormData fd_btnSend = new FormData();
@@ -238,17 +245,19 @@ public class MailWriter extends Shell {
 		subjectText.setText(email.getSubject());
 	}
 	
-	private String testEmail()
+	
+	// Josh Clark
+	private String writeEmailtoServer()
 	{
 		String returnString;
 		try {
 			
 			//create the appropriate packet
-			PacketHeader testPacketHeader = new PacketHeader();
-			testPacketHeader.setCommand(Command.SEND_EMAIL);
+			PacketHeader emailPacketHeader = new PacketHeader();
+			emailPacketHeader.setCommand(Command.SEND_EMAIL);
 			
 			//send the packet
-			io.writeObject(testPacketHeader);
+			io.writeObject(emailPacketHeader);
 			io.flush();
 			io.writeObject(email);
 			
@@ -258,19 +267,48 @@ public class MailWriter extends Shell {
 			if (responsePacket.getCommand() != Command.CONNECT_SUCCESS)
 				returnString = "Response Packet contained non-success command";
 			else
-				returnString = "Successfully connected to remote server.\nSuccessfully transmitted test packet.\n"
-						+ "Recieved valid Success packet\n"
-						+ "Connection test successful!\n"
-						+ "Connection closing...";
+				returnString = "Successfully sent email to server!";
 			
 			io.writeObject(new PacketHeader(Command.CLOSE));
 			
 			io.close();
 		} catch (Exception e)
 		{
-			returnString = "Exception thrown while trying to connect.\n" + e;
+			returnString = "Exception thrown while trying to send email.\n" + e;
 		}
 		return returnString;
 	}
+	
+	// Josh Clark
+	private boolean checkValidEmailInput(EmailStruct myEmail){
+		if(subjectText.getText().isEmpty() || toText.getText().isEmpty()){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+	
+	// Josh Clark
+	private void showEmailInputFailureMessage()
+	{
+		Shell invalid = new Shell();
+		MessageBox messageBox = new MessageBox(invalid, SWT.OK);
+		messageBox.setText("Invalid Email");
+		if(toText.getText().isEmpty() && !subjectText.getText().isEmpty()){
+			messageBox.setMessage("Please provide at least one recipient.");
+		}
+		else if(!toText.getText().isEmpty() && subjectText.getText().isEmpty()){
+			messageBox.setMessage("Please provide a subject line.");
+		}
+		else {
+			messageBox.setMessage("Please provide at least one recipient and a subject line.");
+		}
+		
+		
+		messageBox.open();
+	}
+	
+	
 
 }
