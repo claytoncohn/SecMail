@@ -1,14 +1,21 @@
 package edu.depaul.secmail;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 
@@ -17,11 +24,18 @@ import javax.crypto.KeyAgreement;
 import javax.crypto.SealedObject;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHParameterSpec;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import java.math.BigInteger;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -34,7 +48,9 @@ public class SecMailStaticEncryption {
 	
 	private static String filePath;
 
-    private static final String ENCRYPTIONSPEC = "AES/CBC/PKCS5Padding";
+	private static byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //AES initialization vector, should not remain 0s
+    private static IvParameterSpec ivspec = new IvParameterSpec(iv);
+    private static final String ENCRYPTIONSPEC = "AES/CBC/PKCS5Padding"; //
     
     //MARK: - Text Encryption
     public static void encryptText(String text, byte[] key) throws IOException { //Clayton Cohn
@@ -44,8 +60,28 @@ public class SecMailStaticEncryption {
     	fileOut.write(encryptedText);
     	fileOut.close();
     	filePath = tempFile.getAbsolutePath();
+//    	System.out.println("Text to encrypt: " + text);
+//    	System.out.println("Text encrypted: " + new String (encryptedText, StandardCharsets.UTF_8));
+//    	System.out.println("File path of encrypted text: " + filePath);
     }
     
+//    public static String readFile(String filename) throws IOException{
+//        String content = null;
+//        File file = new File(filename); 
+//        FileReader reader = null;
+//        try {
+//            reader = new FileReader(file);
+//            char[] chars = new char[(int) file.length()];
+//            reader.read(chars);
+//            content = new String(chars);
+//            reader.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            if(reader !=null){reader.close();}
+//        }
+//        return content;
+//    }
     
     public static String decryptText(String filePathString, byte[] key) throws IOException { //Clayton Cohn
     	File file = new File(filePathString);
@@ -57,10 +93,23 @@ public class SecMailStaticEncryption {
     	return decryptedText;
     }
 
+//    //MARK: - File Encryption
+//    public static void encryptFile(File file, byte[] key) throws IOException {
+//    	SealedObject obj = encryptObject(file, key);
+//    	File tempFile = File.createTempFile("smFILE", ".tmp", null);
+//    	FileOutputStream fileOut = new FileOutputStream(tempFile);
+//    	ObjectOutputStream opStream = new ObjectOutputStream(fileOut);
+//    	opStream.writeObject(obj);
+//    	opStream.close();
+//    }
+//    
+//    public static File decryptFile(File file, byte[] key) throws IOException {
+//    	//TODO
+//    }
     
     //following java implementation here: http://www.java2s.com/Tutorial/Java/0490__Security/ImplementingtheDiffieHellmankeyexchange.htm
     //									  http://www.java2s.com/Tutorial/Java/0490__Security/DiffieHellmanKeyAgreement.htm
-	//Clayton Newmiller
+    
     public static class DHKeyServer implements Runnable{
     	private BigInteger Modulo; //also known as p
     	private BigInteger Base; //also known as generator, g
@@ -270,10 +319,11 @@ public class SecMailStaticEncryption {
 		byte cipherText[] = null;
 		byte messageBytes[] = message.getBytes();
 		
+		
 		try {
 			SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
 			Cipher c = Cipher.getInstance(ENCRYPTIONSPEC);
-			c.init(Cipher.ENCRYPT_MODE, keyspec); //, ivspec
+			c.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
 			
 			cipherText = c.doFinal(messageBytes);
 		} catch (Exception e) {
@@ -290,7 +340,7 @@ public class SecMailStaticEncryption {
 		try {
 			SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
 			Cipher c = Cipher.getInstance(ENCRYPTIONSPEC);
-			c.init(Cipher.DECRYPT_MODE, keyspec); //, ivspec
+			c.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
 			byte cipherBytes[] = c.doFinal(cipherText);
 			message = new String (cipherBytes, StandardCharsets.UTF_8);
 			
@@ -301,14 +351,13 @@ public class SecMailStaticEncryption {
 		return message;
 	}
 
-	//Clayton Newmiller
 	public static SealedObject encryptObject(Serializable object, byte keyBytes[]){
 		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
 		Cipher c=null;
 		SealedObject encryptedPacket=null;
 		try {
 			c = Cipher.getInstance(ENCRYPTIONSPEC);
-			c.init(Cipher.ENCRYPT_MODE, keyspec); //, ivspec
+			c.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
 			encryptedPacket = new SealedObject(object, c);
 			
 			return encryptedPacket;
@@ -319,20 +368,35 @@ public class SecMailStaticEncryption {
 		
 		return null;
 	}
-	//Clayton Newmiller
+	
 	public static Serializable decryptObject(SealedObject object, byte keyBytes[]){ //needs to be cast to what it actually is
 		SecretKeySpec keyspec = new SecretKeySpec(keyBytes, "AES");
 		Cipher c=null;
 		Serializable decryptedObject=null;
 		try {
 			c = Cipher.getInstance(ENCRYPTIONSPEC);
-			c.init(Cipher.DECRYPT_MODE, keyspec); //, ivspec
-			decryptedObject = (Serializable) object.getObject(c);
+			c.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
+			decryptedObject = (Serializable) object.getObject(c); //problem here: improperly padded - WRONG KEYS
 			return decryptedObject;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static void main(String[] args) throws IOException {	
+		
+		
+		encryptText("this is the decrypted text", iv);
+		System.out.println(decryptText(filePath, iv));
+//		String s = "hello";
+//		byte[] key = ConvertStringToByteArray("12345678");
+//		SealedObject enc = encryptObject(s, key);
+//		String b = (String) decryptObject(enc, key);
+//		System.out.println(b);
+		
+		
+
 	}
 
 }
