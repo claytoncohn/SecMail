@@ -1,6 +1,7 @@
 package edu.depaul.secmail;
 
 import java.net.*;
+import java.util.Date;
 import java.util.LinkedList;
 import java.io.IOException;
 
@@ -38,12 +39,26 @@ public class SecMailServer {
 
 	}
 	
+	
+	// Josh and somebody else (Jacob?)
 	public static void loadNotifications()
 	{
 		//TODO:
 		//Implement code to read the notifications from last shutdown here.
 		//for now, just instantiate a blank list
+		
+		//Creating a test notification to see if 
+		// notification will make it to client
+		Notification test = new Notification(
+					new UserStruct("josh@gmail.com"), 
+					new UserStruct("test@domain.com"), 
+					NotificationType.EMAIL_RECEIVED, 
+					"123", 
+					"idk", 
+					new Date()
+				);
 		notifications = new LinkedList<Notification>();
+		notifications.add(test);
 	}
 	
 	public static synchronized LinkedList<Notification> getNotificationList(String username)
@@ -60,7 +75,13 @@ public class SecMailServer {
 			}
 		}
 		
-		return ret;
+		//Josh - Doing some testing
+		//Return this to return GLOBAL notifications list
+		return notifications;
+		
+		// Once implemented return this to return
+		// user specific notifications...need some authentication here
+		//return ret;
 	}
 	
 	public static synchronized void addNotificationToList(Notification n)

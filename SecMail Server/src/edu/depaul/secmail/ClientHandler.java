@@ -185,11 +185,12 @@ public class ClientHandler implements Runnable{
 		LinkedList<Notification> notifications = SecMailServer.getNotificationList(this.user.compile());
 		
 		try {
+			//Debug
+			System.out.println(notifications.isEmpty() + "");
 			this.io.writeObject(notifications);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		//send all the notifications in the above linked list to the client.
 	}
 	

@@ -149,6 +149,33 @@ public class RecvMailWindow extends Shell {
 	//Connect to the server and get the new notifications
 	private void getNewNotifications()
 	{
+		PacketHeader getNotification = new PacketHeader(Command.GET_NOTIFICATION);
+		try {
+			
+			io.writeObject(getNotification);
+			
+			//Leaving this suppressed for now
+			//Probably a much safer way to do this
+			//But will look into it if there is time
+			// - Josh
+			
+			@SuppressWarnings("unchecked")
+			LinkedList<Notification> notifications = (LinkedList<Notification>) io.readObject();
+			//String mailDir = MainWindow.getMailDir();
+			//File emailFile;
+			for(Notification n : notifications){
+					addNewTableItem(n, true);
+				}
+					
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		/*
 		//TODO:
 		//for each new notification we get, 
@@ -279,8 +306,10 @@ public class RecvMailWindow extends Shell {
 		
 		//--------------------------------------------------------------
 		//get mail from local system
-		File f = new File(MainWindow.getMailDir() + n.getID());
+		
+		File f = new File(MainWindow.getMailDir() + "/" + n.getID()+ ".txt");
 		if (f.exists()){
+			System.out.println(f);
 		//open the mail in the mail reader window here
 		EmailStruct email = new EmailStruct(f);
 			
@@ -294,10 +323,10 @@ public class RecvMailWindow extends Shell {
 			//make packet header to send to server
 			PacketHeader getEmailHeader = new PacketHeader(Command.RECEIVE_EMAIL);
 			//send packet header to server 
+			
 			io.writeObject(getEmailHeader);
 			//send ID to server 
 			io.writeObject(n.getID());
-			
 			
 			//server sends back the email / packet header
 			EmailStruct email = (EmailStruct)io.readObject();
@@ -305,7 +334,7 @@ public class RecvMailWindow extends Shell {
 			//open in mail reader
 			EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate(), io);
 			reader.open();
-		}
+			}
 		}
 		//else (return to mail notification);
 		/*
