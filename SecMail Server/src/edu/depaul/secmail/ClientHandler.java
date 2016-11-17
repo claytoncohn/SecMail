@@ -37,14 +37,17 @@ public class ClientHandler implements Runnable{
 	public void run()
 	{
 		Log.Debug("Starting ClientHandler");
-		
+	
 		try {
 			PacketHeader nextPacket = null;
-			while ((nextPacket = (PacketHeader)io.readObject()) != null) {
-		        if (nextPacket.getCommand() == Command.CLOSE)
+			while ((nextPacket = (PacketHeader)io.readObject()) != null) {		
+		        if (nextPacket.getCommand() == Command.CLOSE){  
 		        	break; // leave the loop
-		        else
+		        }  
+		        else{
 		        	processPacket(nextPacket);
+		        }
+		        	
 		    }
 		} catch (IOException e) {
 			Log.Error("Error while trying to read or write to socket");
@@ -79,6 +82,7 @@ public class ClientHandler implements Runnable{
 				break;
 			case SEND_EMAIL:
 				Log.Debug("Start Email Handler");
+				System.out.println(user.getUser());
 				handleEmail();
 				break;
 			case ERROR:
@@ -122,20 +126,19 @@ public class ClientHandler implements Runnable{
 			}
 			else
 			{
+				// Let the client know that the login was unauthenticated
+				// Remain open and wait for next login packet
 				io.writeObject(new PacketHeader(Command.LOGIN_FAIL));
-				//forceably close the connection to this client.
-				//TODO: Make this more graceful?
-				io.close();
-				clientSocket.close();
 			}
 		} catch (IOException e)
 		{
-			System.out.println("Got an IOException while logging in."); //TODO should handle this with Log calls
-			System.out.println(e);
+			Log.Error("Error while trying to read or write to socket");
+			Log.Error(e.toString());
+			
 		} catch (ClassNotFoundException e)
 		{
-			System.out.println("SecMail Protocol Error. ClassNotFoundException");
-			System.out.println(e);
+			Log.Error("Error while trying to get object from network. Class not found");
+			Log.Error(e.toString());
 		}
 	}
 	
@@ -147,6 +150,7 @@ public class ClientHandler implements Runnable{
 		return true;
 	}
 	
+	// Josh Clark
 	private void handleEmail(){
 		//die early if the user hasn't authenticated.
 		if (user == null)
@@ -156,6 +160,7 @@ public class ClientHandler implements Runnable{
 		try {
 			EmailStruct newEmail = (EmailStruct)io.readObject();
 			LinkedList<Notification> newNotificationList = newEmail.getNotificationList(user);
+			
 			//spawn a new thread to handle sending out the notifications here
 			//(new Thread(new ServerCommunicator(newNotificationList));
 			storeEmail(newEmail);
@@ -165,12 +170,11 @@ public class ClientHandler implements Runnable{
 			System.out.println("Subject: " + newEmail.getSubject());
 			System.out.println("Body: " + newEmail.getBody());
 			
-			PacketHeader successfulTestPacket = new PacketHeader();
-			successfulTestPacket.setCommand(Command.CONNECT_SUCCESS);
-			io.writeObject(successfulTestPacket);
+			PacketHeader successfulEmailPacket = new PacketHeader();
+			successfulEmailPacket.setCommand(Command.CONNECT_SUCCESS);
+			io.writeObject(successfulEmailPacket);
 		
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -183,11 +187,19 @@ public class ClientHandler implements Runnable{
 	{
 		//TODO: test this
 		LinkedList<Notification> notifications = SecMailServer.getNotificationList(this.user.compile());
+	
 		
 		try {
-			//Debug
-			System.out.println(notifications.isEmpty() + "");
-			this.io.writeObject(notifications);
+
+			if(notifications.isEmpty()){
+				PacketHeader noNotifications = new PacketHeader(Command.END_NOTIFICATION);
+				this.io.writeObject(noNotifications);
+			}
+			else{
+				this.io.writeObject(new PacketHeader(Command.NO_NOTIFICATIONS));
+				this.io.writeObject(notifications);
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -219,30 +231,46 @@ public class ClientHandler implements Runnable{
 		return;
 	}
 	 
-	
+	// Josh Clark
 	private void retrieveEmail(String id)
 	{
+		// Check if user is null
+		if(user == null){	
+			return;
+		}
 		
-		String directory = config.getUserDirectory(user.getUser());
-		try {
-			File[] files = new File(directory).listFiles();
-			for (File file : files){
-				if (file.getName() == id){
-					EmailStruct email = new EmailStruct(file);
+		// Find the file and write it back to the stream
+		else{
+			
+			// Get email directory
+			String root = SecMailServer.getGlobalConfig().getMailRoot();
+			String directoryName = this.user.getUser();
+			
+			// Get the file
+			File file = new File(String.valueOf(root)+String.valueOf(directoryName)+ "/" + id + ".txt");
+			System.out.println(file.getAbsolutePath());
+			
+			// Write the email to the stream
+			if(file.exists()){
+				EmailStruct email = new EmailStruct(file);
+				try {
 					io.writeObject(email);
 					Log.Debug("Email written to stream");
-					} 
-				}
-			}
-		catch (IOException | NullPointerException e) {
-					Log.Error("Email does not exist");
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}		
+				}
+				
+			}
+		}
 		
 	}
 	
+	// Josh Clark
 	private String getNotificationID(){
 		
+		// read in the id sent over from client
 		try {
 			String id = (String)io.readObject();
 			return id;

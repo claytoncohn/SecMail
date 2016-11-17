@@ -153,21 +153,27 @@ public class RecvMailWindow extends Shell {
 		try {
 			
 			io.writeObject(getNotification);
-			
-			//Leaving this suppressed for now
-			//Probably a much safer way to do this
-			//But will look into it if there is time
-			// - Josh
-			
-			@SuppressWarnings("unchecked")
-			LinkedList<Notification> notifications = (LinkedList<Notification>) io.readObject();
-			//String mailDir = MainWindow.getMailDir();
-			//File emailFile;
-			for(Notification n : notifications){
-					addNewTableItem(n, true);
-				}
-					
-			
+			PacketHeader notificationPacket = null;
+			notificationPacket = (PacketHeader) io.readObject();
+		    if (notificationPacket.getCommand() == Command.END_NOTIFICATION){
+		    	noNotificationsMessageBox();
+		    }
+		    else{
+		    	//Leaving this suppressed for now
+				//Probably a much safer way to do this
+				//But will look into it if there is time
+				// - Josh
+				
+				@SuppressWarnings("unchecked")
+				LinkedList<Notification> notifications = (LinkedList<Notification>) io.readObject();
+				//String mailDir = MainWindow.getMailDir();
+				//File emailFile;
+				for(Notification n : notifications){
+						addNewTableItem(n, true);
+					}
+							    	
+		    }
+				
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -292,6 +298,17 @@ public class RecvMailWindow extends Shell {
 	
 	//Opens the email associated with the notification n
 	//will possibly fetch that email from the remote server if necessary
+	
+	// Josh Clark
+		private void noNotificationsMessageBox()
+		{
+			Shell noNotifications = new Shell();
+			MessageBox messageBox = new MessageBox(noNotifications, SWT.OK);
+			messageBox.setText("No Notifications");
+			messageBox.setMessage("You have no notifications! Get some friends!");		
+			messageBox.open();
+		}
+		
 	
 	//Yovana
 	private void OpenOrFetchMail(Notification n) throws ClassNotFoundException, IOException
