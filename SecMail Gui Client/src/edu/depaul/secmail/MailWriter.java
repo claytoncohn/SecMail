@@ -251,7 +251,7 @@ public class MailWriter extends Shell {
 	{
 		String returnString;
 		try {
-			
+
 			//create the appropriate packet
 			PacketHeader emailPacketHeader = new PacketHeader();
 			emailPacketHeader.setCommand(Command.SEND_EMAIL);
@@ -263,15 +263,12 @@ public class MailWriter extends Shell {
 			
 			//get the response
 			PacketHeader responsePacket = (PacketHeader)io.readObject();
-			
+
 			if (responsePacket.getCommand() != Command.CONNECT_SUCCESS)
 				returnString = "Response Packet contained non-success command";
 			else
 				returnString = "Successfully sent email to server!";
 			
-			io.writeObject(new PacketHeader(Command.CLOSE));
-			
-			io.close();
 		} catch (Exception e)
 		{
 			returnString = "Exception thrown while trying to send email.\n" + e;
