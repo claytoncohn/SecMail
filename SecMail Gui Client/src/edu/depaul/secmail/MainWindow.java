@@ -153,7 +153,7 @@ public class MainWindow {
 		btnClose.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				System.exit(0);
+				shlSecmail.close();
 			}
 		});
 		GridData gd_btnClose = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
