@@ -91,6 +91,9 @@ public class ClientHandler implements Runnable{
 			case GET_NOTIFICATION:
 				handleGetNotification();
 				break;
+			case SEND_NOTIFICATION:
+				handleNewNotificationSent();
+				break;
 			case RECEIVE_EMAIL:
 				retrieveEmail(getNotificationID());
 		default:
@@ -132,7 +135,7 @@ public class ClientHandler implements Runnable{
 			}
 		} catch (IOException e)
 		{
-			Log.Error("Error while trying to read or write to socket");
+			Log.Error("IO Exception while trying to handle login");
 			Log.Error(e.toString());
 			
 		} catch (ClassNotFoundException e)
@@ -162,13 +165,13 @@ public class ClientHandler implements Runnable{
 			LinkedList<Notification> newNotificationList = newEmail.getNotificationList(user);
 			
 			//spawn a new thread to handle sending out the notifications here
-			//(new Thread(new ServerCommunicator(newNotificationList));
+			(new Thread(new NotificationSender(newNotificationList))).start();
 			storeEmail(newEmail);
 			
 			//debug code, delete for release
-			System.out.println("Recipient: " + newEmail.getToString());
-			System.out.println("Subject: " + newEmail.getSubject());
-			System.out.println("Body: " + newEmail.getBody());
+			Log.Debug("Recipient: " + newEmail.getToString());
+			Log.Debug("Subject: " + newEmail.getSubject());
+			Log.Debug("Body: " + newEmail.getBody());
 			
 			PacketHeader successfulEmailPacket = new PacketHeader();
 			successfulEmailPacket.setCommand(Command.CONNECT_SUCCESS);
@@ -229,6 +232,20 @@ public class ClientHandler implements Runnable{
 		email.writeToFile(writeTo);
 		Log.Debug("Wrote new email file: "+writeTo.getAbsolutePath());
 		return;
+	}
+	
+	//Jacob Burkamper
+	private void handleNewNotificationSent() {
+		try {
+			Notification recievedNotification = (Notification)io.readObject();
+			SecMailServer.addNotificationToList(recievedNotification);
+		} catch (ClassNotFoundException e) {
+			Log.Error("ClassNotFoundException thrown while trying to read a notification from another server");
+			Log.Error(e.toString());
+		} catch (IOException e) {
+			Log.Error("IOException thrown while reading notification from remote server");
+			Log.Error(e.toString());
+		}
 	}
 	 
 	// Josh Clark

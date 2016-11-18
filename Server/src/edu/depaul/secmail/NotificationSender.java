@@ -15,7 +15,10 @@ public class NotificationSender implements Runnable{
 
 	public void run(){
         for (Notification n: this.notifications){
-            if (SecMailServer.getGlobalConfig().getDomain() == n.getTo().getDomain()){
+            if (
+            		SecMailServer.getGlobalConfig().getDomain() == n.getTo().getDomain() ||
+            		n.getTo().getDomain() == "localhost" // for testing purposes.
+        		){
                 SecMailServer.addNotificationToList(n);
             }
             else

@@ -258,7 +258,7 @@ public class MailWriter extends Shell {
 			
 			//send the packet
 			io.writeObject(emailPacketHeader);
-			io.flush();
+			//io.flush();
 			io.writeObject(email);
 			
 			//get the response
