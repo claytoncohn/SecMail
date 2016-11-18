@@ -139,8 +139,9 @@ public class MailWriter extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				// Josh Clark
-				email = new EmailStruct();
 				loadToEmailStruct();
+				if (!promptAndEncryptEmail())
+					return; // user pressed cancel on password dialog. Don't send email.
 				if(checkValidEmailInput(email)){
 					writeEmailtoServer();
 					MailWriter.this.close();
@@ -226,6 +227,7 @@ public class MailWriter extends Shell {
 				{
 					File emailFile = fc.getSelectedFile();
 					PasswordDialog pd = new PasswordDialog(MailWriter.this, SWT.PRIMARY_MODAL);
+					pd.setMessage("Enter password to encrypt this email");
 					if (pd.open())
 					{
 						email.encrypt(pd.getText());
@@ -307,9 +309,6 @@ public class MailWriter extends Shell {
 	{
 		String returnString;
 		try {
-			
-			//encrypt the email before sending
-			email.encrypt("Key123"); // Key is static for testing. Prompt for key
 
 			//create the appropriate packet
 			PacketHeader emailPacketHeader = new PacketHeader();
@@ -363,5 +362,28 @@ public class MailWriter extends Shell {
 		
 		
 		messageBox.open();
+	}
+	
+	//Jacob Burkamper
+	//Prompts the user about whether they want to encrypt the email or not.
+	// If yes, will ask for a password and encrypt the email using that password.
+	// if no, does nothing else.
+	// returns false on password cancel. Otherwise returns true
+	private boolean promptAndEncryptEmail()
+	{
+		MessageBox promptBox = new MessageBox(this, SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.PRIMARY_MODAL);
+		promptBox.setText("Message");
+		promptBox.setMessage("Do you want to encrypt this email before sending it?");
+		int ret = promptBox.open();
+		if (ret == SWT.YES)
+		{
+			PasswordDialog pd = new PasswordDialog(this, SWT.PRIMARY_MODAL);
+			pd.setMessage("Input password to use for encryption");
+			if (pd.open())
+				email.encrypt(pd.getText());
+			else // user canceled password input
+				return false;
+		}
+		return true;
 	}
 }
