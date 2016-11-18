@@ -272,7 +272,7 @@ public class RecvMailWindow extends Shell {
 					new UserStruct("Jacob.burkamper@gmail.com"), 
 					new UserStruct("my.dad@hisdomain.com"), 
 					NotificationType.NEW_EMAIL, 
-					"azy123", 
+					"c1plidai1rcm7gk1tcsblodsb", 
 					"Testing table stuffs", 
 					new Date()
 				);
