@@ -1,6 +1,7 @@
 package edu.depaul.secmail;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -128,6 +129,13 @@ public class RecvMailWindow extends Shell {
 		this(display);
 		this.io = serverConnection;
 	}
+	
+	@Override
+	public void open()
+	{
+		loadNotificationsFromFile();
+		super.open();
+	}
 
 	/**
 	 * Create contents of the shell.
@@ -135,10 +143,6 @@ public class RecvMailWindow extends Shell {
 	protected void createContents() {
 		setText("SecMail");
 		setSize(659, 464);
-		
-		//TODO: remove for production
-		testLoadColumnItems();
-
 	}
 
 	@Override
@@ -166,11 +170,9 @@ public class RecvMailWindow extends Shell {
 				
 				@SuppressWarnings("unchecked")
 				LinkedList<Notification> notifications = (LinkedList<Notification>) io.readObject();
-				//String mailDir = MainWindow.getMailDir();
-				//File emailFile;
 				for(Notification n : notifications){
-						addNewTableItem(n, true);
-					}
+						addNewTableItem(n, false); // new notification, don't have the email yet
+				}
 							    	
 		    }
 				
@@ -181,26 +183,6 @@ public class RecvMailWindow extends Shell {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		/*
-		//TODO:
-		//for each new notification we get, 
-		Notification n = (Notification)i.getData();
-		For (Notification n :)
-		//store mail  
-		String mailDir = MainWindow.getMailDir();
-		//	check to see if an email matching the notifications ID already exists in the maildir
-        if (text.ExistsIn(mailDir))
-        {
-    		//	if yes, mark received column as true, else false.
-    		TableColumn tblclm = new TableColumn();
-    		tblclmnFileName.setBoolean(TRUE);
-        }
-		
-		//add new table item for the notification
-		addNewTableItem(n, true);
-		//write the notification to disk as well */
-		return;
 	}
 	
 	//Reads the notifications file from the filesystem and loads all the old notifications that we've already gotten.
@@ -218,11 +200,14 @@ public class RecvMailWindow extends Shell {
 		    while ((n = (Notification)reader.readObject()) != null) {
 		        //for each notification read,
 				//	check to see if an email matching the notifications ID already exists in the maildir
-		        File email = new File(MainWindow.getMailDir() + n.getID());
-		        addNewTableItem(n, email.exists());
+		        File emailFile = new File(MainWindow.getMailDir() + n.getID());
+		        addNewTableItem(n, emailFile.exists());
 		    }
 		        
-		} catch (FileNotFoundException e) {
+		} catch (EOFException e) {
+			// do nothing, just reached the end of the file
+		}
+		catch (FileNotFoundException e) {
 			// if the file isn't found, that's fine, there just aren't notifications yet.
 		} catch (IOException e) {
 			System.out.println("IOExceoption trying to read notifications file.");
@@ -250,8 +235,6 @@ public class RecvMailWindow extends Shell {
 			for (TableItem i : table.getItems())
 			{
 				Notification n = (Notification)i.getData(); // get the original notification used
-				
-				//TODO: write the notifications to a file
 				notiwriter.writeObject(n);
 			}
 			notiwriter.close();
@@ -259,26 +242,9 @@ public class RecvMailWindow extends Shell {
 			System.err.println("Error, unable to open File to write notifications");
 			System.err.println(e);
 		} catch (IOException e) {
-			System.out.println("Error whilewriting to file");
+			System.out.println("Error while writing to file");
 			System.out.println(e);
 		}
-	}
-	
-	//creates dummy items and loads them into the table. Just for testing purposes.
-	private void testLoadColumnItems()
-	{
-		//Create a test notification
-		Notification test = new Notification(
-					new UserStruct("Jacob.burkamper@gmail.com"), 
-					new UserStruct("my.dad@hisdomain.com"), 
-					NotificationType.NEW_EMAIL, 
-					"c1plidai1rcm7gk1tcsblods", 
-					"Testing table stuffs", 
-					new Date()
-				);
-		
-		//add it to the table
-		addNewTableItem(test, true);
 	}
 	
 	private void addNewTableItem(Notification n, boolean isOnDisk)
@@ -302,25 +268,17 @@ public class RecvMailWindow extends Shell {
 	//Yovana
 	private void OpenOrFetchMail(Notification n) throws ClassNotFoundException, IOException
 	{
-		//TODO:
-		//check if the mail is already on the local system
-		//if yes, open it.
-		
-		//if the mail isn't on the system, prompt to fetch
-		//if the user says yes, fetch the mail
-		//otherwise cancel.
-		
 		//--------------------------------------------------------------
 		//get mail from local system
 		
 		File f = new File(MainWindow.getMailDir() + "/" + n.getID()+ ".txt");
 		if (f.exists()){
 			System.out.println(f);
-		//open the mail in the mail reader window here
-		EmailStruct email = new EmailStruct(f);
-			
-		EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate(), io);
-		reader.open();
+			//open the mail in the mail reader window here
+			EmailStruct email = new EmailStruct(f);
+				
+			EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate(), io);
+			reader.open();
 		}
 		//--------------------------------------------
 		//get mail from server
@@ -366,59 +324,5 @@ public class RecvMailWindow extends Shell {
 			messageBox.setMessage("Email is no longer on server. Sorry!");		
 			messageBox.open();
 		}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		//else (return to mail notification);
-		/*
-		//extra code
-			if (!file.exists()) 
-			{
-	            context.addMessage(new ErrorMessage("msg.file.notdownloaded"));
-	            context.setForwardName("failure");
-	        } 
-			else 
-			{
-	            response.setContentType("DOWNLOADING MAIL");
-	            response.setHeader("Content", "filename=" + file.getName());
-	            stream = new FileInputStream(file);
-	            response.setContentLength(stream.available());
-	            OutputStream os = response.getOutputStream();      
-	            os.close();
-	            //response.flushBuffer();
-	        }
-		catch (IOException e) 
-		{    e.printStackTrace();} 
-		/*
-		finally 
-		{
-	        if (stream != null) 
-	        {
-	            try 
-	            {
-	                stream.close();
-	            } 
-	            catch (IOException e) 
-	            {
-	                e.printStackTrace();
-	            }
-	        }
-	    }
-		*/
-		//end extra code
-		
-		
-		//test code, remove
-		//MessageBox testBox = new MessageBox(this);
-		//testBox.setText("Test Open Email MessageBox");
-		//testBox.setMessage("You tried to open the email from notification with id: "+n.getID());
-		//testBox.open();
 }
 
