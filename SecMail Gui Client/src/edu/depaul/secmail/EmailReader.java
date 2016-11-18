@@ -244,7 +244,7 @@ public class EmailReader extends Shell {
 			public void mouseDown(MouseEvent e) {
 				MailWriter newMail = new MailWriter( Display.getCurrent(), 
 						null,
-						"Re: " + txtSubject.getText(),
+						"Fwd: " + txtSubject.getText(),
 						stxtBody.getText(),
 						io
 					);
