@@ -171,6 +171,14 @@ public class RecvMailWindow extends Shell {
 				@SuppressWarnings("unchecked")
 				LinkedList<Notification> notifications = (LinkedList<Notification>) io.readObject();
 				for(Notification n : notifications){
+					//first check to make sure the notification isn't already in the table.
+					boolean notificationExists = false;
+					for (TableItem t : table.getItems())
+					{
+						if (((Notification)t.getData()).getID().equals(n.getID())) // if this table item has a notification with the same id
+							notificationExists = true; // set the flag to true
+					}
+					if (!notificationExists) // only if the notification didn't already exist
 						addNewTableItem(n, false); // new notification, don't have the email yet
 				}
 							    	
