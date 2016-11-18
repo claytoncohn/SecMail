@@ -3,7 +3,11 @@ package edu.depaul.secmail;
 import java.util.LinkedList;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.security.SecureRandom;
@@ -15,6 +19,8 @@ public class EmailStruct implements Serializable{
 	private String subject = null;
 	private String body = null;
 	private String id = null;
+	private byte[] encryptedBytes = null;
+	private boolean encrypted = false;
 	
 	//default empty constructor.
 	EmailStruct()
@@ -26,7 +32,8 @@ public class EmailStruct implements Serializable{
 	EmailStruct(File f)
 	{		
 		try {
-			BufferedReader input = new BufferedReader(new FileReader(f));
+			FileInputStream fis = new FileInputStream(f);
+			BufferedReader input = new BufferedReader(new InputStreamReader(fis));
 			String line = null;
 			while ((line = input.readLine()) != null)
 			{
@@ -70,6 +77,15 @@ public class EmailStruct implements Serializable{
 					while ((line = input.readLine()) != null)
 						buffer.append(line);
 					body = buffer.toString();
+				}
+				else if (line.startsWith("Encrypted:"))
+				{
+					encrypted = true;
+					
+					//consume the rest of the file
+					byte[] b = new byte[(int)(fis.getChannel().size() - fis.getChannel().position())];
+					fis.read(b);
+					encryptedBytes = b;
 				}
 				else
 				{
@@ -155,7 +171,8 @@ public class EmailStruct implements Serializable{
 	public boolean writeToFile(File f)
 	{
 		try {
-			PrintWriter out = new PrintWriter(f);
+			FileOutputStream fos = new FileOutputStream(f);
+			PrintWriter out = new PrintWriter(new PrintStream(fos));
 			//write the recipients
 			for (UserStruct recipient : recipients)
 			{
@@ -163,20 +180,30 @@ public class EmailStruct implements Serializable{
 				out.println(recipient.compile());
 			}
 			
-/*			//write the attachments
-			for (File attachment : attachments)
-			{
-				out.print("attachment: ");
-				out.println(attachment.getAbsolutePath());
-			}*/
+			//write the attachments
+			if (attachments != null)
+				for (File attachment : attachments)
+				{
+					out.print("attachment: ");
+					out.println(attachment.getAbsolutePath());
+				}
 			
 			//write the subject
 			out.print("subject: ");
 			out.println(subject);
 			
 			//the rest of the email is the body.
-			out.println("body: ");
-			out.print(body);
+			if (encrypted)
+			{
+				out.println("Encrypted:");
+				fos.write(encryptedBytes);
+			}
+			else
+			{	
+				out.println("body: ");
+				out.print(body);
+			}
+				
 			
 			out.close();
 			return true;
@@ -215,6 +242,28 @@ public class EmailStruct implements Serializable{
 			ret.add(new Notification(recipient, fromUser, NotificationType.NEW_EMAIL, this));
 		}
 		return ret;
+	}
+	
+	//encrypts the body of this EmailStruct
+	public void encrypt(String key)
+	{
+		if (body != null && !encrypted)
+		{
+			encryptedBytes = SecMailStaticEncryption.SecMailEncryptAES(body, key.getBytes()); // encrypt the body using the key
+			body = null; // erase the body
+			encrypted = true; // mark that we're encrypted
+		}		
+	}
+	
+	//decrypts an already-encrypted body
+	public void decrypt(String key)
+	{
+		if (encrypted)
+		{
+			body = SecMailStaticEncryption.SecMailDecryptAES(encryptedBytes, key.getBytes());
+			encryptedBytes = null; // delete the encrypted portion
+			encrypted = false; // set that we're no longer encrypted.
+		}
 	}
 
 }
