@@ -2,6 +2,7 @@ package edu.depaul.secmail;
 
 import java.net.*;
 import java.util.LinkedList;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -67,7 +68,9 @@ public class SecMailServer {
 					Log.Error("Were the notifications saved by a different version of the server?");
 					Log.Error("Error was: " + e.toString());
 				}
-			} catch (IOException e) {
+			}  catch (EOFException e) {
+				 Log.Debug("Finished reading notification file");
+			 }catch (IOException e) {
 				//generic IO errors.
 				Log.Error("IO Error while reading notifications file");
 				Log.Error(e.toString());
@@ -78,6 +81,10 @@ public class SecMailServer {
 		//this will be used to save notifications later.
 		try {
 			notificationWriter = new ObjectOutputStream(new FileOutputStream(notificationFile));
+			//write the notifications back to the file
+			//TODO: Make this unnecessary somehow
+			for(Notification n: notifications)
+				saveNotification(n);
 		} catch (IOException e) {
 			Log.Error("IO Exception while trying to create notificationWriter");
 			Log.Error(e.toString());
@@ -90,7 +97,14 @@ public class SecMailServer {
 	//Jacob Burkamper
 	private static void saveNotification(Notification n) 
 	{
-		
+		try {
+			Log.Debug("Saving Notification for user: "+n.getTo().compile()+" id: "+n.getID());
+			notificationWriter.writeObject(n);
+		} catch (IOException e) {
+			Log.Error("IOException while trying to write to notification file");
+			Log.Error(e.toString());
+			Log.Error("Notification might not be saved for user: "+n.getTo().compile() +" id: "+n.getID());
+		}
 	}
 	
 	public static synchronized LinkedList<Notification> getNotificationList(String username)
