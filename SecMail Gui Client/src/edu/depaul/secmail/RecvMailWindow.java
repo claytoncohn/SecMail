@@ -272,7 +272,7 @@ public class RecvMailWindow extends Shell {
 					new UserStruct("Jacob.burkamper@gmail.com"), 
 					new UserStruct("my.dad@hisdomain.com"), 
 					NotificationType.NEW_EMAIL, 
-					"c1plidai1rcm7gk1tcsblodsb", 
+					"c1plidai1rcm7gk1tcsblods", 
 					"Testing table stuffs", 
 					new Date()
 				);
@@ -298,17 +298,6 @@ public class RecvMailWindow extends Shell {
 	
 	//Opens the email associated with the notification n
 	//will possibly fetch that email from the remote server if necessary
-	
-	// Josh Clark
-		private void noNotificationsMessageBox()
-		{
-			Shell noNotifications = new Shell();
-			MessageBox messageBox = new MessageBox(noNotifications, SWT.OK);
-			messageBox.setText("No Notifications");
-			messageBox.setMessage("You have no notifications!");		
-			messageBox.open();
-		}
-		
 	
 	//Yovana
 	private void OpenOrFetchMail(Notification n) throws ClassNotFoundException, IOException
@@ -340,19 +329,53 @@ public class RecvMailWindow extends Shell {
 			//make packet header to send to server
 			PacketHeader getEmailHeader = new PacketHeader(Command.RECEIVE_EMAIL);
 			//send packet header to server 
-			
 			io.writeObject(getEmailHeader);
 			//send ID to server 
 			io.writeObject(n.getID());
 			
-			//server sends back the email / packet header
-			EmailStruct email = (EmailStruct)io.readObject();
-			
-			//open in mail reader
-			EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate(), io);
-			reader.open();
+			PacketHeader responsePacket = (PacketHeader) io.readObject();
+			if(responsePacket.getCommand() == Command.RECEIVE_EMAIL){
+				//server sends back the email / packet header
+				EmailStruct email = (EmailStruct)io.readObject();
+				
+				//open in mail reader
+				EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate(), io);
+				reader.open();			
+			}
+			else{
+				noEmailOnServer();
+			}
 			}
 		}
+		
+		//Josh Clark
+		private void noNotificationsMessageBox()
+		{
+			Shell noNotifications = new Shell();
+			MessageBox messageBox = new MessageBox(noNotifications, SWT.OK);
+			messageBox.setText("No Notifications");
+			messageBox.setMessage("You have no notifications!");		
+			messageBox.open();
+		}
+		
+		//Josh Clark
+		private void noEmailOnServer()
+		{
+			Shell noEmail = new Shell();
+			MessageBox messageBox = new MessageBox(noEmail, SWT.OK);
+			messageBox.setMessage("Email is no longer on server. Sorry!");		
+			messageBox.open();
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		//else (return to mail notification);
 		/*
 		//extra code
