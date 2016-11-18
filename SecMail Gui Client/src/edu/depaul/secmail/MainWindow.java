@@ -4,6 +4,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Menu;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.swt.SWT;
@@ -40,6 +41,12 @@ public class MainWindow {
 	 */
 	public static void main(String[] args) {
 		try {
+			File mailDirFile = new File(mailDir);
+			if (!mailDirFile.exists() && !mailDirFile.mkdir())
+			{
+				System.err.println("Error, unable to open mail directory: "+mailDirFile.getAbsolutePath());
+				System.exit(10);
+			}
 			MainWindow window = new MainWindow();
 			window.open();	
 			

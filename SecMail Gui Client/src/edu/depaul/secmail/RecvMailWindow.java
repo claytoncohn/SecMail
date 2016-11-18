@@ -71,7 +71,7 @@ public class RecvMailWindow extends Shell {
 				TableItem clickedItem = table.getItem(pt);
 				if (clickedItem != null)
 					try {
-						OpenOrFetchMail((Notification)clickedItem.getData());
+						OpenOrFetchMail(clickedItem);
 					} catch (ClassNotFoundException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -274,12 +274,13 @@ public class RecvMailWindow extends Shell {
 	//will possibly fetch that email from the remote server if necessary
 	
 	//Yovana
-	private void OpenOrFetchMail(Notification n) throws ClassNotFoundException, IOException
+	private void OpenOrFetchMail(TableItem item) throws ClassNotFoundException, IOException
 	{
+		Notification n = (Notification)item.getData();
 		//--------------------------------------------------------------
 		//get mail from local system
 		
-		File f = new File(MainWindow.getMailDir() + "/" + n.getID()+ ".txt");
+		File f = new File(MainWindow.getMailDir() + n.getID());
 		if (f.exists()){
 			System.out.println(f);
 			//open the mail in the mail reader window here
@@ -303,6 +304,8 @@ public class RecvMailWindow extends Shell {
 			if(responsePacket.getCommand() == Command.RECEIVE_EMAIL){
 				//server sends back the email / packet header
 				EmailStruct email = (EmailStruct)io.readObject();
+				email.writeToFile(f);
+				item.setText(3, "Yes"); // update the table item to show that the email has been downloaded
 				
 				//open in mail reader
 				EmailReader reader = new EmailReader(Display.getCurrent(), email, n.getFrom(), n.getDate(), io);
