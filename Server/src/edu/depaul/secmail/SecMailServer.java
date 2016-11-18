@@ -17,6 +17,7 @@ public class SecMailServer {
 
 	public static void main(String[] args) {
 		// read the command line arguments and set up the configuration
+		System.out.println("SecMaild Starting..."); // just output a message so something is on the console.
 		serverConfig = new Config(args);
 		Log.Init(serverConfig.getLogFile());
 		
