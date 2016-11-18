@@ -112,12 +112,14 @@ public class MailWriter extends Shell {
 		bodyText.setLayoutData(fd_bodyText);
 		
 		Button btnAddAttachment = new Button(this, SWT.NONE);
+		btnAddAttachment.setEnabled(false);
 		fd_composite_1.bottom = new FormAttachment(btnAddAttachment, -6);
 		FormData fd_btnAddAttachment = new FormData();
 		fd_btnAddAttachment.left = new FormAttachment(0, 10);
 		fd_btnAddAttachment.bottom = new FormAttachment(100, -10);
 		btnAddAttachment.setLayoutData(fd_btnAddAttachment);
 		btnAddAttachment.setText("Add Attachment");
+		btnAddAttachment.setVisible(false);
 		
 		Button btnCancel = new Button(this, SWT.NONE);
 		btnCancel.addMouseListener(new MouseAdapter() {
