@@ -21,6 +21,9 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormAttachment;
 
 public class EmailReader extends Shell {
 	private Text txtTo;
@@ -58,44 +61,87 @@ public class EmailReader extends Shell {
 	 */
 	public EmailReader(Display display) {
 		super(display, SWT.SHELL_TRIM);
+		setLayout(new FormLayout());
 		
 		Label lblTo = new Label(this, SWT.NONE);
-		lblTo.setBounds(10, 10, 55, 15);
+		FormData fd_lblTo = new FormData();
+		fd_lblTo.left = new FormAttachment(0, 10);
+		fd_lblTo.top = new FormAttachment(0, 7);
+		lblTo.setLayoutData(fd_lblTo);
 		lblTo.setText("To:");
 		
 		Label lblFrom = new Label(this, SWT.NONE);
-		lblFrom.setBounds(10, 37, 55, 15);
+		FormData fd_lblFrom = new FormData();
+		fd_lblFrom.top = new FormAttachment(lblTo, 10);
+		fd_lblFrom.left = new FormAttachment(0, 10);
+		fd_lblFrom.right = new FormAttachment(0, 65);
+		lblFrom.setLayoutData(fd_lblFrom);
 		lblFrom.setText("From:");
 		
 		Label lblDate = new Label(this, SWT.NONE);
-		lblDate.setBounds(10, 61, 55, 15);
+		FormData fd_lblDate = new FormData();
+		fd_lblDate.top = new FormAttachment(lblFrom, 10);
+		fd_lblDate.left = new FormAttachment(lblTo, 0, SWT.LEFT);
+		fd_lblDate.right = new FormAttachment(0, 65);
+		lblDate.setLayoutData(fd_lblDate);
 		lblDate.setText("Date:");
 		
 		Label lblSubject = new Label(this, SWT.NONE);
-		lblSubject.setBounds(10, 85, 55, 15);
+		FormData fd_lblSubject = new FormData();
+		fd_lblSubject.top = new FormAttachment(lblDate, 10);
+		fd_lblSubject.left = new FormAttachment(lblTo, 0, SWT.LEFT);
+		fd_lblSubject.right = new FormAttachment(0, 65);
+		lblSubject.setLayoutData(fd_lblSubject);
 		lblSubject.setText("Subject:");
 		
 		Label lblAttachments = new Label(this, SWT.NONE);
-		lblAttachments.setBounds(10, 109, 80, 15);
+		FormData fd_lblAttachments = new FormData();
+		fd_lblAttachments.right = new FormAttachment(0, 90);
+		fd_lblAttachments.top = new FormAttachment(0, 109);
+		fd_lblAttachments.left = new FormAttachment(0, 10);
+		lblAttachments.setLayoutData(fd_lblAttachments);
 		lblAttachments.setText("Attachments:");
 		
 		txtTo = new Text(this, SWT.BORDER);
+		fd_lblTo.right = new FormAttachment(0,63);
+		FormData fd_txtTo = new FormData();
+		fd_txtTo.right = new FormAttachment(100, -10);
+		fd_txtTo.left = new FormAttachment(lblTo, 6);
+		fd_txtTo.top = new FormAttachment(lblTo, -3, SWT.TOP);
+		txtTo.setLayoutData(fd_txtTo);
 		txtTo.setEditable(false);
-		txtTo.setBounds(71, 7, 563, 21);
 		
 		txtFrom = new Text(this, SWT.BORDER);
+		FormData fd_txtFrom = new FormData();
+		fd_txtFrom.left = new FormAttachment(lblFrom, 4);
+		fd_txtFrom.right = new FormAttachment(txtTo, 0, SWT.RIGHT);
+		fd_txtFrom.top = new FormAttachment(lblFrom, -3, SWT.TOP);
+		txtFrom.setLayoutData(fd_txtFrom);
 		txtFrom.setEditable(false);
-		txtFrom.setBounds(71, 31, 563, 21);
 		
 		txtDate = new Text(this, SWT.BORDER);
+		FormData fd_txtDate = new FormData();
+		fd_txtDate.right = new FormAttachment(100, -10);
+		fd_txtDate.left = new FormAttachment(lblDate, 4);
+		fd_txtDate.top = new FormAttachment(txtFrom, 3);
+		txtDate.setLayoutData(fd_txtDate);
 		txtDate.setEditable(false);
-		txtDate.setBounds(71, 55, 186, 21);
 		
 		txtSubject = new Text(this, SWT.BORDER);
+		FormData fd_txtSubject = new FormData();
+		fd_txtSubject.left = new FormAttachment(lblSubject, 59, SWT.LEFT);
+		fd_txtSubject.right = new FormAttachment(txtTo, 0, SWT.RIGHT);
+		//fd_txtSubject.bottom = new FormAttachment(lblSubject, 0, SWT.BOTTOM);
+		fd_txtSubject.top = new FormAttachment(txtDate, 3);
+		txtSubject.setLayoutData(fd_txtSubject);
 		txtSubject.setEditable(false);
-		txtSubject.setBounds(71, 79, 563, 21);
 		
 		tblAttachments = new Table(this, SWT.BORDER | SWT.FULL_SELECTION);
+		FormData fd_tblAttachments = new FormData();
+		fd_tblAttachments.right = new FormAttachment(txtTo, 0, SWT.RIGHT);
+		fd_tblAttachments.top = new FormAttachment(0, 130);
+		fd_tblAttachments.left = new FormAttachment(0, 10);
+		tblAttachments.setLayoutData(fd_tblAttachments);
 		tblAttachments.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -105,7 +151,6 @@ public class EmailReader extends Shell {
 					handleAttachment((File)clickedItem.getData());
 			}
 		});
-		tblAttachments.setBounds(10, 130, 624, 45);
 		tblAttachments.setHeaderVisible(true);
 		tblAttachments.setLinesVisible(true);
 		
@@ -118,24 +163,42 @@ public class EmailReader extends Shell {
 		tblclmnFileSize.setText("File Size");
 		
 		Label lblBody = new Label(this, SWT.NONE);
-		lblBody.setBounds(10, 181, 55, 15);
+		FormData fd_lblBody = new FormData();
+		fd_lblBody.right = new FormAttachment(0, 65);
+		fd_lblBody.top = new FormAttachment(0, 181);
+		fd_lblBody.left = new FormAttachment(0, 10);
+		lblBody.setLayoutData(fd_lblBody);
 		lblBody.setText("Body:");
 		
 		stxtBody = new StyledText(this, SWT.BORDER);
+		FormData fd_stxtBody = new FormData();
+		fd_stxtBody.top = new FormAttachment(lblBody, 6);
+		fd_stxtBody.right = new FormAttachment(txtTo, 0, SWT.RIGHT);
+		fd_stxtBody.left = new FormAttachment(0, 10);
+		stxtBody.setLayoutData(fd_stxtBody);
 		stxtBody.setEditable(false);
-		stxtBody.setBounds(10, 202, 624, 208);
 		
 		Button btnClose = new Button(this, SWT.NONE);
+		fd_stxtBody.bottom = new FormAttachment(btnClose, -6);
+		FormData fd_btnClose = new FormData();
+		fd_btnClose.top = new FormAttachment(100, -30);
+		fd_btnClose.right = new FormAttachment(txtTo, 0, SWT.RIGHT);
+		fd_btnClose.left = new FormAttachment(100, -80);
+		btnClose.setLayoutData(fd_btnClose);
 		btnClose.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				EmailReader.this.close();
 			}
 		});
-		btnClose.setBounds(559, 426, 75, 25);
 		btnClose.setText("Close");
 		
 		Button btnReply = new Button(this, SWT.NONE);
+		FormData fd_btnReply = new FormData();
+		fd_btnReply.top = new FormAttachment(stxtBody, 9);
+		fd_btnReply.left = new FormAttachment(lblTo, 0, SWT.LEFT);
+		fd_btnReply.right = new FormAttachment(0, 85);
+		btnReply.setLayoutData(fd_btnReply);
 		btnReply.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -148,10 +211,13 @@ public class EmailReader extends Shell {
 				newMail.open();
 			}
 		});
-		btnReply.setBounds(10, 426, 75, 25);
 		btnReply.setText("Reply");
 		
 		Button btnReplyall = new Button(this, SWT.NONE);
+		FormData fd_btnReplyall = new FormData();
+		fd_btnReplyall.top = new FormAttachment(btnReply, 0, SWT.TOP);
+		fd_btnReplyall.left = new FormAttachment(btnReply, 6);
+		btnReplyall.setLayoutData(fd_btnReplyall);
 		btnReplyall.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -164,10 +230,15 @@ public class EmailReader extends Shell {
 			newMail.open();
 			}
 		});
-		btnReplyall.setBounds(91, 426, 75, 25);
 		btnReplyall.setText("Reply-All");
 		
 		Button btnForward = new Button(this, SWT.NONE);
+		fd_btnReplyall.right = new FormAttachment(btnForward, -6);
+		FormData fd_btnForward = new FormData();
+		fd_btnForward.top = new FormAttachment(stxtBody, 9);
+		fd_btnForward.left = new FormAttachment(0, 172);
+		fd_btnForward.right = new FormAttachment(0, 247);
+		btnForward.setLayoutData(fd_btnForward);
 		btnForward.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -180,7 +251,6 @@ public class EmailReader extends Shell {
 			newMail.open();
 			}
 		});
-		btnForward.setBounds(172, 426, 75, 25);
 		btnForward.setText("Forward");
 		createContents();
 	}
@@ -220,7 +290,7 @@ public class EmailReader extends Shell {
 	 */
 	protected void createContents() {
 		setText("EmailReader");
-		setSize(660, 500);
+		setSize(661, 560);
 
 	}
 
