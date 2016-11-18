@@ -175,6 +175,16 @@ public class MailWriter extends Shell {
 				{
 					File emailFile = fc.getSelectedFile();
 					email = new EmailStruct(emailFile);
+					if (email.isEncrypted())
+					{
+						PasswordDialog pd = new PasswordDialog(MailWriter.this, SWT.PRIMARY_MODAL);
+						if(pd.open())
+							email.decrypt(pd.getText());
+						else // the user cancelled
+						{
+							email = null;
+						}
+					}
 					updateFields();
 				}
 				else
@@ -204,6 +214,34 @@ public class MailWriter extends Shell {
 			}
 		});
 		mntmSaveAsDraft.setText("Save As Draft");
+		
+		MenuItem mntmSaveAsEncrypted = new MenuItem(menu_1, SWT.NONE);
+		mntmSaveAsEncrypted.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				loadToEmailStruct();
+				JFileChooser fc = new JFileChooser();
+				int retVal = fc.showSaveDialog(null);
+				if (retVal == JFileChooser.APPROVE_OPTION)
+				{
+					File emailFile = fc.getSelectedFile();
+					PasswordDialog pd = new PasswordDialog(MailWriter.this, SWT.PRIMARY_MODAL);
+					if (pd.open())
+					{
+						email.encrypt(pd.getText());
+						email.writeToFile(emailFile);
+					}
+					else
+						System.out.println("user cancelled draft save");
+					
+				}
+				else
+				{
+					System.out.println("User cancelled draft save.");
+				}
+			}
+		});
+		mntmSaveAsEncrypted.setText("Save As Encrypted Draft");
 		
 		MenuItem mntmClose = new MenuItem(menu_1, SWT.NONE);
 		mntmClose.setText("Close");
@@ -241,7 +279,10 @@ public class MailWriter extends Shell {
 	
 	private void loadToEmailStruct()
 	{
+		if (email == null)
+			email = new EmailStruct();
 		//to field
+		System.out.println(toText.getText());
 		String[] recipients = toText.getText().split(",");
 		for (String recipient : recipients)
 			email.addRecipient(recipient);
@@ -252,9 +293,12 @@ public class MailWriter extends Shell {
 	
 	private void updateFields()
 	{
-		toText.setText(email.getToString());
-		bodyText.setText(email.getBody());
-		subjectText.setText(email.getSubject());
+		if (email != null)
+		{
+			toText.setText(email.getToString());
+			bodyText.setText(email.getBody());
+			subjectText.setText(email.getSubject());
+		}
 	}
 	
 	
@@ -263,6 +307,9 @@ public class MailWriter extends Shell {
 	{
 		String returnString;
 		try {
+			
+			//encrypt the email before sending
+			email.encrypt("Key123"); // Key is static for testing. Prompt for key
 
 			//create the appropriate packet
 			PacketHeader emailPacketHeader = new PacketHeader();
@@ -317,7 +364,4 @@ public class MailWriter extends Shell {
 		
 		messageBox.open();
 	}
-	
-	
-
 }
