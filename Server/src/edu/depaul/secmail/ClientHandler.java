@@ -85,9 +85,6 @@ public class ClientHandler implements Runnable{
 				System.out.println(user.getUser());
 				handleEmail();
 				break;
-			case ERROR:
-				handleError();
-				break;
 			case GET_NOTIFICATION:
 				handleGetNotification();
 				break;
@@ -180,10 +177,6 @@ public class ClientHandler implements Runnable{
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private void handleError(){
-		// Handle Error packet here
 	}
 	
 	private void handleGetNotification()
