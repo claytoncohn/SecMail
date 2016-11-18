@@ -384,7 +384,7 @@ public class SecMailStaticEncryption {
 		return null;
 	}
 	
-	public static void main(String[] args) throws IOException {	
+	/*public static void main(String[] args) throws IOException {	
 		
 		
 		encryptText("this is the decrypted text", iv);
@@ -397,6 +397,6 @@ public class SecMailStaticEncryption {
 		
 		
 
-	}
+	}*/
 
 }
