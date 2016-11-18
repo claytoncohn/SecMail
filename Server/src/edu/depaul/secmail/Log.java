@@ -9,6 +9,7 @@ public class Log {
 	//member vars here
 	private final static boolean DEBUG = true;
 	private static PrintWriter logFile;
+	private static StringBuffer buffer;
 	
 	//constructor
 	Log() {
@@ -61,13 +62,23 @@ public class Log {
 	//private methods
 	private static void File_Output(String out)
 	{
-		if (logFile == null)
+		if (logFile == null) // if we don't have a log to write to
 		{
-			System.err.println("Error: unable to write to logFile because logFile uninitialized.");
-			System.err.println(out);
+			if (buffer == null) // create a buffer if it doesn't exist
+				buffer = new StringBuffer();
+			buffer.append(out); //write the message to the buffer
+			buffer.append("\n"); //append a newline.
 		}
-		else
+		else //we have a log file.
 		{
+			//write the buffer if there is one
+			if (buffer != null)
+			{
+				logFile.println(buffer.toString());
+				buffer = null; // done with the buffer
+			}
+			
+			//output this message
 			logFile.println(out);
 			logFile.flush();
 		}
