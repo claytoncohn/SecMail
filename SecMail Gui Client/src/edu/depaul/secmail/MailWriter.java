@@ -2,6 +2,8 @@ package edu.depaul.secmail;
 
 import java.io.File;
 import java.net.Socket;
+import java.text.DecimalFormat;
+import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
 
@@ -24,6 +26,9 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 
 public class MailWriter extends Shell {
 	private Text toText;
@@ -31,6 +36,7 @@ public class MailWriter extends Shell {
 	private Text bodyText;
 	EmailStruct email;
 	DHEncryptionIO io;
+	private Table tblAttachments;
 
 	/**
 	 * Launch the application.
@@ -107,19 +113,49 @@ public class MailWriter extends Shell {
 		FormData fd_bodyText = new FormData();
 		fd_bodyText.top = new FormAttachment(lblMailBody, 6);
 		fd_bodyText.left = new FormAttachment(lblMailBody, 0, SWT.LEFT);
-		fd_bodyText.bottom = new FormAttachment(100, -30);
+		fd_bodyText.bottom = new FormAttachment(100, -89);
 		fd_bodyText.right = new FormAttachment(100, -10);
 		bodyText.setLayoutData(fd_bodyText);
 		
-		Button btnAddAttachment = new Button(this, SWT.NONE);
-		btnAddAttachment.setEnabled(false);
-		fd_composite_1.bottom = new FormAttachment(btnAddAttachment, -6);
+		tblAttachments = new Table(composite_1, SWT.BORDER | SWT.FULL_SELECTION);
+		FormData fd_tblAttachments = new FormData();
+		fd_tblAttachments.top = new FormAttachment(bodyText, 6);
+		fd_tblAttachments.bottom = new FormAttachment(100, -6);
+		fd_tblAttachments.left = new FormAttachment(lblMailBody, 0, SWT.LEFT);
+		fd_tblAttachments.right = new FormAttachment(100, -10);
+		tblAttachments.setLayoutData(fd_tblAttachments);
+		tblAttachments.setHeaderVisible(true);
+		tblAttachments.setLinesVisible(true);
+		
+		TableColumn tblclmnFilename = new TableColumn(tblAttachments, SWT.NONE);
+		tblclmnFilename.setWidth(315);
+		tblclmnFilename.setText("FileName");
+		
+		TableColumn tblclmnSize = new TableColumn(tblAttachments, SWT.NONE);
+		tblclmnSize.setWidth(184);
+		tblclmnSize.setText("Size");
 		FormData fd_btnAddAttachment = new FormData();
 		fd_btnAddAttachment.left = new FormAttachment(0, 10);
 		fd_btnAddAttachment.bottom = new FormAttachment(100, -10);
+		
+		
+		Button btnAddAttachment = new Button(this, SWT.NONE);
+		btnAddAttachment.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				JFileChooser fc = new JFileChooser();
+				int retVal = fc.showOpenDialog(null);
+				if (retVal == JFileChooser.APPROVE_OPTION)
+				{
+					File newAttachment = fc.getSelectedFile();
+					createAttachmentItem(newAttachment);
+				}
+			}
+		});
+		fd_composite_1.bottom = new FormAttachment(btnAddAttachment, -6);
 		btnAddAttachment.setLayoutData(fd_btnAddAttachment);
 		btnAddAttachment.setText("Add Attachment");
-		btnAddAttachment.setVisible(false);
+		
 		
 		Button btnCancel = new Button(this, SWT.NONE);
 		btnCancel.addMouseListener(new MouseAdapter() {
@@ -270,7 +306,7 @@ public class MailWriter extends Shell {
 	 */
 	protected void createContents() {
 		setText("New Mail");
-		setSize(648, 503);
+		setSize(566, 503);
 
 	}
 
@@ -291,6 +327,12 @@ public class MailWriter extends Shell {
 		
 		email.setSubject(subjectText.getText());
 		email.setBody(bodyText.getText());
+		
+		for (TableItem i : tblAttachments.getItems())
+		{
+			File f = (File)i.getData();
+			email.addAttachment(f);
+		}
 	}
 	
 	private void updateFields()
@@ -300,6 +342,13 @@ public class MailWriter extends Shell {
 			toText.setText(email.getToString());
 			bodyText.setText(email.getBody());
 			subjectText.setText(email.getSubject());
+			
+			LinkedList<File> attachments = email.getAttachmentList();
+			if (attachments != null)
+				for (File f : attachments)
+				{
+					createAttachmentItem(f);
+				}
 		}
 	}
 	
@@ -385,5 +434,25 @@ public class MailWriter extends Shell {
 				return false;
 		}
 		return true;
+	}
+	
+	//http://stackoverflow.com/questions/3263892/format-file-size-as-mb-gb-etc
+	public static String readableFileSize(long size) {
+	    if(size <= 0) return "0";
+	    final String[] units = new String[] { "B", "kB", "MB", "GB", "TB" };
+	    int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
+	    return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+	}
+	
+	//Jacob Burkamper
+	//creates a TableItem with the File and adds it to the attachment table.
+	private void createAttachmentItem(File f)
+	{
+		if (!f.exists())
+			System.out.println("Error! No file with that path!");
+		TableItem attachmentItem = new TableItem(tblAttachments, SWT.NONE);
+		attachmentItem.setData(f);
+		attachmentItem.setText(0, f.getName());
+		attachmentItem.setText(1, readableFileSize( f.length() ));
 	}
 }

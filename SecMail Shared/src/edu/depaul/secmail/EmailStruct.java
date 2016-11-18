@@ -57,11 +57,16 @@ public class EmailStruct implements Serializable{
 				{
 					//add attachment
 					String[] split = line.split(":");
-					if (split.length > 2)
+					if (split.length > 3) // windows will have at least 2 ':'
 						fileFormatError(line);
 					else
 					{
-						File attachment = new File(split[1].trim());
+						String path;
+						if (split.length > 2)
+							path = split[1] + ":" + split[2];
+						else
+							path = split[1];
+						File attachment = new File(path.trim());
 						attachments.add(attachment);
 					}
 				}
