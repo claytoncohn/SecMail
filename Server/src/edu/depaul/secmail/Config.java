@@ -12,7 +12,7 @@ public class Config {
 	private File configFile = null;
 	private String logFilePath = "./SecMailServer.log";
 	private File logFile = new File(logFilePath);
-	private String mailDir = "./";
+	private String mailDir = "./mail/";
 	private String domain = "localhost";
 	
 	Config(String[] args) 

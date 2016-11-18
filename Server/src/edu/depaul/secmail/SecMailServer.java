@@ -24,6 +24,9 @@ public class SecMailServer {
 		Log.Out("Reading notification list from file system");
 		loadNotifications();
 		
+		Log.Out("Using Mail Directory: "+serverConfig.getMailRoot());
+		checkAndCreateMailDir();
+		
 		Log.Out("Binding to port " + serverConfig.getPort() +" backlog " + serverConfig.getBacklog());
 		try (
 			ServerSocket serverSocket = new ServerSocket(serverConfig.getPort(), serverConfig.getBacklog());
@@ -123,6 +126,20 @@ public class SecMailServer {
 	public static Config getGlobalConfig()
 	{
 		return serverConfig;
+	}
+	
+	private static void checkAndCreateMailDir()
+	{
+		File mailDir = new File(serverConfig.getMailRoot());
+		if (!mailDir.exists())
+		{
+			Log.Out("Creating Mail directory" + mailDir.getAbsolutePath());
+			if (!mailDir.mkdir()) // if the dir doesn't get made
+			{
+				Log.Error("Couldn't create mail directory. Unable to continue");
+				System.exit(10);
+			}
+		}
 	}
 
 }

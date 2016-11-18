@@ -224,7 +224,7 @@ public class ClientHandler implements Runnable{
 		String directoryName = this.user.getUser();
 		String filename = email.getID();
 	
-		File directory = new File(String.valueOf(root)+"/"+String.valueOf(directoryName));
+		File directory = new File(String.valueOf(root)+String.valueOf(directoryName));
 		if (! directory.exists()){
 			directory.mkdir();
 		}
