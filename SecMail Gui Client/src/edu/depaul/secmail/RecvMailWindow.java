@@ -305,7 +305,7 @@ public class RecvMailWindow extends Shell {
 			Shell noNotifications = new Shell();
 			MessageBox messageBox = new MessageBox(noNotifications, SWT.OK);
 			messageBox.setText("No Notifications");
-			messageBox.setMessage("You have no notifications! Get some friends!");		
+			messageBox.setMessage("You have no notifications!");		
 			messageBox.open();
 		}
 		

@@ -201,12 +201,14 @@ public class EmailReader extends Shell {
 		
 		//handle the attachments
 		LinkedList<File> attachments = email.getAttachmentList();
-		for (File f : attachments)
-		{
-			TableItem t = new TableItem(tblAttachments, 0);
-			t.setData(f);
-			t.setText(0, f.getName()); // filename
-			t.setText(1, String.valueOf(f.length()));
+		if(attachments != null){
+			for (File f : attachments)
+			{
+				TableItem t = new TableItem(tblAttachments, 0);
+				t.setData(f);
+				t.setText(0, f.getName()); // filename
+				t.setText(1, String.valueOf(f.length()));
+			}		
 		}
 		
 		//set the body to something.
