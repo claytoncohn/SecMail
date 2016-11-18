@@ -220,7 +220,7 @@ public class ClientHandler implements Runnable{
 		if (! directory.exists()){
 			directory.mkdir();
 		}
-		File writeTo = new File(directory + "/" + filename + ".txt");
+		File writeTo = new File(directory + "/" + filename);
 		email.writeToFile(writeTo);
 		Log.Debug("Wrote new email file: "+writeTo.getAbsolutePath());
 		return;
@@ -256,7 +256,7 @@ public class ClientHandler implements Runnable{
 			String directoryName = this.user.getUser();
 			
 			// Get the file
-			File file = new File(String.valueOf(root)+String.valueOf(directoryName)+ "/" + id + ".txt");
+			File file = new File(String.valueOf(root)+String.valueOf(directoryName)+ "/" + id);
 			System.out.println(file.getAbsolutePath());
 			
 			// Write the email to the stream
