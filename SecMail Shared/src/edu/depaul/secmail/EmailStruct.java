@@ -3,10 +3,12 @@ package edu.depaul.secmail;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -25,6 +27,8 @@ public class EmailStruct implements Serializable{
 	private String id = null;
 	private byte[] encryptedBytes = null;
 	private boolean encrypted = false;
+	private transient FileInputStream fis;
+	private transient FileOutputStream fos;
 	
 	//default empty constructor.
 	EmailStruct()
@@ -36,10 +40,9 @@ public class EmailStruct implements Serializable{
 	EmailStruct(File f)
 	{		
 		try {
-			FileInputStream fis = new FileInputStream(f);
-			BufferedReader input = new BufferedReader(new InputStreamReader(fis));
+			fis = new FileInputStream(f);
 			String line = null;
-			while ((line = input.readLine()) != null)
+			while ((line = custom_readLine()) != null)
 			{
 				if (line.startsWith("to:"))
 				{
@@ -78,7 +81,7 @@ public class EmailStruct implements Serializable{
 					//add the body
 					StringBuffer buffer = new StringBuffer();
 					//consume the rest of the file
-					while ((line = input.readLine()) != null)
+					while ((line = custom_readLine()) != null)
 						buffer.append(line);
 					body = buffer.toString();
 				}
@@ -87,16 +90,18 @@ public class EmailStruct implements Serializable{
 					encrypted = true;
 					
 					//consume the rest of the file
-					byte[] b = new byte[(int)(fis.getChannel().size() - fis.getChannel().position())];
-					fis.read(b);
-					encryptedBytes = b;
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					int nextByte;
+					while ((nextByte = fis.read()) != -1)
+						bos.write((byte)nextByte);
+					encryptedBytes = bos.toByteArray();
 				}
 				else
 				{
 					fileFormatError(line);
 				}
 			}
-			input.close();
+			fis.close();
 		} catch (Exception e)
 		{
 			System.out.println(e);
@@ -175,41 +180,40 @@ public class EmailStruct implements Serializable{
 	public boolean writeToFile(File f)
 	{
 		try {
-			FileOutputStream fos = new FileOutputStream(f);
-			PrintWriter out = new PrintWriter(new PrintStream(fos));
+			fos = new FileOutputStream(f);
 			//write the recipients
 			for (UserStruct recipient : recipients)
 			{
-				out.print("to: ");
-				out.println(recipient.compile());
+				custom_write("to: ");
+				custom_writeLine(recipient.compile());
 			}
 			
 			//write the attachments
 			if (attachments != null)
 				for (File attachment : attachments)
 				{
-					out.print("attachment: ");
-					out.println(attachment.getAbsolutePath());
+					custom_write("attachment: ");
+					custom_writeLine(attachment.getAbsolutePath());
 				}
 			
 			//write the subject
-			out.print("subject: ");
-			out.println(subject);
+			custom_write("subject: ");
+			custom_writeLine(subject);
 			
 			//the rest of the email is the body.
 			if (encrypted)
 			{
-				out.println("Encrypted:");
+				custom_writeLine("Encrypted:");
 				fos.write(encryptedBytes);
 			}
 			else
 			{	
-				out.println("body: ");
-				out.print(body);
+				custom_writeLine("body: ");
+				custom_write(body);
 			}
 				
 			
-			out.close();
+			fos.close();
 			return true;
 		} catch (Exception e)
 		{
@@ -306,6 +310,59 @@ public class EmailStruct implements Serializable{
 	public boolean isEncrypted()
 	{
 		return encrypted;
+	}
+	
+	//custom method to read a line of characters from the input file.
+	//returns null on EOF or exception
+	private String custom_readLine()
+	{
+		final int newline = 10;
+		StringBuffer sb = new StringBuffer();
+		int nextByte;
+		try {
+			while ((nextByte = fis.read()) != newline)
+	        {
+	          if (nextByte == -1) //if EOF
+	            break;
+	
+	          sb.append((char)nextByte);
+	        }
+		} catch (IOException e) 
+		{
+			//e.printStackTrace();
+			sb.setLength(0);
+		}
+		
+		if (sb.length() == 0)
+			return null;
+		else
+			return sb.toString();
+	}
+	
+	private void custom_writeLine(String toWrite)
+	{
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		PrintWriter writer = new PrintWriter(bos);
+		writer.println(toWrite);
+		writer.flush();
+		try {
+			fos.write(bos.toByteArray());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void custom_write(String toWrite)
+	{
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		PrintWriter writer = new PrintWriter(bos);
+		writer.print(toWrite);
+		writer.flush();
+		try {
+			fos.write(bos.toByteArray());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
