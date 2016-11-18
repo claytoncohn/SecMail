@@ -94,7 +94,6 @@ public class SecMailServer {
 	}
 	
 	//save the notifications list to a file
-	//TODO: make the location of the notifications file part of Config.
 	//Jacob Burkamper
 	private static void saveNotification(Notification n) 
 	{
@@ -110,11 +109,7 @@ public class SecMailServer {
 	
 	public static synchronized LinkedList<Notification> getNotificationList(String username)
 	{
-		//TODO: test this
-		
 		//search the notification list and return a new linked list containing notifications for the user only
-		//don't forget to make this thread safe! Apparently this done
-		//for now, just return an empty list.
 		LinkedList<Notification> ret = new LinkedList<Notification>();
 		for (Notification n : notifications){
 			if (n.getTo().compile().equals(username)){
@@ -125,19 +120,17 @@ public class SecMailServer {
 		return ret;
 	}
 	
+	//Jacob Burkamper
 	public static synchronized void addNotificationToList(Notification n)
-	{
-		//TODO: test this
-		
-		//add the notification to the list.
-		//don't forget to synchronize! (thread safety!)
-		
+	{		
+		//add the notification to the list.		
 		notifications.add(n);
 		saveNotification(n); // save the notification to disk
 		return;
 	}
 	
 	//returns the Config object being used by the server
+	//Jacob Burkamper
 	public static Config getGlobalConfig()
 	{
 		return serverConfig;
