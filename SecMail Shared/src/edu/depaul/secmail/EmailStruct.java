@@ -137,6 +137,8 @@ public class EmailStruct implements Serializable{
 	//Add the File attachment to the list of attachments for this email
 	public void addAttachment(File attachment)
 	{
+		if (attachments == null)
+			attachments = new LinkedList<File>();
 		attachments.add(attachment);
 	}
 	
@@ -315,6 +317,14 @@ public class EmailStruct implements Serializable{
 	public boolean isEncrypted()
 	{
 		return encrypted;
+	}
+	
+	//returns whether the email has attachments in the attachment list
+	public boolean hasAttachments()
+	{
+		if (attachments == null)
+			return false;
+		else return !attachments.isEmpty();
 	}
 	
 	//custom method to read a line of characters from the input file.

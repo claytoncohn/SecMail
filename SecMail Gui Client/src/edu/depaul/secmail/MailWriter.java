@@ -1,8 +1,11 @@
 package edu.depaul.secmail;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
@@ -368,6 +371,15 @@ public class MailWriter extends Shell {
 			//io.flush();
 			io.writeObject(email);
 			
+			//Jacob Burkamper
+			if (email.hasAttachments())
+				sendAttachments();
+			else
+			{
+				io.writeObject(new PacketHeader(Command.END_EMAIL));
+			}
+			// end Jacob Burkamper
+			
 			//get the response
 			PacketHeader responsePacket = (PacketHeader)io.readObject();
 
@@ -381,6 +393,52 @@ public class MailWriter extends Shell {
 			returnString = "Exception thrown while trying to send email.\n" + e;
 		}
 		return returnString;
+	}
+	
+	//send the attachments from the email to the server.
+	private void sendAttachments() throws IOException
+	{
+		System.out.println("Sending Attachments!"); // TODO: Delete debug code
+		final int ARRAY_SIZE = 1000; // size of array to send
+		
+		io.writeObject(new PacketHeader(Command.START_ATTACHMENTS));
+		LinkedList<File> attachments = email.getAttachmentList();
+		for (File f : attachments)
+		{
+			PacketHeader ph = new PacketHeader(Command.SEND_ATTACHMENT);
+			
+			//calculate the number of byte arrays we will need
+			long fSize = f.length();
+			long numArrays = fSize / ARRAY_SIZE;
+			if (fSize % ARRAY_SIZE > 0)
+				numArrays++;
+			
+			//add the number of byte arrays to the packetheader
+			ph.setLength(numArrays);
+			
+			//add the original name of the file to packetheader
+			ph.setString(f.getName());
+			
+			//send the packet header over the network
+			io.writeObject(ph);
+			
+			//begin sending the file
+			FileInputStream fis = new FileInputStream(f);
+			byte[] bArr = new byte[ARRAY_SIZE];
+			int lengthRead = 0;
+			while((lengthRead = fis.read(bArr)) != -1) //read until the end of file
+			{
+				byte[] sendArray = null;
+				if (lengthRead < ARRAY_SIZE) // we didn't read a full array, send a truncated copy
+					sendArray = Arrays.copyOf(bArr, lengthRead);
+				else
+					sendArray = bArr; // we did read the full array. java shallow assignment ftw
+				io.writeObject(sendArray);
+			}
+			fis.close(); // done reading the file
+		}
+		// we've sent all the attachments.
+		io.writeObject(new PacketHeader(Command.END_ATTACHMENTS));
 	}
 	
 	// Josh Clark

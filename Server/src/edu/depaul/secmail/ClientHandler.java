@@ -3,10 +3,13 @@ package edu.depaul.secmail;
 import java.util.LinkedList;
 import java.util.concurrent.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
 import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -162,6 +165,9 @@ public class ClientHandler implements Runnable{
 			
 			//spawn a new thread to handle sending out the notifications here
 			(new Thread(new NotificationSender(newNotificationList))).start();
+			
+			receiveAttachments(newEmail);
+			
 			storeEmail(newEmail);
 			
 			//debug code, delete for release
@@ -169,12 +175,63 @@ public class ClientHandler implements Runnable{
 			Log.Debug("Subject: " + newEmail.getSubject());
 			Log.Debug("Body: " + newEmail.getBody());
 			
+			
+			
 			PacketHeader successfulEmailPacket = new PacketHeader();
 			successfulEmailPacket.setCommand(Command.CONNECT_SUCCESS);
 			io.writeObject(successfulEmailPacket);
 		
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	//Jacob Burkamper
+	//receives the attachments associated with email from the client
+	private void receiveAttachments(EmailStruct email)
+	{
+		try {
+			PacketHeader hasAttachmentHeader = (PacketHeader)io.readObject();
+			if (hasAttachmentHeader.getCommand() == Command.END_EMAIL)
+				return; // no attachments, nothing to do.
+			
+			//handle the attachments
+			for (
+					PacketHeader header = (PacketHeader)io.readObject();
+					header.getCommand() != Command.END_ATTACHMENTS;
+					header = (PacketHeader)io.readObject()
+					)
+			{
+				if (header.getCommand() != Command.SEND_ATTACHMENT)
+					Log.Error("Protocol Error! Next header was not attachment send");
+				
+				//create a temporary file
+				String tmpPath = SecMailServer.getGlobalConfig().getMailRoot() + user.getUser() + "/"
+						+email.getID() + ".tmp-attach";
+				File tmp = new File(tmpPath);
+				FileOutputStream fos = new FileOutputStream(tmp);
+				
+				//for every array we are expecting
+				for (int i = 0; i < header.getLength(); i++)
+				{
+					byte[] b = (byte[])io.readObject(); //read the array from the network
+					fos.write(b); // write the array to the file
+				}
+				
+				//move the now-complete file from temp to its final location
+				String finalPath = SecMailServer.getGlobalConfig().getUserDirectory(user.getUser()) + email.getID() + "." + header.getString();
+				tmp.renameTo(new File(finalPath));
+				
+				//add the retrieved file to the email
+				email.addAttachment(tmp);
+			}
+		} catch (ClassNotFoundException e)
+		{
+			Log.Error("ClassNotFound while receiving attachments");
+			Log.Error(e.toString());
+		} catch (IOException e) {
+			Log.Error("IO Error while trying to read attachments");
+			Log.Error(e.toString());
 		}
 	}
 	
