@@ -30,6 +30,7 @@ public class PasswordDialog extends Dialog {
 	public PasswordDialog(Shell parent, int style) {
 		super(parent, style);
 		setText("SWT Dialog");
+		createContents();
 	}
 
 	/**
@@ -37,7 +38,6 @@ public class PasswordDialog extends Dialog {
 	 * @return the result
 	 */
 	public boolean open() {
-		createContents();
 		shlPassword.open();
 		shlPassword.layout();
 		Display display = getParent().getDisplay();

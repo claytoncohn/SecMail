@@ -33,6 +33,7 @@ public class EmailReader extends Shell {
 	private Table tblAttachments;
 	private StyledText stxtBody;
 	private DHEncryptionIO io;
+	private EmailStruct email;
 
 	/**
 	 * Launch the application.
@@ -281,8 +282,25 @@ public class EmailReader extends Shell {
 			}		
 		}
 		
-		//set the body to something.
-		stxtBody.setText(email.getBody());
+		this.email = email;
+	}
+	
+	@Override
+	public void open() 
+	{
+		if (email.isEncrypted())
+		{
+			PasswordDialog pd = new PasswordDialog(this, SWT.PRIMARY_MODAL);
+			pd.setMessage("The email you are trying to read is encrypted. Please enter the password.");
+			if (pd.open())
+			{
+				email.decrypt(pd.getText());
+				stxtBody.setText(email.getBody());
+			}
+			else
+				return;
+		}
+		super.open();		
 	}
 
 	/**
