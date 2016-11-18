@@ -87,7 +87,8 @@ public class MailWriter extends Shell {
 		subjectText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Composite composite_1 = new Composite(this, SWT.NONE);
-		fd_composite.bottom = new FormAttachment(100, -175);
+		fd_composite.bottom = new FormAttachment(composite_1, 0);
+		composite_1.setLayout(new FormLayout());
 		FormData fd_composite_1 = new FormData();
 		fd_composite_1.top = new FormAttachment(composite, 6);
 		fd_composite_1.left = new FormAttachment(composite, 0, SWT.LEFT);
@@ -95,11 +96,20 @@ public class MailWriter extends Shell {
 		composite_1.setLayoutData(fd_composite_1);
 		
 		Label lblMailBody = new Label(composite_1, SWT.NONE);
-		lblMailBody.setBounds(10, 10, 55, 15);
+		FormData fd_lblMailBody = new FormData();
+		fd_lblMailBody.right = new FormAttachment(100, 0);
+		fd_lblMailBody.left = new FormAttachment(0, 10);
+		fd_lblMailBody.top = new FormAttachment(0, 10);
+		lblMailBody.setLayoutData(fd_lblMailBody);
 		lblMailBody.setText("Mail Body:");
 		
-		bodyText = new Text(composite_1, SWT.BORDER);
-		bodyText.setBounds(10, 31, 394, 87);
+		bodyText = new Text(composite_1, SWT.BORDER | SWT.WRAP);
+		FormData fd_bodyText = new FormData();
+		fd_bodyText.top = new FormAttachment(lblMailBody, 6);
+		fd_bodyText.left = new FormAttachment(lblMailBody, 0, SWT.LEFT);
+		fd_bodyText.bottom = new FormAttachment(100, -30);
+		fd_bodyText.right = new FormAttachment(100, -10);
+		bodyText.setLayoutData(fd_bodyText);
 		
 		Button btnAddAttachment = new Button(this, SWT.NONE);
 		fd_composite_1.bottom = new FormAttachment(btnAddAttachment, -6);
@@ -218,7 +228,7 @@ public class MailWriter extends Shell {
 	 */
 	protected void createContents() {
 		setText("New Mail");
-		setSize(450, 300);
+		setSize(648, 503);
 
 	}
 

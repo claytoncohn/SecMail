@@ -32,6 +32,7 @@ public class MainWindow {
 	protected Shell shlSecmail;
 	private DHEncryptionIO serverIO = null;
 	private static String mailDir = "./mail/";
+	private static final int SHELL_TRIM = SWT.CLOSE | SWT.TITLE | SWT.MIN;
 
 	/**
 	 * Launch the application.
@@ -77,7 +78,7 @@ public class MainWindow {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shlSecmail = new Shell();
+		shlSecmail = new Shell(SHELL_TRIM & (~SWT.RESIZE));
 		shlSecmail.addShellListener(new ShellAdapter() {
 			@Override
 			public void shellClosed(ShellEvent e) {
