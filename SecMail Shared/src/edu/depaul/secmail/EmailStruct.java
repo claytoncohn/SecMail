@@ -1,5 +1,6 @@
 package edu.depaul.secmail;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,6 +11,9 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.math.BigInteger;
 
@@ -245,25 +249,63 @@ public class EmailStruct implements Serializable{
 	}
 	
 	//encrypts the body of this EmailStruct
-	public void encrypt(String key)
+	public void encrypt(String pass)
 	{
-		if (body != null && !encrypted)
+		try {
+			byte[] key = pass.getBytes("UTF-8");
+			MessageDigest sha = MessageDigest.getInstance("SHA-1");
+			key = sha.digest(key);
+			key = Arrays.copyOf(key, 16); // use only first 128 bit
+			if (body != null && !encrypted)
+			{
+				encryptedBytes = SecMailStaticEncryption.SecMailEncryptAES(body, key); // encrypt the body using the key
+				body = null; // erase the body
+				encrypted = true; // mark that we're encrypted
+			}
+		}
+		catch (UnsupportedEncodingException e)
 		{
-			encryptedBytes = SecMailStaticEncryption.SecMailEncryptAES(body, key.getBytes()); // encrypt the body using the key
-			body = null; // erase the body
-			encrypted = true; // mark that we're encrypted
-		}		
+			System.out.println("Unable to encrypt email.");
+			e.printStackTrace();
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	//decrypts an already-encrypted body
-	public void decrypt(String key)
+	//returns true if successful or false if not
+	public boolean decrypt(String pass)
 	{
-		if (encrypted)
-		{
-			body = SecMailStaticEncryption.SecMailDecryptAES(encryptedBytes, key.getBytes());
-			encryptedBytes = null; // delete the encrypted portion
-			encrypted = false; // set that we're no longer encrypted.
+		try {
+			byte[] key = pass.getBytes("UTF-8");
+			MessageDigest sha = MessageDigest.getInstance("SHA-1");
+			key = sha.digest(key);
+			key = Arrays.copyOf(key, 16); // use only first 128 bit
+			if (encrypted)
+			{
+				body = SecMailStaticEncryption.SecMailDecryptAES(encryptedBytes, key);
+				encryptedBytes = null; // delete the encrypted portion
+				encrypted = false; // set that we're no longer encrypted.
+				return true; //TODO: make this actually check to see if decryption was successful.
+			}
 		}
+		catch (UnsupportedEncodingException e)
+		{
+			System.out.println("Unable to encrypt email.");
+			e.printStackTrace();
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean isEncrypted()
+	{
+		return encrypted;
 	}
 
 }
