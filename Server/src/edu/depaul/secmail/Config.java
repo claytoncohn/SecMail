@@ -6,12 +6,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class Config {
+	private final String LOG_FILE_DEFAULT_PATH = "./SecMailServer.log";
 	private int port = 57890;
 	private int backlog = 15;
 	private String configFilePath = null;
 	private File configFile = null;
-	private String logFilePath = "./SecMailServer.log";
-	private File logFile = new File(logFilePath);
+	private String logFilePath = null;
+	private File logFile = null;
 	private String mailDir = "./mail/";
 	private String domain = "localhost";
 	
@@ -36,6 +37,10 @@ public class Config {
 					System.err.println("Unknown command line option: " + args[i]);
 				}
 			}
+		}
+		if (logFile == null) // if the log file hasn't been set up yet.
+		{
+			SetLogFile(LOG_FILE_DEFAULT_PATH);
 		}
 		Log.Debug("finished constructing Config object");
 	}
@@ -126,14 +131,24 @@ public class Config {
 		Log.Debug("Setting Log File path to + \"" + newLogFilePath + "\"");
 		
 		//get the file handle
-		File file = new File(logFilePath);
-		if (file.canWrite())
-		{
-			logFilePath = newLogFilePath;
-			logFile = file;
+		File file = new File(newLogFilePath);
+		try {
+			if ((file.exists() && file.canWrite()) || file.createNewFile())
+			{
+				logFilePath = newLogFilePath;
+				logFile = file;
+			}
+			else
+			{
+				System.err.println("Unable to open file \""+newLogFilePath+"\" for writing as log file");
+				//kill the program
+				System.exit(20);
+			}
+		} catch (IOException e) {
+			System.err.println("Error trying to create log file");
+			System.exit(21);
 		}
-		else
-			System.err.println("Unable to open file \""+newLogFilePath+"\" for writing as log file");
+		
 	}
 	
 	private void setDomain(String newDomain)

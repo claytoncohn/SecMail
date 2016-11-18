@@ -74,7 +74,7 @@ public class Log {
 			//write the buffer if there is one
 			if (buffer != null)
 			{
-				logFile.println(buffer.toString());
+				logFile.print(buffer.toString()); // no need to println, all buffer objects have newline appended already
 				buffer = null; // done with the buffer
 			}
 			
