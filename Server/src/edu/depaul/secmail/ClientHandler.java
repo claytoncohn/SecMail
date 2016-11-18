@@ -82,7 +82,6 @@ public class ClientHandler implements Runnable{
 				break;
 			case SEND_EMAIL:
 				Log.Debug("Start Email Handler");
-				System.out.println(user.getUser());
 				handleEmail();
 				break;
 			case GET_NOTIFICATION:
@@ -261,18 +260,23 @@ public class ClientHandler implements Runnable{
 			System.out.println(file.getAbsolutePath());
 			
 			// Write the email to the stream
-			if(file.exists()){
-				EmailStruct email = new EmailStruct(file);
-				try {
-					io.writeObject(email);
-					Log.Debug("Email written to stream");
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			try {
+				if(file.exists()){
+					PacketHeader sendEmail = new PacketHeader(Command.RECEIVE_EMAIL);
+					EmailStruct email = new EmailStruct(file);
+						io.writeObject(sendEmail);
+						io.flush();
+						io.writeObject(email);
+						Log.Debug("Email written to stream");
 				}
-				
-			}
+			else{
+				PacketHeader noEmail = new PacketHeader(Command.NO_EMAIL);
+				io.writeObject(noEmail);
+				}	
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
 		}
 		
 	}
