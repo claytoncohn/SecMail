@@ -107,12 +107,12 @@ public class SecMailServer {
 		}
 	}
 	
-	public static synchronized LinkedList<Notification> getNotificationList(String username)
+	public static synchronized LinkedList<Notification> getNotificationList(UserStruct username)
 	{
 		//search the notification list and return a new linked list containing notifications for the user only
 		LinkedList<Notification> ret = new LinkedList<Notification>();
 		for (Notification n : notifications){
-			if (n.getTo().compile().equals(username)){
+			if (n.getTo().compile().equals(username.compile())){
 				ret.add(n);
 			}
 		}

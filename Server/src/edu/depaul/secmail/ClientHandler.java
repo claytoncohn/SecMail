@@ -149,14 +149,6 @@ public class ClientHandler implements Runnable{
 		}
 	}
 	
-	//authenticate the user vs the password store
-	private boolean authenticate(String user, String password)
-	{
-		Log.Out("Got authentication request for user: "+user+","+getIdentifier());
-		//remove this and implement logic.
-		return true;
-	}
-	
 	// Josh Clark
 	private void handleEmail(){
 		//die early if the user hasn't authenticated.
@@ -238,7 +230,7 @@ public class ClientHandler implements Runnable{
 	private void handleGetNotification()
 	{
 		//TODO: test this
-		LinkedList<Notification> notifications = SecMailServer.getNotificationList(this.user.compile());
+		LinkedList<Notification> notifications = SecMailServer.getNotificationList(this.user);
 	
 		
 		try {

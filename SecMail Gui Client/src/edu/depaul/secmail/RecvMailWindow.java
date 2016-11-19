@@ -105,7 +105,6 @@ public class RecvMailWindow extends Shell {
 		btnClose.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				dumpNotificationsToFile();
 				RecvMailWindow.this.close();
 			}
 		});
@@ -133,7 +132,6 @@ public class RecvMailWindow extends Shell {
 	@Override
 	public void open()
 	{
-		loadNotificationsFromFile();
 		super.open();
 	}
 
@@ -172,16 +170,18 @@ public class RecvMailWindow extends Shell {
 				@SuppressWarnings("unchecked")
 				LinkedList<Notification> notifications = (LinkedList<Notification>) io.readObject();
 				for(Notification n : notifications){
-					
-					//first check to make sure the notification isn't already in the table.
-					boolean notificationExists = false;
-					for (TableItem t : table.getItems())
-					{
-						if (((Notification)t.getData()).getID().equals(n.getID())) // if this table item has a notification with the same id
-							notificationExists = true; // set the flag to true
+					if(n.getType() == NotificationType.NEW_EMAIL){
+						//first check to make sure the notification isn't already in the table.
+						boolean notificationExists = false;
+						for (TableItem t : table.getItems())
+						{
+							if (((Notification)t.getData()).getID().equals(n.getID())) // if this table item has a notification with the same id
+								notificationExists = true; // set the flag to true
+						}
+						if (!notificationExists) // only if the notification didn't already exist
+							addNewTableItem(n, false); // new notification, don't have the email yet				
 					}
-					if (!notificationExists) // only if the notification didn't already exist
-						addNewTableItem(n, false); // new notification, don't have the email yet
+					
 				}
 							    	
 		    }
@@ -192,68 +192,6 @@ public class RecvMailWindow extends Shell {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-	
-	//Reads the notifications file from the filesystem and loads all the old notifications that we've already gotten.
-	private void loadNotificationsFromFile()
-	{
-		//open the notification file
-		File notificationfile = new File("notifications.bin");
-		ObjectInputStream reader = null;
-		//read the file
-		try 
-		{
-		    reader = new ObjectInputStream(new FileInputStream(notificationfile));
-		    Notification n = null; 
-
-		    while ((n = (Notification)reader.readObject()) != null) {
-		        //for each notification read,
-				//	check to see if an email matching the notifications ID already exists in the maildir
-		        File emailFile = new File(MainWindow.getMailDir() + n.getID());
-		        addNewTableItem(n, emailFile.exists());
-		    }
-		        
-		} catch (EOFException e) {
-			// do nothing, just reached the end of the file
-		}
-		catch (FileNotFoundException e) {
-			// if the file isn't found, that's fine, there just aren't notifications yet.
-		} catch (IOException e) {
-			System.out.println("IOExceoption trying to read notifications file.");
-			System.out.println(e);
-		} catch (ClassNotFoundException e) {
-			System.out.println("Error while reading notifications file.");
-			System.out.println(e);
-		}
-        try {
-        	if (reader != null) 
-        		reader.close();
-        } catch (Exception e){
-        	System.out.println("Exception while tring to close notification file");
-        	System.out.println(e);
-        }
-	}
-	
-	//put the notifications in the notifications list into the notifications file so they are saved.
-	private void dumpNotificationsToFile()
-	{
-		try {
-			FileOutputStream f = new FileOutputStream("notifications.bin", false);
-			ObjectOutputStream notiwriter = new ObjectOutputStream(f);
-			//for each item in the table
-			for (TableItem i : table.getItems())
-			{
-				Notification n = (Notification)i.getData(); // get the original notification used
-				notiwriter.writeObject(n);
-			}
-			notiwriter.close();
-		} catch (FileNotFoundException e) {
-			System.err.println("Error, unable to open File to write notifications");
-			System.err.println(e);
-		} catch (IOException e) {
-			System.out.println("Error while writing to file");
-			System.out.println(e);
 		}
 	}
 	
