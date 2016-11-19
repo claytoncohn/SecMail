@@ -125,6 +125,10 @@ public class SecMailServer {
 	{		
 		//add the notification to the list.		
 		notifications.add(n);
+		if(n.getType() == NotificationType.EMAIL_RECEIVED){
+			Log.Debug("Email Confirmation Recieved");
+		}
+		
 		saveNotification(n); // save the notification to disk
 		return;
 	}

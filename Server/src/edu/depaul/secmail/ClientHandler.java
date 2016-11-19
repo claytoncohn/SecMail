@@ -97,7 +97,7 @@ public class ClientHandler implements Runnable{
 				handleNewNotificationSent();
 				break;
 			case RECEIVE_EMAIL:
-				retrieveEmail(getNotificationID());
+				retrieveEmail(getNotificationID(), getFromUser());
 		default:
 			break;
 		}
@@ -164,21 +164,14 @@ public class ClientHandler implements Runnable{
 		//Read Email from input stream
 		try {
 			EmailStruct newEmail = (EmailStruct)io.readObject();
+			
 			LinkedList<Notification> newNotificationList = newEmail.getNotificationList(user);
 			
 			//spawn a new thread to handle sending out the notifications here
 			(new Thread(new NotificationSender(newNotificationList))).start();
 			
-			receiveAttachments(newEmail);
-			
-			storeEmail(newEmail);
-			
-			//debug code, delete for release
-			Log.Debug("Recipient: " + newEmail.getToString());
-			Log.Debug("Subject: " + newEmail.getSubject());
-			Log.Debug("Body: " + newEmail.getBody());
-			
-			
+			receiveAttachments(newEmail);		
+			storeEmail(newEmail);			
 			
 			PacketHeader successfulEmailPacket = new PacketHeader();
 			successfulEmailPacket.setCommand(Command.CONNECT_SUCCESS);
@@ -302,7 +295,7 @@ public class ClientHandler implements Runnable{
 	}
 	 
 	// Josh Clark
-	private void retrieveEmail(String id)
+	private void retrieveEmail(String id, UserStruct fromUser)
 	{
 		// Check if user is null
 		if(user == null){	
@@ -314,7 +307,7 @@ public class ClientHandler implements Runnable{
 			
 			// Get email directory
 			String root = SecMailServer.getGlobalConfig().getMailRoot();
-			String directoryName = this.user.getUser();
+			String directoryName = fromUser.getUser();
 			
 			// Get the file
 			File file = new File(String.valueOf(root)+String.valueOf(directoryName)+ "/" + id);
@@ -325,10 +318,12 @@ public class ClientHandler implements Runnable{
 				if(file.exists()){
 					PacketHeader sendEmail = new PacketHeader(Command.RECEIVE_EMAIL);
 					EmailStruct email = new EmailStruct(file);
-						io.writeObject(sendEmail);
-						io.flush();
-						io.writeObject(email);
-						Log.Debug("Email written to stream");
+					Notification confirmation = new Notification(fromUser, user, NotificationType.EMAIL_RECEIVED, email);
+					SecMailServer.addNotificationToList(confirmation);
+					io.writeObject(sendEmail);
+					io.flush();
+					io.writeObject(email);
+					Log.Debug("Email written to stream");
 				}
 			else{
 				PacketHeader noEmail = new PacketHeader(Command.NO_EMAIL);
@@ -358,5 +353,22 @@ public class ClientHandler implements Runnable{
 		}
 		return null;	
 	}
+	
+	// Josh Clark
+		private UserStruct getFromUser(){
+			
+			// read in the id sent over from client
+			try {
+				UserStruct fromUser = (UserStruct)io.readObject();
+				return fromUser;
+			} catch (ClassNotFoundException e) {
+				Log.Error("ClassNotFoundException thrown while trying to read a notification from another server");
+				Log.Error(e.toString());
+			} catch (IOException e) {
+				Log.Error("IOException thrown while reading notification from remote server");
+				e.printStackTrace();
+			}
+			return null;	
+		}
 	
 }

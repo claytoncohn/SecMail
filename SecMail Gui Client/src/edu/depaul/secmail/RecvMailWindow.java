@@ -157,6 +157,7 @@ public class RecvMailWindow extends Shell {
 		try {
 			
 			io.writeObject(getNotification);
+			
 			PacketHeader notificationPacket = null;
 			notificationPacket = (PacketHeader) io.readObject();
 		    if (notificationPacket.getCommand() == Command.END_NOTIFICATION){
@@ -171,6 +172,7 @@ public class RecvMailWindow extends Shell {
 				@SuppressWarnings("unchecked")
 				LinkedList<Notification> notifications = (LinkedList<Notification>) io.readObject();
 				for(Notification n : notifications){
+					
 					//first check to make sure the notification isn't already in the table.
 					boolean notificationExists = false;
 					for (TableItem t : table.getItems())
@@ -299,6 +301,8 @@ public class RecvMailWindow extends Shell {
 			io.writeObject(getEmailHeader);
 			//send ID to server 
 			io.writeObject(n.getID());
+			//send from user to server for email receipt
+			io.writeObject(n.getFrom());
 			
 			PacketHeader responsePacket = (PacketHeader) io.readObject();
 			if(responsePacket.getCommand() == Command.RECEIVE_EMAIL){
