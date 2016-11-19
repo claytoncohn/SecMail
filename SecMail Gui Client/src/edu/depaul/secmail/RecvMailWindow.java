@@ -309,6 +309,10 @@ public class RecvMailWindow extends Shell {
 			io2.writeObject(token);
 			//send ID to server 
 			io2.writeObject(n.getID());
+			//Geri and Clayton
+			
+			//TODO - handle if token is good or bad
+			
 			
 			PacketHeader responsePacket = (PacketHeader) io.readObject();
 			if(responsePacket.getCommand() == Command.RECEIVE_EMAIL){
