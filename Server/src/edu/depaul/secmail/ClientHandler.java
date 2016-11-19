@@ -178,6 +178,7 @@ public class ClientHandler implements Runnable{
 			io.writeObject(successfulEmailPacket);
 		
 		} catch (ClassNotFoundException | IOException e) {
+			Log.Error("Error thrown while trying to read User from client");
 			e.printStackTrace();
 		}
 	}
@@ -330,7 +331,7 @@ public class ClientHandler implements Runnable{
 				io.writeObject(noEmail);
 				}	
 			} catch (IOException e) {
-				Log.Error("IOException thrown while reading notification from remote server");
+				Log.Error("IOException thrown while writing email to client");
 				e.printStackTrace();
 			}		
 		}
@@ -345,30 +346,30 @@ public class ClientHandler implements Runnable{
 			String id = (String)io.readObject();
 			return id;
 		} catch (ClassNotFoundException e) {
-			Log.Error("ClassNotFoundException thrown while trying to read a notification from another server");
+			Log.Error("ClassNotFoundException thrown while trying to read Email ID from client");
 			Log.Error(e.toString());
 		} catch (IOException e) {
-			Log.Error("IOException thrown while reading notification from remote server");
+			Log.Error("IOException thrown while trying to read Email ID from client");
 			e.printStackTrace();
 		}
 		return null;	
 	}
 	
 	// Josh Clark
-		private UserStruct getFromUser(){
-			
-			// read in the id sent over from client
-			try {
-				UserStruct fromUser = (UserStruct)io.readObject();
-				return fromUser;
-			} catch (ClassNotFoundException e) {
-				Log.Error("ClassNotFoundException thrown while trying to read a notification from another server");
-				Log.Error(e.toString());
-			} catch (IOException e) {
-				Log.Error("IOException thrown while reading notification from remote server");
-				e.printStackTrace();
-			}
-			return null;	
+	private UserStruct getFromUser(){
+		
+		// read in the id sent over from client
+		try {
+			UserStruct fromUser = (UserStruct)io.readObject();
+			return fromUser;
+		} catch (ClassNotFoundException e) {
+			Log.Error("ClassNotFoundException thrown while trying to read User from client");
+			Log.Error(e.toString());
+		} catch (IOException e) {
+			Log.Error("IOException thrown while trying to read User from client");
+			e.printStackTrace();
 		}
+		return null;	
+	}
 	
 }
