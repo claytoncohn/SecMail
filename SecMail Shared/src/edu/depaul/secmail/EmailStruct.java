@@ -73,13 +73,9 @@ public class EmailStruct implements Serializable{
 				else if (line.startsWith("subject:"))
 				{
 					//add the subject
-					String[] split = line.split(":");
-					if (split.length > 2)
-						fileFormatError(line);
-					else
-					{
-						this.subject = split[1].trim();
-					}
+					//String[] split = line.split(":");
+					int idx = line.indexOf(':');
+					this.subject = line.substring(idx+1).trim();
 				}
 				else if (line.startsWith("body:"))
 				{
