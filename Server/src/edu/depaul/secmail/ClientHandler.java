@@ -3,7 +3,10 @@ package edu.depaul.secmail;
 import java.util.LinkedList;
 import java.util.concurrent.*;
 import java.net.Socket;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
 import java.io.PrintWriter;
@@ -217,13 +220,14 @@ public class ClientHandler implements Runnable{
 					byte[] b = (byte[])io.readObject(); //read the array from the network
 					fos.write(b); // write the array to the file
 				}
-				
+				fos.close();
 				//move the now-complete file from temp to its final location
-				String finalPath = SecMailServer.getGlobalConfig().getUserDirectory(user.getUser()) + email.getID() + "." + header.getString();
-				tmp.renameTo(new File(finalPath));
+				Path finalPath = Paths.get(SecMailServer.getGlobalConfig().getUserDirectory(user.getUser()) + email.getID() + "." + header.getString());
+				Files.move(tmp.toPath(), finalPath, StandardCopyOption.ATOMIC_MOVE);
 				
 				//add the retrieved file to the email
-				email.addAttachment(tmp);
+				File finalFile = finalPath.toFile();
+				email.addAttachment(finalFile);
 			}
 		} catch (ClassNotFoundException e)
 		{
