@@ -123,8 +123,10 @@ public class ClientHandler implements Runnable{
 			String username = (String)io.readObject();
 			String password = (String)io.readObject();
 			
+                       	Auth authenticate = new Auth();
+                       	
 			//authenticate
-			if (authenticate(username,password))
+			if (authenticate.login(username,password))
 			{
 				io.writeObject(new PacketHeader(Command.LOGIN_SUCCESS));
 				user = new UserStruct(username, SecMailServer.getGlobalConfig().getDomain(), SecMailServer.getGlobalConfig().getPort());
