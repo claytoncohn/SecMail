@@ -335,7 +335,7 @@ public class ClientHandler implements Runnable{
 				io.writeObject(noEmail);
 				}	
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				Log.Error("IOException thrown while reading notification from remote server");
 				e.printStackTrace();
 			}		
 		}
@@ -350,11 +350,11 @@ public class ClientHandler implements Runnable{
 			String id = (String)io.readObject();
 			return id;
 		} catch (ClassNotFoundException e) {
-			System.err.println(e);
+			Log.Error("ClassNotFoundException thrown while trying to read a notification from another server");
 			Log.Error(e.toString());
 		} catch (IOException e) {
-			System.err.println(e);
-			Log.Error(e.toString());
+			Log.Error("IOException thrown while reading notification from remote server");
+			e.printStackTrace();
 		}
 		return null;	
 	}
