@@ -149,6 +149,14 @@ public class ClientHandler implements Runnable{
 		}
 	}
 	
+	//authenticate the user vs the password store
+	private boolean authenticate(String user, String password)
+	{
+		Log.Out("Got authentication request for user: "+user+","+getIdentifier());
+		//remove this and implement logic.
+		return true;
+	}
+	
 	// Josh Clark
 	private void handleEmail(){
 		//die early if the user hasn't authenticated.
@@ -230,7 +238,7 @@ public class ClientHandler implements Runnable{
 	private void handleGetNotification()
 	{
 		//TODO: test this
-		LinkedList<Notification> notifications = SecMailServer.getNotificationList(this.user);
+		LinkedList<Notification> notifications = SecMailServer.getNotificationList(this.user.compile());
 	
 		
 		try {
@@ -257,10 +265,8 @@ public class ClientHandler implements Runnable{
 	
 	private void storeEmail(EmailStruct email) throws IOException
 	{
-		//TODO:
-		//Implement code to write the email to somewhere applicable
-		//NOTE: see email.writeToFile, file name should be email.getID(), stored in a directory that identifies the user (this.username)
-		
+		//Jacob Kanka
+		//writes email as a text file. Directory root can be configured by the user. Files are stored in separate folders for each user.
 		String root = SecMailServer.getGlobalConfig().getMailRoot();
 		String directoryName = this.user.getUser();
 		String filename = email.getID();
