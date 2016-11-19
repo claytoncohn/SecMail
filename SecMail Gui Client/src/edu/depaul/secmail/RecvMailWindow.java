@@ -30,6 +30,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormAttachment;
 
 public class RecvMailWindow extends Shell {
 	private Table table;
@@ -62,8 +65,14 @@ public class RecvMailWindow extends Shell {
 	 */	
 	public RecvMailWindow(Display display) {
 		super(display, SWT.SHELL_TRIM);
+		setLayout(new FormLayout());
 		
 		table = new Table(this, SWT.BORDER | SWT.FULL_SELECTION);
+		FormData fd_table = new FormData();
+		fd_table.top = new FormAttachment(0, 10);
+		fd_table.right = new FormAttachment(100, -10);
+		fd_table.left = new FormAttachment(0, 10);
+		table.setLayoutData(fd_table);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -81,7 +90,6 @@ public class RecvMailWindow extends Shell {
 					}
 			}
 		});
-		table.setBounds(10, 31, 623, 325);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		
@@ -102,23 +110,32 @@ public class RecvMailWindow extends Shell {
 		tblclmnRecieved.setText("Recieved");
 		
 		Button btnClose = new Button(this, SWT.NONE);
+		fd_table.bottom = new FormAttachment(100, -52);
+		FormData fd_btnClose = new FormData();
+		fd_btnClose.top = new FormAttachment(table, 4);
+		fd_btnClose.right = new FormAttachment(table, 0, SWT.RIGHT);
+		btnClose.setLayoutData(fd_btnClose);
 		btnClose.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				RecvMailWindow.this.close();
 			}
 		});
-		btnClose.setBounds(558, 390, 75, 25);
 		btnClose.setText("Close");
 		
 		Button btnGetNotifications = new Button(this, SWT.NONE);
+		//fd_btnClose.left = new FormAttachment(0, 626);
+		FormData fd_btnGetNotifications = new FormData();
+		fd_btnGetNotifications.top = new FormAttachment(btnClose, 0, SWT.TOP);
+		fd_btnGetNotifications.right = new FormAttachment(btnClose, -6);
+		//fd_btnGetNotifications.left = new FormAttachment(btnClose, -60);
+		btnGetNotifications.setLayoutData(fd_btnGetNotifications);
 		btnGetNotifications.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				getNewNotifications();
 			}
 		});
-		btnGetNotifications.setBounds(431, 390, 120, 25);
 		btnGetNotifications.setText("Get Notifications");
 		createContents();
 	}
@@ -140,7 +157,7 @@ public class RecvMailWindow extends Shell {
 	 */
 	protected void createContents() {
 		setText("SecMail");
-		setSize(659, 464);
+		setSize(719, 562);
 	}
 
 	@Override
