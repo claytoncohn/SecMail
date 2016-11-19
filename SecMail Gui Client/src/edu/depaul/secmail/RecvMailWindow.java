@@ -119,7 +119,7 @@ public class RecvMailWindow extends Shell {
 				getNewNotifications();
 			}
 		});
-		btnGetNotifications.setBounds(451, 390, 101, 25);
+		btnGetNotifications.setBounds(431, 390, 120, 25);
 		btnGetNotifications.setText("Get Notifications");
 		createContents();
 	}
