@@ -11,6 +11,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -293,12 +295,20 @@ public class RecvMailWindow extends Shell {
 		//get mail from server
 		else
 		{
+			//Geri and Clayton
+			PacketHeader p = new PacketHeader(Command.REQ_THREE_WAY, n.getFrom().getDomain(), n.getFrom().getPort());
+			io.writeObject(p);
+			AuthToken token = (AuthToken)io.readObject();
+			Socket t = new Socket(n.getFrom().getDomain(), n.getFrom().getPort());
+			
 			//make packet header to send to server
+			DHEncryptionIO io2 = new DHEncryptionIO(t, true);
 			PacketHeader getEmailHeader = new PacketHeader(Command.RECEIVE_EMAIL);
 			//send packet header to server 
-			io.writeObject(getEmailHeader);
+			io2.writeObject(getEmailHeader);
+			io2.writeObject(token);
 			//send ID to server 
-			io.writeObject(n.getID());
+			io2.writeObject(n.getID());
 			
 			PacketHeader responsePacket = (PacketHeader) io.readObject();
 			if(responsePacket.getCommand() == Command.RECEIVE_EMAIL){

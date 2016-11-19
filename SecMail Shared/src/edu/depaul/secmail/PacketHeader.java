@@ -19,6 +19,12 @@ public class PacketHeader implements java.io.Serializable {
 		
 	}
 	
+	PacketHeader(Command c, String s, long l) {
+		this.length = l;
+		this.string = s;
+		this.command = c;
+	}
+	
 	public Command getCommand()
 	{
 		return command;

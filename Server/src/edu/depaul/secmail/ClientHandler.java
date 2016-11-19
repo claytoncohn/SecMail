@@ -20,7 +20,15 @@ import java.io.ObjectInputStream;
 
 public class ClientHandler implements Runnable{
 	private Socket clientSocket = null;
+	
+	//Geri and clayton
+	private Socket clientToServerTwoSocket = null;
+	public Socket getClientToServerTwoSocket() { return clientToServerTwoSocket; }
+	public void setClientToServerTwoSocket(Socket clientToServerTwoSocket) { this.clientToServerTwoSocket = clientToServerTwoSocket; }
+	
 	private DHEncryptionIO io = null;
+	private DHEncryptionIO io2 = null;
+
 	UserStruct user = null;
 	Config config = null;
 	
@@ -357,6 +365,37 @@ public class ClientHandler implements Runnable{
 			e.printStackTrace();
 		}
 		return null;	
+	}
+	
+//Step 1. Client 1 tells server 1 to tell server 2 that we are good and need a token
+//	Client tells is in ReceiveMail.java, Tells sever 1 part is in ClientHandler
+//Step 2. Server 2 acknowledges that we are good and sends us back a token via server 1.
+//Step 3. We then use that token to open up a new direct socket to server 2
+//Step 4. Authenticate with said token to server 2.
+//Step 5. Grab the email
+	
+	//Make request from client 1 to server 1 - send our auth token to server1
+	//Make request from server 1 to server 2 - 
+	//Server 2 authenticates client info from server 1
+	//Server 2 returns token to server 1
+	//Server 1 returns server 2 token back to client 1
+	
+	
+	//Client 1 opens connection to server 2
+	//Server 2 authorizes connection with Client 1
+	//Client 1 pulls email directly from server 2
+	
+	private void clientSocketToServer2() {
+		this.clientToServerTwoSocket = new Socket();
+		Socket s = this.clientToServerTwoSocket;
+		try {
+			io2 = new DHEncryptionIO(s, true);
+		} catch (IOException e) {
+			System.err.println(e);
+			Log.Error("Exception creating ClientHandler or Server 2: ");
+			Log.Error(e.toString());
+			System.exit(10);
+		}
 	}
 	
 }
