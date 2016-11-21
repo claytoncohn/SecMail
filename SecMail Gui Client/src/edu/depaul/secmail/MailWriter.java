@@ -123,6 +123,7 @@ public class MailWriter extends Shell {
 		bodyText.setLayoutData(fd_bodyText);
 		
 		tblAttachments = new Table(composite_1, SWT.BORDER | SWT.FULL_SELECTION);
+		tblAttachments.setEnabled(false);
 		FormData fd_tblAttachments = new FormData();
 		fd_tblAttachments.top = new FormAttachment(bodyText, 6);
 		fd_tblAttachments.bottom = new FormAttachment(100, -6);
@@ -145,6 +146,7 @@ public class MailWriter extends Shell {
 		
 		
 		Button btnAddAttachment = new Button(this, SWT.NONE);
+		btnAddAttachment.setEnabled(false);
 		btnAddAttachment.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
