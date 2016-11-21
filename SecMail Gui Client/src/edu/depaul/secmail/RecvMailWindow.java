@@ -44,6 +44,7 @@ public class RecvMailWindow extends Shell {
 	 * Launch the application.
 	 * @param args
 	 */
+	//Jacob Burkamper
 	public static void main(String args[]) {
 		try {
 			Display display = Display.getDefault();
@@ -64,7 +65,8 @@ public class RecvMailWindow extends Shell {
 	 * Create the shell.
 	 * @param display
 	 * @wbp.parser.constructor
-	 */	
+	 */
+	//Jacob Burkamper
 	public RecvMailWindow(Display display) {
 		super(display, SWT.SHELL_TRIM);
 		setLayout(new FormLayout());
@@ -183,12 +185,14 @@ public class RecvMailWindow extends Shell {
 		createContents();
 	}
 	
+	//Jacob Burkamper
 	RecvMailWindow(Display display, DHEncryptionIO serverConnection)
 	{
 		this(display);
 		this.io = serverConnection;
 	}
 	
+	//Jacob Burkamper
 	@Override
 	public void open()
 	{
@@ -198,6 +202,7 @@ public class RecvMailWindow extends Shell {
 	/**
 	 * Create contents of the shell.
 	 */
+	//Jacob Burkamper
 	protected void createContents() {
 		setText("SecMail");
 		setSize(661, 496);
@@ -268,6 +273,7 @@ public class RecvMailWindow extends Shell {
 		}
 	}
 	
+	//Jacob Burkamper
 	private void addNewTableItem(Table t, Notification n, boolean isOnDisk)
 	{
 		TableItem item = new TableItem(t, SWT.NONE);

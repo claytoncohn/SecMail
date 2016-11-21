@@ -39,6 +39,7 @@ public class EmailReader extends Shell {
 	 * Launch the application.
 	 * @param args
 	 */
+	//Jacob Burkamper
 	public static void main(String args[]) {
 		try {
 			Display display = Display.getDefault();
@@ -60,6 +61,7 @@ public class EmailReader extends Shell {
 	 * @param display
 	 * @wbp.parser.constructor
 	 */
+	//Jacob Burkamper
 	public EmailReader(Display display) {
 		super(display, SWT.SHELL_TRIM);
 		setLayout(new FormLayout());
@@ -256,12 +258,14 @@ public class EmailReader extends Shell {
 		createContents();
 	}
 	
+	//Jacob Burkamper
 	EmailReader(Display d, DHEncryptionIO serverIO)
 	{
 		this(d);
 		this.io = serverIO;
 	}
 	
+	//Jacob Burkamper
 	EmailReader(Display d, EmailStruct email, UserStruct from, Date emailDate, DHEncryptionIO serverIO)
 	{
 		this(d, serverIO);
@@ -285,6 +289,7 @@ public class EmailReader extends Shell {
 		this.email = email;
 	}
 	
+	//Jacob Burkamper
 	@Override
 	public void open() 
 	{
@@ -306,6 +311,7 @@ public class EmailReader extends Shell {
 	/**
 	 * Create contents of the shell.
 	 */
+	//Jacob Burkamper
 	protected void createContents() {
 		setText("EmailReader");
 		setSize(661, 560);
@@ -317,6 +323,7 @@ public class EmailReader extends Shell {
 		// Disable the check that prevents subclassing of SWT components
 	}
 	
+	//Jacob Burkamper
 	private void handleAttachment(File f)
 	{
 		//TODO: Handle the attachment.

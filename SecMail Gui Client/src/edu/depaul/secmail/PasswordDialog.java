@@ -27,6 +27,7 @@ public class PasswordDialog extends Dialog {
 	 * @param parent
 	 * @param style
 	 */
+	//Jacob Burkamper
 	public PasswordDialog(Shell parent, int style) {
 		super(parent, style);
 		setText("SWT Dialog");
@@ -37,6 +38,7 @@ public class PasswordDialog extends Dialog {
 	 * Open the dialog.
 	 * @return the result
 	 */
+	//Jacob Burkamper
 	public boolean open() {
 		shlPassword.open();
 		shlPassword.layout();
@@ -52,6 +54,7 @@ public class PasswordDialog extends Dialog {
 	/**
 	 * Create contents of the dialog.
 	 */
+	//Jacob Burkamper
 	private void createContents() {
 		shlPassword = new Shell(getParent(), getStyle());
 		shlPassword.setSize(531, 126);
@@ -106,21 +109,25 @@ public class PasswordDialog extends Dialog {
 
 	}
 	
+	//Jacob Burkamper
 	public void setTitle(String titleText)
 	{
 		setText(titleText);
 	}
 	
+	//Jacob Burkamper
 	public void setMessage(String message)
 	{
 		lblText.setText(message);
 	}
 	
+	//Jacob Burkamper
 	public boolean returnOK()
 	{
 		return exit_ok;
 	}
 	
+	//Jacob Burkamper
 	public String getText()
 	{
 		return pass;
