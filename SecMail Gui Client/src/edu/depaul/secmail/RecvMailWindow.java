@@ -33,10 +33,12 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.widgets.Label;
 
 public class RecvMailWindow extends Shell {
-	private Table table;
+	private Table tblNewMail;
 	private DHEncryptionIO io;
+	private Table tblSentMail;
 
 	/**
 	 * Launch the application.
@@ -67,17 +69,16 @@ public class RecvMailWindow extends Shell {
 		super(display, SWT.SHELL_TRIM);
 		setLayout(new FormLayout());
 		
-		table = new Table(this, SWT.BORDER | SWT.FULL_SELECTION);
-		FormData fd_table = new FormData();
-		fd_table.top = new FormAttachment(0, 10);
-		fd_table.right = new FormAttachment(100, -10);
-		fd_table.left = new FormAttachment(0, 10);
-		table.setLayoutData(fd_table);
-		table.addMouseListener(new MouseAdapter() {
+		tblNewMail = new Table(this, SWT.BORDER | SWT.FULL_SELECTION);
+		FormData fd_tblNewMail = new FormData();
+		fd_tblNewMail.right = new FormAttachment(100, -10);
+		fd_tblNewMail.left = new FormAttachment(0, 10);
+		tblNewMail.setLayoutData(fd_tblNewMail);
+		tblNewMail.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				Point pt = new Point(e.x, e.y);
-				TableItem clickedItem = table.getItem(pt);
+				TableItem clickedItem = tblNewMail.getItem(pt);
 				if (clickedItem != null)
 					try {
 						OpenOrFetchMail(clickedItem);
@@ -90,30 +91,30 @@ public class RecvMailWindow extends Shell {
 					}
 			}
 		});
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
+		tblNewMail.setHeaderVisible(true);
+		tblNewMail.setLinesVisible(true);
 		
-		TableColumn tblclmnNewColumn = new TableColumn(table, SWT.NONE);
-		tblclmnNewColumn.setWidth(100);
+		TableColumn tblclmnNewColumn = new TableColumn(tblNewMail, SWT.NONE);
+		tblclmnNewColumn.setWidth(149);
 		tblclmnNewColumn.setText("From");
 		
-		TableColumn tblclmnSubject = new TableColumn(table, SWT.NONE);
-		tblclmnSubject.setWidth(373);
+		TableColumn tblclmnSubject = new TableColumn(tblNewMail, SWT.NONE);
+		tblclmnSubject.setWidth(273);
 		tblclmnSubject.setText("Subject");
 		
-		TableColumn tblclmnDate = new TableColumn(table, SWT.NONE);
-		tblclmnDate.setWidth(82);
+		TableColumn tblclmnDate = new TableColumn(tblNewMail, SWT.NONE);
+		tblclmnDate.setWidth(130);
 		tblclmnDate.setText("Date");
 		
-		TableColumn tblclmnRecieved = new TableColumn(table, SWT.NONE);
+		TableColumn tblclmnRecieved = new TableColumn(tblNewMail, SWT.NONE);
 		tblclmnRecieved.setWidth(63);
-		tblclmnRecieved.setText("Recieved");
+		tblclmnRecieved.setText("Opened");
 		
 		Button btnClose = new Button(this, SWT.NONE);
-		fd_table.bottom = new FormAttachment(100, -52);
+		fd_tblNewMail.bottom = new FormAttachment(100, -276);
 		FormData fd_btnClose = new FormData();
-		fd_btnClose.top = new FormAttachment(table, 4);
-		fd_btnClose.right = new FormAttachment(table, 0, SWT.RIGHT);
+		fd_btnClose.right = new FormAttachment(100, -10);
+		fd_btnClose.bottom = new FormAttachment(100, -10);
 		btnClose.setLayoutData(fd_btnClose);
 		btnClose.addMouseListener(new MouseAdapter() {
 			@Override
@@ -137,6 +138,48 @@ public class RecvMailWindow extends Shell {
 			}
 		});
 		btnGetNotifications.setText("Get Notifications");
+		
+		Label lblNewMail = new Label(this, SWT.NONE);
+		fd_tblNewMail.top = new FormAttachment(lblNewMail, 6);
+		FormData fd_lblNewMail = new FormData();
+		fd_lblNewMail.right = new FormAttachment(0, 105);
+		fd_lblNewMail.left = new FormAttachment(0, 10);
+		fd_lblNewMail.top = new FormAttachment(0, 10);
+		lblNewMail.setLayoutData(fd_lblNewMail);
+		lblNewMail.setText("New Mail");
+		
+		Label lblSentMail = new Label(this, SWT.NONE);
+		FormData fd_lblSentMail = new FormData();
+		fd_lblSentMail.top = new FormAttachment(tblNewMail, 6);
+		fd_lblSentMail.left = new FormAttachment(tblNewMail, 0, SWT.LEFT);
+		lblSentMail.setLayoutData(fd_lblSentMail);
+		lblSentMail.setText("Sent Mail Receipts");
+		
+		tblSentMail = new Table(this, SWT.BORDER | SWT.FULL_SELECTION);
+		FormData fd_tblSentMail = new FormData();
+		fd_tblSentMail.bottom = new FormAttachment(btnClose, -6);
+		fd_tblSentMail.right = new FormAttachment(tblNewMail, 0, SWT.RIGHT);
+		fd_tblSentMail.top = new FormAttachment(lblSentMail, 6);
+		fd_tblSentMail.left = new FormAttachment(tblNewMail, 0, SWT.LEFT);
+		tblSentMail.setLayoutData(fd_tblSentMail);
+		tblSentMail.setHeaderVisible(true);
+		tblSentMail.setLinesVisible(true);
+		
+		TableColumn tblclmnTo = new TableColumn(tblSentMail, SWT.NONE);
+		tblclmnTo.setWidth(160);
+		tblclmnTo.setText("To");
+		
+		TableColumn tblclmnSubject_1 = new TableColumn(tblSentMail, SWT.NONE);
+		tblclmnSubject_1.setWidth(260);
+		tblclmnSubject_1.setText("Subject");
+		
+		TableColumn tblclmnReceived = new TableColumn(tblSentMail, SWT.NONE);
+		tblclmnReceived.setWidth(69);
+		tblclmnReceived.setText("Received");
+		
+		TableColumn tblclmnDate_1 = new TableColumn(tblSentMail, SWT.NONE);
+		tblclmnDate_1.setWidth(128);
+		tblclmnDate_1.setText("Date");
 		createContents();
 	}
 	
@@ -157,7 +200,7 @@ public class RecvMailWindow extends Shell {
 	 */
 	protected void createContents() {
 		setText("SecMail");
-		setSize(719, 562);
+		setSize(661, 496);
 	}
 
 	@Override
@@ -166,6 +209,7 @@ public class RecvMailWindow extends Shell {
 	}
 	
 	//Connect to the server and get the new notifications
+	//Jacob Burkamper and Geri Toncheva
 	private void getNewNotifications()
 	{
 		PacketHeader getNotification = new PacketHeader(Command.GET_NOTIFICATION);
@@ -188,17 +232,28 @@ public class RecvMailWindow extends Shell {
 				LinkedList<Notification> notifications = (LinkedList<Notification>) io.readObject();
 				for(Notification n : notifications){
 					boolean notificationExists = false;
-					if(n.getType() == NotificationType.NEW_EMAIL){
+					if(n.getType() == NotificationType.NEW_EMAIL){ // handle the new email notifications
 						 File emailFile = new File(MainWindow.getMailDir() + n.getID());
 					
 						//first check to make sure the notification isn't already in the table.
-						for (TableItem t : table.getItems())
+						for (TableItem t : tblNewMail.getItems())
 						{
 							if (((Notification)t.getData()).getID().equals(n.getID())) // if this table item has a notification with the same id
 								notificationExists = true; // set the flag to true
 						}		
 						if (!notificationExists) // only if the notification didn't already exist
-							addNewTableItem(n,  emailFile.exists()); // new notification, don't have the email yet		
+							addNewTableItem(tblNewMail, n,  emailFile.exists());		
+					} else // handle the receipt notifications
+					{
+						//make sure the notification isn't already in the table.
+						for (TableItem i : tblSentMail.getItems())
+							if ( ((Notification)i.getData()).getID().equals(n.getID()) )
+							{
+								notificationExists = true;
+								break;
+							}
+						if (!notificationExists)
+							addNewTableItem(tblSentMail, n, true); // will always be true for email receipts
 					}
 				}
 							    	
@@ -213,9 +268,9 @@ public class RecvMailWindow extends Shell {
 		}
 	}
 	
-	private void addNewTableItem(Notification n, boolean isOnDisk)
+	private void addNewTableItem(Table t, Notification n, boolean isOnDisk)
 	{
-		TableItem item = new TableItem(table, SWT.NONE);
+		TableItem item = new TableItem(t, SWT.NONE);
 		item.setData(n); // store the notification for future use
 		item.setText(0, n.getFrom().compile()); // the from field
 		item.setText(1, n.getSubject()); // the subject
