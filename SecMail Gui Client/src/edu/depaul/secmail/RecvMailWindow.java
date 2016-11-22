@@ -175,13 +175,13 @@ public class RecvMailWindow extends Shell {
 		tblclmnSubject_1.setWidth(260);
 		tblclmnSubject_1.setText("Subject");
 		
-		TableColumn tblclmnReceived = new TableColumn(tblSentMail, SWT.NONE);
-		tblclmnReceived.setWidth(69);
-		tblclmnReceived.setText("Received");
-		
 		TableColumn tblclmnDate_1 = new TableColumn(tblSentMail, SWT.NONE);
-		tblclmnDate_1.setWidth(128);
+		tblclmnDate_1.setWidth(114);
 		tblclmnDate_1.setText("Date");
+		
+		TableColumn tblclmnReceived = new TableColumn(tblSentMail, SWT.NONE);
+		tblclmnReceived.setWidth(95);
+		tblclmnReceived.setText("Received");
 		createContents();
 	}
 	
