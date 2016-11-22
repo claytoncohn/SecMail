@@ -326,7 +326,7 @@ public class MailWriter extends Shell {
 		System.out.println(toText.getText());
 		String[] recipients = toText.getText().split(",");
 		for (String recipient : recipients)
-			email.addRecipient(recipient);
+			email.addRecipient(recipient.trim());
 		
 		email.setSubject(subjectText.getText());
 		email.setBody(bodyText.getText());

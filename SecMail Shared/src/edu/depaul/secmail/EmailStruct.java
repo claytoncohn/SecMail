@@ -127,6 +127,7 @@ public class EmailStruct implements Serializable{
 	//creates the appropriate UserStruct from the incoming string first.
 	public void addRecipient(String to)
 	{
+		System.out.println("Added to:" + to);
 		recipients.add(new UserStruct(to));
 	}
 	
