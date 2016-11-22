@@ -36,7 +36,7 @@ public class LoginDialog extends Dialog {
 	//Jacob Burkamper
 	public LoginDialog(Shell parent, int style) {
 		super(parent, style);
-		setText("SWT Dialog");
+		setText("Login");
 	}
 
 	/**
