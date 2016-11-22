@@ -36,7 +36,7 @@ public class Config {
 					this.SetLogFile(args[++i]);
 					break;
 				case "d":
-				case "-domain:":
+				case "-domain":
 					this.setDomain(args[++i]);
 					break;
 				default:
