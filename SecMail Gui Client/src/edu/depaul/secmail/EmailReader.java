@@ -305,6 +305,7 @@ public class EmailReader extends Shell {
 			else
 				return;
 		}
+		stxtBody.setText(email.getBody());
 		super.open();		
 	}
 
