@@ -45,6 +45,7 @@ public class MailWriter extends Shell {
 	 * Launch the application.
 	 * @param args
 	 */
+	//Jacob Burkamper
 	public static void main(String args[]) {
 		try {
 			Display display = Display.getDefault();
@@ -66,6 +67,7 @@ public class MailWriter extends Shell {
 	 * @param display
 	 * @wbp.parser.constructor
 	 */
+	//Jacob Burkamper
 	public MailWriter(Display display) {
 		super(display, SWT.SHELL_TRIM);
 		createContents();
@@ -121,6 +123,7 @@ public class MailWriter extends Shell {
 		bodyText.setLayoutData(fd_bodyText);
 		
 		tblAttachments = new Table(composite_1, SWT.BORDER | SWT.FULL_SELECTION);
+		tblAttachments.setEnabled(false);
 		FormData fd_tblAttachments = new FormData();
 		fd_tblAttachments.top = new FormAttachment(bodyText, 6);
 		fd_tblAttachments.bottom = new FormAttachment(100, -6);
@@ -143,6 +146,7 @@ public class MailWriter extends Shell {
 		
 		
 		Button btnAddAttachment = new Button(this, SWT.NONE);
+		btnAddAttachment.setEnabled(false);
 		btnAddAttachment.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -288,12 +292,14 @@ public class MailWriter extends Shell {
 		mntmClose.setText("Close");
 	}
 	
+	//Jacob Burkamper
 	MailWriter(Display d, DHEncryptionIO serverIO)
 	{
 		this(d);
 		this.io = serverIO;
 	}
 	
+	//Jacob Burkamper
 	//constructor for creating the window with default values
 	MailWriter(Display d, String to, String subject, String body, DHEncryptionIO serverIO)
 	{
@@ -307,6 +313,7 @@ public class MailWriter extends Shell {
 	/**
 	 * Create contents of the shell.
 	 */
+	//Jacob Burkamper
 	protected void createContents() {
 		setText("New Mail");
 		setSize(566, 503);
@@ -318,6 +325,7 @@ public class MailWriter extends Shell {
 		// Disable the check that prevents subclassing of SWT components
 	}
 	
+	//Jacob Burkamper
 	private void loadToEmailStruct()
 	{
 		if (email == null)
@@ -338,6 +346,7 @@ public class MailWriter extends Shell {
 		}
 	}
 	
+	//Jacob Burkamper
 	private void updateFields()
 	{
 		if (email != null)
@@ -395,6 +404,7 @@ public class MailWriter extends Shell {
 		return returnString;
 	}
 	
+	//Jacob Burkamper
 	//send the attachments from the email to the server.
 	private void sendAttachments() throws IOException
 	{

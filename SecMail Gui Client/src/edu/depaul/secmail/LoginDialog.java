@@ -33,6 +33,7 @@ public class LoginDialog extends Dialog {
 	 * @param parent
 	 * @param style
 	 */
+	//Jacob Burkamper
 	public LoginDialog(Shell parent, int style) {
 		super(parent, style);
 		setText("SWT Dialog");
@@ -42,6 +43,7 @@ public class LoginDialog extends Dialog {
 	 * Open the dialog.
 	 * @return the result
 	 */
+	//Jacob Burkamper
 	public Status open() {
 		createContents();
 		shell.open();
@@ -58,6 +60,7 @@ public class LoginDialog extends Dialog {
 	/**
 	 * Create contents of the dialog.
 	 */
+	//Jacob Burkamper
 	private void createContents() {
 		shell = new Shell(getParent(), getStyle());
 		shell.setSize(450, 300);
@@ -160,6 +163,7 @@ public class LoginDialog extends Dialog {
 		}
 	}
 	
+	//Jacob Burkamper
 	private void outputUserFormatError(String format)
 	{
 		MessageBox messageBox = new MessageBox(shell, SWT.OK);
@@ -169,6 +173,7 @@ public class LoginDialog extends Dialog {
 		returnStatus = Status.LOGIN_FAIL;
 	}
 	
+	//Jacob Burkamper
 	private void showLoginFailureMessage()
 	{
 		MessageBox messageBox = new MessageBox(shell, SWT.OK);
@@ -177,6 +182,7 @@ public class LoginDialog extends Dialog {
 		messageBox.open();
 	}
 	
+	//Jacob Burkamper
 	public DHEncryptionIO getServerConnection()
 	{
 		return serverConnection;

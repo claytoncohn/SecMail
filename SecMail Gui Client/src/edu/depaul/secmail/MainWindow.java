@@ -34,6 +34,7 @@ public class MainWindow {
 	 * Launch the application.
 	 * @param args
 	 */
+	//Jacob Burkamper
 	public static void main(String[] args) {
 		try {
 			File mailDirFile = new File(mailDir);
@@ -53,6 +54,7 @@ public class MainWindow {
 	/**
 	 * Open the window.
 	 */
+	//Jacob Burkamper
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
@@ -79,6 +81,7 @@ public class MainWindow {
 	/**
 	 * Create contents of the window.
 	 */
+	//Jacob Burkamper
 	protected void createContents() {
 		shlSecmail = new Shell(SHELL_TRIM & (~SWT.RESIZE));
 		shlSecmail.addShellListener(new ShellAdapter() {
@@ -165,6 +168,7 @@ public class MainWindow {
 		btnClose.setText("Close");
 
 	}
+	//Jacob Burkamper
 	public static String getMailDir()
 	{
 		return mailDir;

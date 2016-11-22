@@ -14,7 +14,8 @@ public class SecMailServer {
 	private static Config serverConfig;
 	public static LinkedList<Notification> notifications;
 	private static ObjectOutputStream notificationWriter = null;
-
+	
+	//Jacob Burkamper
 	public static void main(String[] args) {
 		// read the command line arguments and set up the configuration
 		System.out.println("SecMaild Starting..."); // just output a message so something is on the console.
@@ -107,6 +108,7 @@ public class SecMailServer {
 		}
 	}
 	
+	//Jacob Burkamper
 	public static synchronized LinkedList<Notification> getNotificationList(UserStruct username)
 	{
 		//search the notification list and return a new linked list containing notifications for the user only

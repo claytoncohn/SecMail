@@ -24,6 +24,7 @@ public class ClientHandler implements Runnable{
 	UserStruct user = null;
 	Config config = null;
 	
+	//Jacob Burkamper
 	ClientHandler(Socket s)
 	{
 		this.clientSocket = s;
@@ -40,6 +41,7 @@ public class ClientHandler implements Runnable{
 		
 	}
 	
+	//Jacob Burkamper
 	public void run()
 	{
 		Log.Debug("Starting ClientHandler");
@@ -75,6 +77,7 @@ public class ClientHandler implements Runnable{
 		}
 	}
 	
+	//Collective effort from all group memebers
 	private void processPacket(PacketHeader ph)
 	{
 		Log.Debug("Processing packet for command " + ph.getCommand());
@@ -104,6 +107,7 @@ public class ClientHandler implements Runnable{
 	
 	}
 	
+	//Jacob Burkamper
 	private void handleTestConnection()
 	{
 		//create successful connection packet
@@ -118,6 +122,7 @@ public class ClientHandler implements Runnable{
 		}
 	}
 	
+	//Jacob Burkamper
 	private void handleLogin(){
 		try {
 			String username = (String)io.readObject();
@@ -126,7 +131,7 @@ public class ClientHandler implements Runnable{
                        	Auth authenticate = new Auth();
                        	
 			//authenticate
-			if (authenticate.login(username,password))
+			if (authenticate.login(username,password)) //DJ & Juan
 			{
 				io.writeObject(new PacketHeader(Command.LOGIN_SUCCESS));
 				user = new UserStruct(username, SecMailServer.getGlobalConfig().getDomain(), SecMailServer.getGlobalConfig().getPort());
@@ -227,9 +232,9 @@ public class ClientHandler implements Runnable{
 		}
 	}
 	
+	//Clayton Newmiller
 	private void handleGetNotification()
 	{
-		//TODO: test this
 		LinkedList<Notification> notifications = SecMailServer.getNotificationList(this.user);
 	
 		
@@ -250,17 +255,16 @@ public class ClientHandler implements Runnable{
 		//send all the notifications in the above linked list to the client.
 	}
 	
+	//Jacob Burkamper
 	private String getIdentifier()
 	{
 		return clientSocket.getInetAddress() + ":" + clientSocket.getPort();
 	}
 	
+	//Jacob Kanka
+	//writes email as a text file. Directory root can be configured by the user. Files are stored in separate folders for each user.
 	private void storeEmail(EmailStruct email) throws IOException
 	{
-		//TODO:
-		//Implement code to write the email to somewhere applicable
-		//NOTE: see email.writeToFile, file name should be email.getID(), stored in a directory that identifies the user (this.username)
-		
 		String root = SecMailServer.getGlobalConfig().getMailRoot();
 		String directoryName = this.user.getUser();
 		String filename = email.getID();

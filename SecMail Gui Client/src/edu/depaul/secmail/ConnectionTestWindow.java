@@ -29,6 +29,7 @@ public class ConnectionTestWindow extends Shell {
 	 * Launch the application.
 	 * @param args
 	 */
+	//Jacob Burkamper
 	public static void main(String args[]) {
 		try {
 			Display display = Display.getDefault();
@@ -49,6 +50,7 @@ public class ConnectionTestWindow extends Shell {
 	 * Create the shell.
 	 * @param display
 	 */
+	//Jacob Burkamper
 	public ConnectionTestWindow(Display display) {
 		super(display, SWT.SHELL_TRIM);
 		setLayout(new GridLayout(3, false));
@@ -95,6 +97,7 @@ public class ConnectionTestWindow extends Shell {
 	/**
 	 * Create contents of the shell.
 	 */
+	//Jacob Burkamper
 	protected void createContents() {
 		setText("Test SecMail Connection");
 		setSize(316, 300);
@@ -106,6 +109,7 @@ public class ConnectionTestWindow extends Shell {
 		// Disable the check that prevents subclassing of SWT components
 	}
 	
+	//Jacob Burkamper
 	//Attempt to connect to a server and send a CONNECTION_TEST command
 	private String testConnection()
 	{
