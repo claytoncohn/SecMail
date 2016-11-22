@@ -34,6 +34,11 @@ public class Config {
 				case "l":
 				case "-logfile":
 					this.SetLogFile(args[++i]);
+					break;
+				case "d":
+				case "-domain:":
+					this.setDomain(args[++i]);
+					break;
 				default:
 					System.err.println("Unknown command line option: " + args[i]);
 				}
