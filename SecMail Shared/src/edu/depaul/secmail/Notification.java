@@ -86,4 +86,11 @@ public class Notification implements Serializable{
 	{
 		return sendDate;
 	}
+	public String toString(){
+		return "to: "+this.to.compile() +
+				"\nfrom: "+this.from.compile() +
+				"\nsubject "+this.subject;
+	}
+	
+	
 }
