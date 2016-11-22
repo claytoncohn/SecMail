@@ -113,10 +113,9 @@ public class SecMailServer {
 	{
 		//search the notification list and return a new linked list containing notifications for the user only
 		LinkedList<Notification> ret = new LinkedList<Notification>();
-		System.out.println("Searching for notifications... for: "+username.compile());
+//		System.out.println("Searching for notifications... for: "+username.compile());
 		for (Notification n : notifications){
-			
-			System.out.println(n.toString());
+//			System.out.println(n.toString());
 			if (n.getTo().compile().trim().equals(username.compile().trim())){
 				ret.add(n);
 			}

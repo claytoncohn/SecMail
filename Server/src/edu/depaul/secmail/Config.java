@@ -168,8 +168,7 @@ public class Config {
 	
 	//Jacob Burkamper
 	private void setDomain(String newDomain)
-	{
-		System.out.println("setDomain() has been called"); 
+	{ 
 		this.domain = newDomain;
 	}
 	
