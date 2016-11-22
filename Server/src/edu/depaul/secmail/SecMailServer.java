@@ -99,7 +99,7 @@ public class SecMailServer {
 	private static void saveNotification(Notification n) 
 	{
 		try {
-			Log.Debug("Saving Notification for user: "+n.getTo().compile()+" id: "+n.getID());
+			Log.Debug("Saving Notification for user: "+n.getTo().compile()+"from:"+ n.getFrom()+" id: "+n.getID());
 			notificationWriter.writeObject(n);
 		} catch (IOException e) {
 			Log.Error("IOException while trying to write to notification file");
@@ -113,8 +113,11 @@ public class SecMailServer {
 	{
 		//search the notification list and return a new linked list containing notifications for the user only
 		LinkedList<Notification> ret = new LinkedList<Notification>();
+		System.out.println("Searching for notifications... for: "+username.compile());
 		for (Notification n : notifications){
-			if (n.getTo().compile().equals(username.compile())){
+			
+			System.out.println(n.toString());
+			if (n.getTo().compile().trim().equals(username.compile().trim())){
 				ret.add(n);
 			}
 		}
